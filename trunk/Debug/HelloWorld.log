@@ -1,0 +1,67 @@
+﻿La génération a démarré 18/06/2011 18:03:41.
+     1>Projet "C:\Users\Yoann\Desktop\SA-MP Server\plugins\HelloWorld.vcxproj" sur le nœud 2 (build cible(s)).
+     1>InitializeBuildStatus:
+         Mise à jour de l'horodatage "Debug\HelloWorld.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Software\Visual Studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D HELLOWORLD_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp pool\class_gangzonepool.cpp pool\class_pickuppool.cpp script\amx\func_amx_gangzone.cpp script\func_amx.cpp
+         class_pickuppool.cpp
+         class_gangzonepool.cpp
+         main.cpp
+         Génération de code en cours...
+         Compilation en cours...
+         func_amx.cpp
+         func_amx_gangzone.cpp
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(40): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(43): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(63): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(66): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(66): warning C4244: 'argument' : conversion de 'cell' en 'uint8_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(77): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(80): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(100): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(103): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(103): warning C4244: 'argument' : conversion de 'cell' en 'uint8_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(114): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(117): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(137): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(140): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(140): warning C4244: 'argument' : conversion de 'cell' en 'uint8_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(151): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(154): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(174): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(177): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(177): warning C4244: 'argument' : conversion de 'cell' en 'uint8_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(188): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+     1>c:\users\yoann\desktop\sa-mp server\plugins\script\amx\func_amx_gangzone.cpp(191): warning C4244: 'argument' : conversion de 'cell' en 'uint16_t', perte possible de données
+         Génération de code en cours...
+         Toutes les sorties sont à jour.
+       ManifestResourceCompile:
+         Toutes les sorties sont à jour.
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.dll) ne correspond pas à la valeur de la propriété OutputFile (C:\Users\Yoann\Desktop\SA-MP Server\plugins\plugin.dll) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(HelloWorld) ne correspond pas à la valeur de la propriété OutputFile (plugin) de Linker. Cela peut entraîner une génération incorrecte de votre projet. Pour corriger ce problème, vérifiez que les valeurs des propriétés $(OutDir), $(TargetName) et $(TargetExt) correspondent à la valeur spécifiée dans %(Link.OutputFile).
+       Link:
+         C:\Program Files\Software\Visual Studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"plugin.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"helloworld.def" /MANIFEST /ManifestFile:"Debug\HelloWorld.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.lib" /MACHINE:X86 /DLL Debug\HelloWorld.dll.embed.manifest.res
+         Debug\amxplugin.obj
+         Debug\getch.obj
+         Debug\main.obj
+         Debug\class_gangzonepool.obj
+         Debug\class_pickuppool.obj
+         Debug\BitStream.obj
+         Debug\func_amx_gangzone.obj
+         Debug\func_amx.obj
+            Création de la bibliothèque C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.lib et de l'objet C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.exp
+     1>HelloWorld.exp : warning LNK4070: la directive /OUT:HelloWorld.dll dans .EXP est différente du nom du fichier de sortie 'plugin.dll' ; directive ignorée
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\HelloWorld.dll.embed.manifest" /manifest Debug\HelloWorld.dll.intermediate.manifest
+         Toutes les sorties sont à jour.
+       LinkEmbedManifest:
+         Toutes les sorties sont à jour.
+         HelloWorld.vcxproj -> C:\Users\Yoann\Desktop\SA-MP Server\plugins\Debug\HelloWorld.dll
+       FinalizeBuildStatus:
+         Suppression du fichier "Debug\HelloWorld.unsuccessfulbuild".
+         Mise à jour de l'horodatage "Debug\HelloWorld.lastbuildstate".
+     1>Génération du projet "C:\Users\Yoann\Desktop\SA-MP Server\plugins\HelloWorld.vcxproj" terminée (build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:07.49
