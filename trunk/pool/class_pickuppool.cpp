@@ -6,7 +6,7 @@ tPickupPool* __PickupPoolEx = NULL;
 uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, float a_float_X, float a_float_Y, float a_float_Z, uint8_t a_uint8_Static )
 {
 	logprintf ( "[Call]-> CPickupPool::New ( %d, %d, %f, %f, %f, %d )", a_uint32_Model, a_uint32_Type, a_float_X, a_float_Y, a_float_Z, a_uint8_Static );
-
+/*
 	//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
 	__PickupPoolEx = ( tPickupPool* )( *( uint32_t* )( __NetGame + 0x10 ) );
@@ -58,7 +58,7 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 		result = l_PickupIndex;
 	}
 	return result;
-
+	*/
 
 /*
 	//if ( this->m_uint32_PickupCount >= LIMIT_MAX_PICKUPS )
@@ -131,6 +131,7 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 		}
 	}
 	*/
+	return 0;
 }
 
 uint8_t CPickupPool::Destroy ( uint32_t a_uint32_PickupIndex )

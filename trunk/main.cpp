@@ -20,11 +20,16 @@
 
 logprintf_t logprintf;
 
+
+int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499020;
+int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499240;
+
 void **ppPluginData;
 extern void *pAMXFunctions;
 
 CPickupPool* __PickupPool = NULL;
 CGangZonePool* __GangZonePool = NULL;
+CTextDrawPool* __TextDrawPool = NULL;
 
 uint32_t __NetGame = NULL;
 
@@ -71,7 +76,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();
-
+	__TextDrawPool = new CTextDrawPool( );
+	
 	/***
 	*	HOOKING PARTY =D
 	*

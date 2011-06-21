@@ -3,6 +3,7 @@
 
 #include "stdio.h"
 #include <Windows.h>
+#include <malloc.h>
 
 
 
@@ -17,16 +18,27 @@ typedef unsigned char	uint8_t;
 typedef char			int8_t;
 
 
+#include "raknet/BitStream.h"
+
+
+extern int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
+extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
+
+
 #include "pool/class_pickuppool.h"
 #include "pool/class_gangzonepool.h"
+#include "pool/class_textdrawpool.h"
+#include "pool/class_text3dlabels.h"
 
 
-#include "raknet/BitStream.h"
+
 
 extern CPickupPool* __PickupPool;
 extern CGangZonePool* __GangZonePool;
+extern CTextDrawPool* __TextDrawPool;
 
 extern uint32_t __NetGame;
+
 
 // __MAIN_H_
 #endif
