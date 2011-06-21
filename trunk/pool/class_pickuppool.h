@@ -32,7 +32,7 @@ private:
 	tPickup m_Pickups[ LIMIT_MAX_PICKUPS ];			// - 0x0000 - 0000
 	uint32_t m_uint32_PickupCount;					// - 0xA000 - 40960
 	uint8_t m_uint8_Active[ LIMIT_MAX_PICKUPS ];	// - 0xA004 - 40964
-													// - 0xA005 - 40965
+													// - 0xA804 - 43012
 public:
 	
 	CPickupPool()

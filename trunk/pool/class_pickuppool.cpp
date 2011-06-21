@@ -11,6 +11,56 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 	__NetGame = *( uint32_t* )( 0x004F6270 );
 	__PickupPoolEx = ( tPickupPool* )( *( uint32_t* )( __NetGame + 0x10 ) );
 
+	char *v7; // eax@1
+	signed int l_PickupIndex; // esi@1
+	signed int result; // eax@12
+	char *v10; // eax@13
+
+	l_PickupIndex = 0;
+	v7 = (char *)__PickupPoolEx->m_uint8_Active;
+	while ( *((DWORD *)v7 - 1) )
+	{
+		if ( !*(DWORD *)v7 )
+		{
+			++l_PickupIndex;
+			break;
+		}
+		if ( !*((DWORD *)v7 + 1) )
+		{
+			l_PickupIndex += 2;
+			break;
+		}
+		if ( !*((DWORD *)v7 + 2) )
+		{
+			l_PickupIndex += 3;
+			break;
+		}
+		l_PickupIndex += 4;
+		v7 += 16;
+		if ( l_PickupIndex >= LIMIT_MAX_PICKUPS )
+			break;
+	}
+
+	if ( l_PickupIndex == LIMIT_MAX_PICKUPS )
+	{
+		result = -1;
+	}
+	else
+	{
+		__PickupPoolEx->m_Pickups[ i ].m_uint32_Model = a_uint32_Model;
+		__PickupPoolEx->m_Pickups[ i ].m_uint32_Type = a_uint32_Type;
+		__PickupPoolEx->m_Pickups[ i ].m_float_X = a_float_X;
+		__PickupPoolEx->m_Pickups[ i ].m_float_Y = a_float_Y;	
+		__PickupPoolEx->m_Pickups[ i ].m_float_Z = a_float_Z;
+		__PickupPoolEx->m_uint8_Active[ i ] = a_uint8_Static;
+
+		//sub_47C150((int)this);
+		result = l_PickupIndex;
+	}
+	return result;
+
+
+/*
 	//if ( this->m_uint32_PickupCount >= LIMIT_MAX_PICKUPS )
 	//	return -1;
 
@@ -43,7 +93,7 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 			bsPickup.Write(i);
 			bsPickup.Write((PCHAR)&m_Pickups[i], sizeof (PICKUP));
 			pNetGame->GetRakServer()->RPC(RPC_Pickup, &bsPickup, HIGH_PRIORITY, RELIABLE, 0, UNASSIGNED_PLAYER_ID, true, false);
-			*/
+			*//*
 			return i;
 		}
 	}
@@ -81,7 +131,6 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 		}
 	}
 	*/
-	return -1;
 }
 
 uint8_t CPickupPool::Destroy ( uint32_t a_uint32_PickupIndex )
