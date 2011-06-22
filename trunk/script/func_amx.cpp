@@ -6,6 +6,8 @@
 #include "func_amx.h"
 #include "amx/func_amx_gangzone.h"
 #include "amx/func_amx_object.h"
+#include "amx/func_amx_textdraw.h"
+
 
 AMX_NATIVE_INFO __AmxScriptNative[];
 
@@ -231,24 +233,7 @@ cell ( __cdecl* _funcGameTextForAll )( AMX* a_AmxInterface, cell* a_Params ) = (
 cell ( __cdecl* _funcGameTextForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GameTextForPlayer;
 cell ( __cdecl* _funcSendPlayerMessageToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToPlayer;
 cell ( __cdecl* _funcSendPlayerMessageToAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToAll;
-cell ( __cdecl* _funcTextDrawCreate )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawCreate;
-cell ( __cdecl* _funcTextDrawSetString )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawSetString;
-cell ( __cdecl* _funcTextDrawLetterSize )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawLetterSize;
-cell ( __cdecl* _funcTextDrawTextSize )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawTextSize;
-cell ( __cdecl* _funcTextDrawAlignment )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawAlignment;
-cell ( __cdecl* _funcTextDrawColor )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawColor;
-cell ( __cdecl* _funcTextDrawUseBox )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawUseBox;
-cell ( __cdecl* _funcTextDrawBoxColor )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawBoxColor;
-cell ( __cdecl* _funcTextDrawSetShadow )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawSetShadow;
-cell ( __cdecl* _funcTextDrawSetOutline )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawSetOutline;
-cell ( __cdecl* _funcTextDrawBackgroundColor )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawBackgroundColor;
-cell ( __cdecl* _funcTextDrawFont )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawFont;
-cell ( __cdecl* _funcTextDrawSetProportional )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawSetProportional;
-cell ( __cdecl* _funcTextDrawShowForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawShowForPlayer;
-cell ( __cdecl* _funcTextDrawShowForAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawShowForAll;
-cell ( __cdecl* _funcTextDrawHideForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawHideForPlayer;
-cell ( __cdecl* _funcTextDrawHideForAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawHideForAll;
-cell ( __cdecl* _funcTextDrawDestroy )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawDestroy;
+
 cell ( __cdecl* _funcCreateMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateMenu;
 cell ( __cdecl* _funcDestroyMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyMenu;
 cell ( __cdecl* _funcAddMenuItem )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddMenuItem;
@@ -1414,124 +1399,7 @@ cell AMX_NATIVE_CALL funcSendPlayerMessageToAll ( AMX* a_AmxInterface, cell* a_P
 	logprintf ( "[Call]-> funcSendPlayerMessageToAll()" );
 	return _funcSendPlayerMessageToAll ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcTextDrawCreate ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 3 );
-	logprintf ( "[Call]-> funcTextDrawCreate()" );
-	/*
-		Je ne test pas volontairement si il y a bien eu du texte entrée, vu que sur le serveur "original", il n'y a pas ce test
-	*/
-	char* str = 0; 
-	amx_StrParam( a_AmxInterface, a_Params[3], str );
 
-	logprintf( "funcTextDrawCreate( %f, %f, %s )", amx_ctof( a_Params[1] ), amx_ctof( a_Params[2] ), str );
-	
-	return __TextDrawPool->Create( amx_ctof( a_Params[1] ), amx_ctof( a_Params[2] ), str );
-}
-cell AMX_NATIVE_CALL funcTextDrawSetString ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawSetString()" );
-	char* str = 0; 
-	amx_StrParam( a_AmxInterface, a_Params[2], str );
-	return __TextDrawPool->setString( (WORD)a_Params[1], str );
-}
-cell AMX_NATIVE_CALL funcTextDrawLetterSize ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 3 );
-	logprintf ( "[Call]-> funcTextDrawLetterSize()" );
-	return __TextDrawPool->setLetterSize( (WORD)a_Params[1], amx_ctof( a_Params[2] ), amx_ctof( a_Params[3] ) );
-}
-cell AMX_NATIVE_CALL funcTextDrawTextSize ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 3 );
-	logprintf ( "[Call]-> funcTextDrawTextSize()" );
-	return __TextDrawPool->setTextSize( (WORD)a_Params[1], amx_ctof( a_Params[2] ), amx_ctof( a_Params[3] ) );
-}
-cell AMX_NATIVE_CALL funcTextDrawAlignment ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawAlignment()" );
-	return __TextDrawPool->setAlignement( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawColor ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawColor()" );
-	return __TextDrawPool->setColor( (WORD)a_Params[1], /*a_Params[2]*/-1 );
-}
-cell AMX_NATIVE_CALL funcTextDrawUseBox ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawUseBox()" );
-	return __TextDrawPool->setUseBox( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawBoxColor ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawBoxColor()" );
-	return __TextDrawPool->setDrawBoxColor( (WORD)a_Params[1], a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawSetShadow ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawSetShadow()" );
-	return __TextDrawPool->setShadow( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawSetOutline ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawSetOutline()" );
-	return __TextDrawPool->setOutline( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawBackgroundColor ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawBackgroundColor()" );
-	return __TextDrawPool->setBackgroundColor( (WORD)a_Params[1], a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawFont ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawFont()" );
-	return __TextDrawPool->setFont( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawSetProportional ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawSetProportional()" );
-	return __TextDrawPool->setProportional( (WORD)a_Params[1], (BYTE)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawShowForPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawShowForPlayer()" );
-	return __TextDrawPool->showForPlayer( (WORD)a_Params[1], (WORD)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawShowForAll ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 1 );
-	logprintf ( "[Call]-> funcTextDrawShowForAll()" );
-	return __TextDrawPool->showForAll( (WORD)a_Params[1] );
-}
-cell AMX_NATIVE_CALL funcTextDrawHideForPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawHideForPlayer()" );
-	return __TextDrawPool->hideForPlayer( (WORD)a_Params[1], (WORD)a_Params[2] );
-}
-cell AMX_NATIVE_CALL funcTextDrawHideForAll ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 1 );
-	logprintf ( "[Call]-> funcTextDrawHideForAll()" );
-	return __TextDrawPool->hideForAll( (WORD)a_Params[1] );
-}
-cell AMX_NATIVE_CALL funcTextDrawDestroy ( AMX* a_AmxInterface, cell* a_Params )
-{
-	CHECK_PARAMS( 2 );
-	logprintf ( "[Call]-> funcTextDrawDestroy()" );
-	return __TextDrawPool->Destroy( a_Params[1] );
-}
 
 cell AMX_NATIVE_CALL funcCreateMenu ( AMX* a_AmxInterface, cell* a_Params )
 {

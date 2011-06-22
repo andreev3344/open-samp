@@ -20,8 +20,6 @@
     <ClCompile Include="script\amx\func_amx_gangzone.cpp">
       <Filter>script\amx</Filter>
     </ClCompile>
-    <ClCompile Include="pool\class_text3dlabels.cpp" />
-    <ClCompile Include="pool\class_textdrawpool.cpp" />
     <ClCompile Include="pool\class_pickuppool.cpp">
       <Filter>pool</Filter>
     </ClCompile>
@@ -30,6 +28,15 @@
     </ClCompile>
     <ClCompile Include="object\class_object.cpp">
       <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_text3dlabels.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_textdrawpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_textdraw.cpp">
+      <Filter>script\amx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,13 +100,20 @@
     <ClInclude Include="script\amx\func_amx_gangzone.h">
       <Filter>script\amx</Filter>
     </ClInclude>
-    <ClInclude Include="pool\class_text3dlabels.h" />
-    <ClInclude Include="pool\class_textdrawpool.h" />
     <ClInclude Include="script\amx\func_amx_object.h">
       <Filter>script\amx</Filter>
     </ClInclude>
     <ClInclude Include="object\class_object.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_textdrawpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_text3dlabels.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_textdraw.h">
+      <Filter>script\amx</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

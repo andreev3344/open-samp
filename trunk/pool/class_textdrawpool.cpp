@@ -228,10 +228,13 @@ int CTextDrawPool::showForPlayer( WORD playerid, WORD textDrawID ) //Ref: 0x47D3
 
 	DWORD RPC_ShowTextDraw = 0x46;
 
+	WORD textLen = (WORD)( strlen( this->text[ textDrawID ] + 1 ) );
+
 	RakNet::BitStream bStream;
 	bStream.Write( (WORD)textDrawID );
 	bStream.Write( (char*)this->textDraw[ textDrawID ], sizeof( tTextDraw ) );
-	bStream.Write( this->text[ textDrawID ], MAX_TEXTDRAW_TEXT );
+	bStream.Write( (WORD)textLen );
+	bStream.Write( this->text[ textDrawID ], textLen );
 
 	this->textDrawOwner[ textDrawID ][ playerid ] = 1;
 	CNetGame__RPC_SendToPlayer( __NetGame, &RPC_ShowTextDraw, &bStream, playerid, 2 );
@@ -266,11 +269,13 @@ int CTextDrawPool::showForAll( WORD textDrawID )
 	__NetGame = *(DWORD*)( 0x4F6270 );
 
 	DWORD RPC_ShowTextDraw = 0x46;
+	WORD textLen = (WORD)( strlen( this->text[textDrawID] ) + 1 );
 
 	RakNet::BitStream bStream;
 	bStream.Write( (WORD)textDrawID );
 	bStream.Write( (char*)this->textDraw[ textDrawID ], sizeof( tTextDraw ) );
-	bStream.Write( this->text[ textDrawID ], MAX_TEXTDRAW_TEXT );
+	bStream.Write( (WORD)textLen );
+	bStream.Write( this->text[ textDrawID ], textLen );
 
 	for( int i = 0; i < 500; i++ )
 	{
