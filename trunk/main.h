@@ -17,6 +17,11 @@ typedef short			int16_t;
 typedef unsigned char	uint8_t;
 typedef char			int8_t;
 
+typedef struct Vector_t
+{
+	float X, Y, Z;
+} tVector;
+
 
 #include "raknet/BitStream.h"
 
