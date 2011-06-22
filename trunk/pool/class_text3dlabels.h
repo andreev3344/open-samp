@@ -9,18 +9,18 @@
 */
 
 
-typedef struct Text3DLabels_t
+typedef struct Text3DLabels_t // size 0x21
 {
 #pragma pack( 1 )
 
-	char* text;		// + 0x00
-	DWORD color;	// + 0x04
-	float posX;		// + 0x08
-	float posY;		// + 0x0C
-	float posZ;		// + 0x10
-	float drawDistance;	// + 0x14
-	bool useLineOfSight; // + 0x18
-	DWORD virtualWorld; // + 0x19
+	char* text;					// + 0x00
+	DWORD color;				// + 0x04
+	float posX;					// + 0x08
+	float posY;					// + 0x0C
+	float posZ;					// + 0x10
+	float drawDistance;			// + 0x14
+	bool useLineOfSight;		// + 0x18
+	DWORD virtualWorld;			// + 0x19
 	WORD attachedToPlayerID;	// + 0x1D
 	WORD attachedToVehicleID;	// + 0x1F
 } tText3DLabels;
@@ -30,8 +30,8 @@ class CText3DLabels
 #pragma pack( 1 )
 public:
 
-	tText3DLabels		TextLabels[ MAX_TEXT_LABELS ];
-	BOOL				isCreated[ MAX_TEXT_LABELS ];
+	tText3DLabels		TextLabels[ MAX_TEXT_LABELS ];	// + 0x0000
+	BOOL				isCreated[ MAX_TEXT_LABELS ];	// + 0x8400
 
 	int	Create3DTextLabel( char* text, DWORD color, float x, float y, float z, float drawDistance, DWORD virtualWorld, bool useLOS );
 	int Delete3DTextLabel( int labelID );

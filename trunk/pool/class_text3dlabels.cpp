@@ -18,12 +18,6 @@ CText3DLabels::CText3DLabels( )
 
 		this->isCreated[i] = 0;
 	}
-/*
-	int id = Create3DTextLabel( "Test", 0xFFFFFFFF, 0.0f, 0.0f, 0.0f, 0, true );
-	printf( "3D TextLabels created id %d\n", id );
-	Delete3DTextLabel( id ); // no crash ;D
-*/
-
 }
 
 CText3DLabels::~CText3DLabels( )
@@ -185,7 +179,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 	int id = 0;
 	while( id < MAX_TEXT_LABELS )
 	{
-		if( this->isCreated[ id ] != 0 ) break;
+		if( this->isCreated[ id ] == 0 ) break;
 		id++;
 	}
 	if( id >= MAX_TEXT_LABELS ) return 0x0000FFFF;
@@ -200,19 +194,25 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 	this->TextLabels[id].attachedToPlayerID = 
 		this->TextLabels[id].attachedToVehicleID = 0xFFFF;
 	this->TextLabels[id].text = new char[ strlen( text ) + 1 ];
+	memset( this->TextLabels[id].text, 0x00, strlen( text ) + 1 );
 	strcpy( this->TextLabels[id].text, text );
+
+	this->isCreated[id] = 1;
 
 /*
 	TODO ( Yoann ):
 		Lire le code assembleur, on voit qu'on a besoin de CNetGame->PlayerPool
+		( Sasuke78200 ):
+		Retiré toute cette dépendence aux adresses dès qu'on aura CNetGame
 */
-	/*
-	DWORD CNetGame = *(DWORD*) 0x4F6270;
-	DWORD CPlayerPool = *(DWORD*)( CNetGame + 0x04 );
+	
+	__NetGame = *(DWORD*) 0x4F6270;
+	DWORD CPlayerPool = *(DWORD*)( __NetGame + 0x04 );
 
 
 	for( int i = 0; i < 500; i++ )
 	{
+		//logprintf( "Player %d %d", i, *(DWORD*)( CPlayerPool + i * 4 ) );
 		//  CNetGame->PlayerPool->isPlayerCreated( i ) == 0 
 		if( *(DWORD*)( CPlayerPool + i * 4 ) == 0 ) continue;
 		// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( i ); 
@@ -223,12 +223,13 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 		if( *(BYTE*)( CPlayer + 0x281 ) == 9 ) continue; // ?
 
 		float* playerPos = (float*)CPlayer;
+		/* float distance = CPlayer->GetDistanceBetWeen3DPoint( x, y, z );*/
 
 		float distance = (float)sqrt( (playerPos[0]-x)*(playerPos[0]-x) + (playerPos[1]-y)*(playerPos[1]-y) + (playerPos[2]-z)*(playerPos[2]-z) );
-		
+//		logprintf( "Position of Labels %f %f %f distance %f", x, y, z, distance );		
 		if( distance > drawDistance ) continue;
 
-
+		
 		RakNet::BitStream* bStream = new RakNet::BitStream( );
 		
 		bStream->Write( (DWORD)id );
@@ -241,33 +242,19 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 		bStream->Write( (WORD)0xFFFF );
 		bStream->Write( (WORD)0xFFFF );
 
+		DWORD RPC_CreateText3DLabels = 0x91;
+		CNetGame__RPC_SendToPlayer( __NetGame, &RPC_CreateText3DLabels, bStream, i, 2 );
 
-	//	DWORD bitSteam_Create = 0x464D80; //Au revoir
-	//	DWORD bitStream_Write = 0x4653E0; //Plus besoin
-		DWORD RPC_CreateText3DLabels = 0x4BE8C0;//0x91;
-		DWORD CNetGame__BroadCastData = 0x499240;
-		
-		_asm
-		{
-			pushad
-
-			push 2
-			push 0 // fake
-			push bStream
-			push RPC_CreateText3DLabels
-			mov ecx, CNetGame
-			call CNetGame__BroadCastData
-			popad
-
-		}
 	}
-	*/
+	
 	return id;
 }
 
 int CText3DLabels::Delete3DTextLabel( int labelID )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
+
+	if( this->isCreated[labelID] == 0 ) return 0;
 
 	this->TextLabels[labelID].posX = 0.f;
 	this->TextLabels[labelID].posY = 0.f;
@@ -279,11 +266,43 @@ int CText3DLabels::Delete3DTextLabel( int labelID )
 	this->TextLabels[labelID].attachedToPlayerID = 
 		this->TextLabels[labelID].attachedToVehicleID = 0xFFFF;
 	
-	delete this->TextLabels[labelID].text;
-	this->TextLabels[labelID].text = 0;
+	if( this->TextLabels[labelID].text > 0 )
+	{
+		delete this->TextLabels[labelID].text;
+		this->TextLabels[labelID].text = 0;
+	}
 
 	this->isCreated[labelID] = 0;
 	
+	/*
+			sub_47AD10
+	*/
+
+	//__NetGame = *(DWORD*) 0x4F6270;
+	//DWORD CPlayerPool = *(DWORD*)( __NetGame + 0x04 );
+
+
+	//for( int playerid = 0; playerid < 500; playerid ++ )
+	//{
+	//	/* CNetGame->PlayerPool->isPlayerCreated( playerid ) */
+	//	if( *(DWORD*)( CPlayerPool + 4 * playerid ) == 0 ) continue;
+	//	// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( playerid ); 
+
+	//	DWORD CPlayer = *(DWORD*)( CPlayerPool + playerid * 4 + 0x7D0 );
+	//	
+	//	if( *(DWORD*)( CPlayer + labelID + 0xE0F ) == 0 ) continue;
+
+	//	DWORD RPC_Delete_Text3DLabel = 0x92;
+
+	//	RakNet::BitStream bStream;
+	//	bStream.Write( (int)labelID );
+
+	//	CNetGame__RPC_SendToPlayer( __NetGame, &RPC_Delete_Text3DLabel, &bStream, playerid, 2 );
+	//	
+
+	//}
+
+
 	return 1;
 }
 
@@ -295,7 +314,31 @@ int CText3DLabels::Update3DTextLabelText( int labelID, DWORD color, char* text )
 	this->TextLabels[ labelID ].color = color;
 	delete this->TextLabels[ labelID ].text;
 	this->TextLabels[ labelID ].text = new char[ strlen( text ) + 1 ];
+	memset( this->TextLabels[ labelID ].text, 0x00, strlen( text ) + 1 );
 	strcpy( this->TextLabels[ labelID ].text, text );
+
+	
+
+	//for( int playerid = 0; playerid < 500; playerid ++ )
+	//{
+	//	/* CNetGame->PlayerPool->isPlayerCreated( playerid ) */
+	//	if( *(DWORD*)( CPlayerPool + 4 * playerid ) == 0 ) continue;
+	//	// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( playerid ); 
+
+	//	DWORD CPlayer = *(DWORD*)( CPlayerPool + playerid * 4 + 0x7D0 );
+	//	
+	//	if( *(DWORD*)( CPlayer + labelID + 0xE0F ) == 0 ) continue;
+
+	//	DWORD RPC_Delete_Text3DLabel = 0x92;
+
+	//	RakNet::BitStream bStream;
+	//	bStream.Write( (int)labelID );
+
+	//	CNetGame__RPC_SendToPlayer( __NetGame, &RPC_Delete_Text3DLabel, &bStream, playerid, 2 );
+	//}
+
+
+
 	return 1;
 }
 

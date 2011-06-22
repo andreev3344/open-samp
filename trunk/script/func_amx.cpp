@@ -554,12 +554,28 @@ cell AMX_NATIVE_CALL funcIsPlayerNPC ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcCreate3DTextLabel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcCreate3DTextLabel()" );
-	return _funcCreate3DTextLabel ( a_AmxInterface, a_Params );
+	//__NetGame = *(DWORD*) 0x4F6270;
+	//CText3DLabels* pool = (CText3DLabels*)( *(DWORD*)( __NetGame + 0x0C ) );
+	/*
+	for( int i = 0; i < 1024; i++ )
+	{
+		if( pool->isCreated[i] )
+		{
+			logprintf( "Text3Dlabels id %d text %s ", i, pool->TextLabels[i].text );
+		}
+	}
+	*/
+	//char* str = 0;
+	//amx_StrParam( a_AmxInterface, a_Params[1], str );
+	//bool useLOS = a_Params[8] ? true : false;
+	return /*pool->Create3DTextLabel( str, a_Params[2], amx_ctof( a_Params[3] ), amx_ctof( a_Params[4] ), amx_ctof( a_Params[5] ), amx_ctof( a_Params[6] ), a_Params[7], useLOS );*/_funcCreate3DTextLabel ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcDelete3DTextLabel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDelete3DTextLabel()" );
-	return _funcDelete3DTextLabel ( a_AmxInterface, a_Params );
+	//__NetGame = *(DWORD*) 0x4F6270;
+	//CText3DLabels* pool = (CText3DLabels*)( *(DWORD*)( __NetGame + 0x0C ) );
+	return /*pool->Delete3DTextLabel( a_Params[1] );*/_funcDelete3DTextLabel ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcAttach3DTextLabelToPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {

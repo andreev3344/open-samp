@@ -54,18 +54,17 @@ WORD CTextDrawPool::Create( float x, float y, char* text ) // Ref: 0x47D0C0
 	this->textDraw[id]->posY = y;
 
 	this->textDraw[id]->SizeX =
-		this->textDraw[id]->SizeY = (float)0x44A00000; // TODO: Trouver la valeur en float
+		this->textDraw[id]->SizeY = 1280.0000f;
 
-	this->textDraw[id]->letterWidth		= (float)0x3EF5C28F; // TODO: Trouver la valeur en float
-	this->textDraw[id]->letterHeight	= (float)0x3F8F5C29; // TODO: Trouver la valeur en float
+	this->textDraw[id]->letterWidth		= 0.47999999f; 
+	this->textDraw[id]->letterHeight	= 1.1200000f; 
 	this->textDraw[id]->color			= 0xFFE1E1E1;
 	this->textDraw[id]->boxColor		= 0x80808080;
 	this->textDraw[id]->backgroundColor = 0xFF000000;
 	this->textDraw[id]->useShadow		= 0x02;
 	this->textDraw[id]->useOutline		= 0x00;
 	this->textDraw[id]->textFont		= 0x01;
-	this->textDraw[id]->textdrawFlags	&= 0xF0;
-	this->textDraw[id]->textdrawFlags	|= 0x10;
+	this->textDraw[id]->textdrawFlags	= this->textDraw[id]->textdrawFlags & 0xF0 | 0x10;
 	this->isCreated[id]					= 1;
 
 	return id;
@@ -76,7 +75,7 @@ int CTextDrawPool::setColor( WORD textDrawID, DWORD color ) // Ref: 0x47D280
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
-	this->textDraw[textDrawID]->color = color;
+	this->textDraw[textDrawID]->color = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
@@ -84,7 +83,7 @@ int CTextDrawPool::setBackgroundColor( WORD textDrawID, DWORD color ) // Ref: 0x
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
-	this->textDraw[textDrawID]->backgroundColor = color;
+	this->textDraw[textDrawID]->backgroundColor = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
@@ -97,15 +96,19 @@ int CTextDrawPool::setAlignement( WORD textDrawID, BYTE value ) // Ref: 0x47D230
 	this->textDraw[textDrawID]->textdrawFlags &= 0xF7;
 	this->textDraw[textDrawID]->textdrawFlags &= 0xFB;
 
-	if( value == 0 )
+	
+	if( value == 1 )
 	{
 		this->textDraw[textDrawID]->textdrawFlags |= 2;
 	}
-	else
+	else if( value == 2 )
 	{
 		this->textDraw[textDrawID]->textdrawFlags |= 8;
 	}
-
+	else if( value == 3 )
+	{
+		this->textDraw[textDrawID]->textdrawFlags |= 4;
+	}
 	return 1;
 }
 
@@ -156,12 +159,8 @@ int CTextDrawPool::setProportional( WORD textDrawID, BYTE value ) // Ref: 0x4888
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
-	BYTE Flags = this->textDraw[textDrawID]->textdrawFlags;
-	value = ( ( value ? 0 : 1 ) << 4 );
-	value ^= Flags;
-	value &= 0x10;
-	Flags ^= value;
-	this->textDraw[textDrawID]->textdrawFlags = Flags;
+	value = ( ( value ? 1 : 0 ) );
+	this->textDraw[textDrawID]->textdrawFlags ^= this->textDraw[textDrawID]->textdrawFlags ^ 0x10 * value & 0x10;
 	return 1;
 }
 
@@ -172,12 +171,9 @@ int CTextDrawPool::setUseBox( WORD textDrawID, BYTE value ) // Ref: 0x4886F0
 	
 	BYTE Flags = this->textDraw[textDrawID]->textdrawFlags;
 
-	value = ( value ? 0 : 1 );
-	value ^= Flags;
-	value &= 1;
-	Flags ^= value;
+	value = ( ( value ? 1 : 0 ) );
 
-	this->textDraw[textDrawID]->textdrawFlags = Flags;
+	this->textDraw[textDrawID]->textdrawFlags ^= this->textDraw[textDrawID]->textdrawFlags ^ value;
 
 	return 1;
 }
@@ -228,7 +224,7 @@ int CTextDrawPool::showForPlayer( WORD playerid, WORD textDrawID ) //Ref: 0x47D3
 
 	DWORD RPC_ShowTextDraw = 0x46;
 
-	WORD textLen = (WORD)( strlen( this->text[ textDrawID ] + 1 ) );
+	WORD textLen = (WORD)( strlen( this->text[ textDrawID ] ) +1 );
 
 	RakNet::BitStream bStream;
 	bStream.Write( (WORD)textDrawID );

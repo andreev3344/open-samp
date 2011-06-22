@@ -14,10 +14,7 @@ cell AMX_NATIVE_CALL funcTextDrawCreate ( AMX* a_AmxInterface, cell* a_Params )
 		Je ne test pas volontairement si il y a bien eu du texte entrée, vu que sur le serveur "original", il n'y a pas ce test
 	*/
 	char* str = 0; 
-	amx_StrParam( a_AmxInterface, a_Params[3], str );
-
-	logprintf( "funcTextDrawCreate( %f, %f, %s )", amx_ctof( a_Params[1] ), amx_ctof( a_Params[2] ), str );
-	
+	amx_StrParam( a_AmxInterface, a_Params[3], str );	
 	return __TextDrawPool->Create( amx_ctof( a_Params[1] ), amx_ctof( a_Params[2] ), str );
 }
 cell AMX_NATIVE_CALL funcTextDrawSetString ( AMX* a_AmxInterface, cell* a_Params )
@@ -50,7 +47,7 @@ cell AMX_NATIVE_CALL funcTextDrawColor ( AMX* a_AmxInterface, cell* a_Params )
 {
 	CHECK_PARAMS( 2 );
 	logprintf ( "[Call]-> funcTextDrawColor()" );
-	return __TextDrawPool->setColor( (WORD)a_Params[1], /*a_Params[2]*/-1 );
+	return __TextDrawPool->setColor( (WORD)a_Params[1], a_Params[2] );
 }
 cell AMX_NATIVE_CALL funcTextDrawUseBox ( AMX* a_AmxInterface, cell* a_Params )
 {
