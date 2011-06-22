@@ -76,7 +76,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();
-	__TextDrawPool = new CTextDrawPool( );
+	__TextDrawPool = new CTextDrawPool();
 	
 	/***
 	*	HOOKING PARTY =D

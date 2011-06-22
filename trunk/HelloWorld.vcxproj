@@ -62,7 +62,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>helloworld.def</ModuleDefinitionFile>
@@ -95,12 +95,14 @@
     <ClCompile Include="..\SDK\amxplugin.cpp" />
     <ClCompile Include="..\SDK\amx\getch.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="object\class_object.cpp" />
     <ClCompile Include="pool\class_gangzonepool.cpp" />
     <ClCompile Include="pool\class_pickuppool.cpp" />
     <ClCompile Include="pool\class_text3dlabels.cpp" />
     <ClCompile Include="pool\class_textdrawpool.cpp" />
     <ClCompile Include="raknet\BitStream.cpp" />
     <ClCompile Include="script\amx\func_amx_gangzone.cpp" />
+    <ClCompile Include="script\amx\func_amx_object.cpp" />
     <ClCompile Include="script\func_amx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +115,7 @@
     <ClInclude Include="..\SDK\plugin.h" />
     <ClInclude Include="..\SDK\plugincommon.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="object\class_object.h" />
     <ClInclude Include="pool\class_gangzonepool.h" />
     <ClInclude Include="pool\class_pickuppool.h" />
     <ClInclude Include="pool\class_text3dlabels.h" />
@@ -121,7 +124,15 @@
     <ClInclude Include="raknet\Export.h" />
     <ClInclude Include="raknet\NetworkTypes.h" />
     <ClInclude Include="script\amx\func_amx_gangzone.h" />
+    <ClInclude Include="script\amx\func_amx_object.h" />
     <ClInclude Include="script\func_amx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

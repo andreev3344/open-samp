@@ -5,6 +5,7 @@
 
 #include "func_amx.h"
 #include "amx/func_amx_gangzone.h"
+#include "amx/func_amx_object.h"
 
 AMX_NATIVE_INFO __AmxScriptNative[];
 
@@ -248,27 +249,6 @@ cell ( __cdecl* _funcTextDrawShowForAll )( AMX* a_AmxInterface, cell* a_Params )
 cell ( __cdecl* _funcTextDrawHideForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawHideForPlayer;
 cell ( __cdecl* _funcTextDrawHideForAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawHideForAll;
 cell ( __cdecl* _funcTextDrawDestroy )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TextDrawDestroy;
-cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateObject;
-cell ( __cdecl* _funcAttachObjectToVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToVehicle;
-cell ( __cdecl* _funcSetObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetObjectPos;
-cell ( __cdecl* _funcSetObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetObjectRot;
-cell ( __cdecl* _funcGetObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetObjectPos;
-cell ( __cdecl* _funcGetObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetObjectRot;
-cell ( __cdecl* _funcIsValidObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidObject;
-cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyObject;
-cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MoveObject;
-cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopObject;
-cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreatePlayerObject;
-cell ( __cdecl* _funcSetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerObjectPos;
-cell ( __cdecl* _funcSetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerObjectRot;
-cell ( __cdecl* _funcGetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerObjectPos;
-cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerObjectRot;
-cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidPlayerObject;
-cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyPlayerObject;
-cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MovePlayerObject;
-cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopPlayerObject;
-cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToPlayer;
-cell ( __cdecl* _funcAttachPlayerObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachPlayerObjectToPlayer;
 cell ( __cdecl* _funcCreateMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateMenu;
 cell ( __cdecl* _funcDestroyMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyMenu;
 cell ( __cdecl* _funcAddMenuItem )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddMenuItem;
@@ -1552,111 +1532,7 @@ cell AMX_NATIVE_CALL funcTextDrawDestroy ( AMX* a_AmxInterface, cell* a_Params )
 	logprintf ( "[Call]-> funcTextDrawDestroy()" );
 	return __TextDrawPool->Destroy( a_Params[1] );
 }
-cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcCreateObject()" );
-	return _funcCreateObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcAttachObjectToVehicle()" );
-	return _funcAttachObjectToVehicle ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcSetObjectPos()" );
-	return _funcSetObjectPos ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcSetObjectRot()" );
-	return _funcSetObjectRot ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetObjectPos()" );
-	return _funcGetObjectPos ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetObjectRot()" );
-	return _funcGetObjectRot ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcIsValidObject()" );
-	return _funcIsValidObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDestroyObject()" );
-	return _funcDestroyObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcMoveObject()" );
-	return _funcMoveObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcStopObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcStopObject()" );
-	return _funcStopObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcCreatePlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcCreatePlayerObject()" );
-	return _funcCreatePlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcSetPlayerObjectPos ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcSetPlayerObjectPos()" );
-	return _funcSetPlayerObjectPos ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcSetPlayerObjectRot ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcSetPlayerObjectRot()" );
-	return _funcSetPlayerObjectRot ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcGetPlayerObjectPos ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetPlayerObjectPos()" );
-	return _funcGetPlayerObjectPos ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcGetPlayerObjectRot ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetPlayerObjectRot()" );
-	return _funcGetPlayerObjectRot ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcIsValidPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcIsValidPlayerObject()" );
-	return _funcIsValidPlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDestroyPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDestroyPlayerObject()" );
-	return _funcDestroyPlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcMovePlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcMovePlayerObject()" );
-	return _funcMovePlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcStopPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcStopPlayerObject()" );
-	return _funcStopPlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcAttachObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcAttachObjectToPlayer()" );
-	return _funcAttachObjectToPlayer ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcAttachPlayerObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcAttachPlayerObjectToPlayer()" );
-	return _funcAttachPlayerObjectToPlayer ( a_AmxInterface, a_Params );
-}
+
 cell AMX_NATIVE_CALL funcCreateMenu ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcCreateMenu()" );
