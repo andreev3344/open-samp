@@ -150,21 +150,163 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetObjectRot()" );
+/*
+  int l_ObjectPool; // ecx@1
+  int result; // eax@2
+  unsigned __int16 l_ObjectIndex; // ax@3
+  int l_Object; // ecx@4
+  int v6; // edx@6
+  int v7; // eax@6
+  int v8; // eax@7
+  int v9; // [sp+0h] [bp-130h]@7
+  VECTOR a_Position; // [sp+4h] [bp-12Ch]@6
+  char v11; // [sp+10h] [bp-120h]@7
+  int v12; // [sp+12Ch] [bp-4h]@7
+
+  l_ObjectPool = *(_DWORD *)(_NetGame + 20);
+  if ( l_ObjectPool )
+  {
+    l_ObjectIndex = *((_WORD *)a_Params + 2);
+    if ( l_ObjectIndex < 400u )
+      l_Object = *(_DWORD *)(l_ObjectPool + 4 * l_ObjectIndex + 1600);
+    else
+      l_Object = 0;
+    v6 = a_Params[3];
+    a_Position.X = a_Params[2];
+    v7 = a_Params[4];
+    a_Position.Y = v6;
+    a_Position.Z = v7;
+    if ( l_Object )
+    {
+      CObject__SetRotation(&a_Position);
+      BitStream__New(&v11);
+      v8 = *((_WORD *)a_Params + 2);
+      v12 = 0;
+      v9 = v8;
+      BitStream__Write((int)&v11, (unsigned __int8 *)&v9, (void *)0x10, 1);
+      v9 = a_Position.X;
+      BitStream__Write((int)&v11, (unsigned __int8 *)&v9, (void *)0x20, 1);
+      v9 = a_Position.Y;
+      BitStream__Write((int)&v11, (unsigned __int8 *)&v9, (void *)0x20, 1);
+      v9 = a_Position.Z;
+      BitStream__Write((int)&v11, (unsigned __int8 *)&v9, (void *)0x20, 1);
+      CNetGame__RPC_SendToEveryPlayer(_NetGame, (int)&unk_4C1084, (int)&v11, 0xFFFFu, 2);
+      v12 = -1;
+      BitStream__Delete((int)&v11);
+    }
+    result = 1;
+  }
+  else
+  {
+    result = 0;
+  }
+  return result;
+
+*/
 	return _funcSetObjectRot ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetObjectPos()" );
+
+	/*
+	  int v2; // ecx@1
+  int v3; // ecx@1
+  int result; // eax@2
+  unsigned __int16 v5; // ax@3
+  int v6; // esi@4
+  int a_Pointer; // [sp+0h] [bp-4h]@1
+
+  a_Pointer = v3;
+  v2 = *(_DWORD *)(_NetGame + 20);
+  if ( v2 )
+  {
+    v5 = *((_WORD *)a_Params + 2);
+    if ( v5 < 400 && (v6 = *(_DWORD *)(v2 + 4 * v5 + 1600)) != 0 )
+    {
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[2], &a_Pointer);
+      *(_DWORD *)a_Pointer = *(_DWORD *)(v6 + 58);
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[3], &a_Pointer);
+      *(_DWORD *)a_Pointer = *(_DWORD *)(v6 + 62);
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[4], &a_Pointer);
+      *(_DWORD *)a_Pointer = *(_DWORD *)(v6 + 66);
+      result = 1;
+    }
+    else
+    {
+      result = 0;
+    }
+  }
+  else
+  {
+    result = 0;
+  }
+  return result;
+
+	*/
+
 	return _funcGetObjectPos ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetObjectRot()" );
+
+/*
+  int v2; // ecx@1
+  int v3; // ecx@1
+  int result; // eax@2
+  unsigned __int16 v5; // ax@3
+  void *v6; // ecx@4
+  char *v7; // esi@5
+  int a_Pointer; // [sp+0h] [bp-4h]@1
+
+  a_Pointer = v3;
+  v2 = *(_DWORD *)(_NetGame + 20);
+  if ( v2 )
+  {
+    v5 = *((_WORD *)a_Params + 2);
+    if ( v5 < 0x190u && (v6 = *(void **)(v2 + 4 * v5 + 1600)) != 0 )
+    {
+      v7 = CObject__GetRotation(v6);
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[2], &a_Pointer);
+      *(_DWORD *)a_Pointer = *(_DWORD *)v7;
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[3], &a_Pointer);
+      *(_DWORD *)a_Pointer = *((_DWORD *)v7 + 1);
+      amx_GetAddr(a_AmxInterface, (int *)a_Params[4], &a_Pointer);
+      *(_DWORD *)a_Pointer = *((_DWORD *)v7 + 2);
+      result = 1;
+    }
+    else
+    {
+      result = 0;
+    }
+  }
+  else
+  {
+    result = 0;
+  }
+  return result;
+
+*/
+
+
 	return _funcGetObjectRot ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsValidObject()" );
+
+/*
+  int l_ObjectPool; // eax@1
+  unsigned __int16 l_ObjectIndex; // cx@2
+
+  l_ObjectPool = *(_DWORD *)(_NetGame + 20);
+  return l_ObjectPool
+      && (l_ObjectIndex = *((_WORD *)a_Params + 2), l_ObjectIndex < 400u)
+      && *(_DWORD *)(l_ObjectPool + 4 * l_ObjectIndex + 1600);
+
+*/
+
 	return _funcIsValidObject ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )

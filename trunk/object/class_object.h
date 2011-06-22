@@ -30,6 +30,7 @@ public:
 	void SpawnForPlayer ( uint16_t a_PlayerIndex );
 
 	void SetRotation ( tVector* a_Rotation );
+	tVector* GetRotation ( void );
 };
 
 // __CLASS_OBJECT_H_

@@ -84,3 +84,8 @@ void CObject::SetRotation ( tVector* a_Rotation )
 	this->m_Rotation.Y = a_Rotation->Y;
 	this->m_Rotation.Z = a_Rotation->Z;
 }
+	
+tVector* CObject::GetRotation ( void )
+{
+	return &( this->m_Rotation );
+}
