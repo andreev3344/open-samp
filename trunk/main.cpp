@@ -32,7 +32,7 @@ CGangZonePool* __GangZonePool = NULL;
 CObjectPool* __ObjectPool = NULL;
 CTextDrawPool* __TextDrawPool = NULL;
 
-uint32_t __NetGame = NULL;
+CNetGame* __NetGame = NULL;
 
 //----------------------------------------------------------
 // The Support() function indicates what possibilities this
@@ -74,6 +74,8 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 	logprintf = (logprintf_t)ppData[PLUGIN_DATA_LOGPRINTF];
 
 	logprintf( "WE GONNA KILL YOU" );
+
+	__NetGame = (CNetGame*)( *(DWORD*)( 0x4F6270 ) );
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();

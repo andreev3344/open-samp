@@ -5,9 +5,8 @@ tObjectPool* __ObjectPoolEx = NULL;
 
 uint16_t CObjectPool::New ( uint32_t a_uint32_ModelIndex, tVector* a_Position, tVector* a_Rotation, float a_float_DrawDistance )
 {
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	uint16_t l_uint16_ObjectIndex;
 
@@ -36,9 +35,7 @@ uint16_t CObjectPool::New ( uint32_t a_uint32_ModelIndex, tVector* a_Position, t
 void CObjectPool::Delete ( uint16_t a_uint16_ObjectIndex )
 {
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	if ( ( a_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( __ObjectPoolEx->m_Object[ a_uint16_ObjectIndex ] ) )
 	{

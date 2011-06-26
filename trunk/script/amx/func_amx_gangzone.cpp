@@ -51,10 +51,9 @@ cell AMX_NATIVE_CALL funcGangZoneShowForPlayer ( AMX* a_AmxInterface, cell* a_Pa
 
 	CHECK_PARAMS ( 3 );
 
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * a_Params[ 1 ] ) ) )
+
+	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
@@ -88,10 +87,9 @@ cell AMX_NATIVE_CALL funcGangZoneHideForPlayer ( AMX* a_AmxInterface, cell* a_Pa
 
 	CHECK_PARAMS ( 2 );
 
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * a_Params[ 1 ] ) ) )
+
+	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
@@ -125,10 +123,9 @@ cell AMX_NATIVE_CALL funcGangZoneFlashForPlayer ( AMX* a_AmxInterface, cell* a_P
 
 	CHECK_PARAMS ( 3 );
 
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * a_Params[ 1 ] ) ) )
+
+	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
@@ -162,10 +159,9 @@ cell AMX_NATIVE_CALL funcGangZoneStopFlashForPlayer ( AMX* a_AmxInterface, cell*
 
 	CHECK_PARAMS ( 2 );
 
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * a_Params[ 1 ] ) ) )
+
+	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )

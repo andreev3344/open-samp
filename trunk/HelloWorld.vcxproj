@@ -69,7 +69,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <OutputFile>plugin.dll</OutputFile>
+      <OutputFile>C:\Users\Sasuke78200\Documents\samp server\scriptfiles\plug.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,6 +95,7 @@
     <ClCompile Include="..\SDK\amxplugin.cpp" />
     <ClCompile Include="..\SDK\amx\getch.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu\class_menu.cpp" />
     <ClCompile Include="object\class_object.cpp" />
     <ClCompile Include="pool\class_gangzonepool.cpp" />
     <ClCompile Include="pool\class_objectpool.cpp" />
@@ -116,7 +117,9 @@
     <ClInclude Include="..\SDK\amx\sclinux.h" />
     <ClInclude Include="..\SDK\plugin.h" />
     <ClInclude Include="..\SDK\plugincommon.h" />
+    <ClInclude Include="class_netgame.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="menu\class_menu.h" />
     <ClInclude Include="object\class_object.h" />
     <ClInclude Include="pool\class_gangzonepool.h" />
     <ClInclude Include="pool\class_objectpool.h" />

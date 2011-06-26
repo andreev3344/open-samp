@@ -30,13 +30,18 @@ extern int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, 
 extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
 
 
+#define MAX_PLAYERS			500
+
+#include "menu/class_menu.h"
+#include "object/class_object.h"
+
 #include "pool/class_pickuppool.h"
 #include "pool/class_gangzonepool.h"
 #include "pool/class_textdrawpool.h"
 #include "pool/class_text3dlabels.h"
-
-#include "object/class_object.h"
 #include "pool/class_objectpool.h"
+
+#include "class_netgame.h"
 
 
 
@@ -48,7 +53,7 @@ extern CGangZonePool* __GangZonePool;
 extern CObjectPool* __ObjectPool;
 extern CTextDrawPool* __TextDrawPool;
 
-extern uint32_t __NetGame;
+extern CNetGame*	 __NetGame;
 
 
 // __MAIN_H_

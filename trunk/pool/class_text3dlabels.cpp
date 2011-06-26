@@ -206,8 +206,8 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 		Retiré toute cette dépendence aux adresses dès qu'on aura CNetGame
 */
 	
-	__NetGame = *(DWORD*) 0x4F6270;
-	DWORD CPlayerPool = *(DWORD*)( __NetGame + 0x04 );
+
+	DWORD CPlayerPool = *(DWORD*)( __NetGame->playerPool );
 
 
 	for( int i = 0; i < 500; i++ )
@@ -243,7 +243,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 		bStream->Write( (WORD)0xFFFF );
 
 		DWORD RPC_CreateText3DLabels = 0x91;
-		CNetGame__RPC_SendToPlayer( __NetGame, &RPC_CreateText3DLabels, bStream, i, 2 );
+		CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_CreateText3DLabels, bStream, i, 2 );
 
 	}
 	

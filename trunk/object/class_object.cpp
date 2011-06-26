@@ -31,11 +31,9 @@ void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 		l_BitStream.Write ( this->m_AttachedRotation.Z );
 	}
 
-	//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
 
 	uint32_t l_RpcSpawnObject = 0x00000030;
-	CNetGame__RPC_SendToPlayer ( __NetGame, &l_RpcSpawnObject, &l_BitStream, a_uint16_PlayerIndex, 2 );
+	CNetGame__RPC_SendToPlayer ( (DWORD)__NetGame, &l_RpcSpawnObject, &l_BitStream, a_uint16_PlayerIndex, 2 );
 }
 
 
@@ -64,7 +62,7 @@ void CObject::AttachToVehicle ( uint16_t a_uint16_VehicleIndex, tVector* a_Offse
 
 	
 		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
+
 	
 	uint32_t __PlayerPoolEx = *( uint32_t* )( *( uint32_t* )( __NetGame + 0x04 ) );
 	if ( __PlayerPoolEx )

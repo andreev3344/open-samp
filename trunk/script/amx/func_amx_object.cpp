@@ -34,8 +34,8 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 	CHECK_PARAMS ( 8 );
 
 		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__NetGame = (CNetGame*)( *( uint32_t* )( 0x004F6270 ) );
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	
 	if ( !__ObjectPoolEx )
@@ -89,9 +89,8 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 
 	CHECK_PARAMS ( 8 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -124,9 +123,9 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -151,7 +150,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( l_VectorPosition->Z );
 
 		uint32_t l_RpcSetObjectPosition = 0x00000031;
-		CNetGame__RPC_SendToEveryPlayer ( __NetGame, &l_RpcSetObjectPosition, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcSetObjectPosition, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
@@ -164,9 +163,8 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -191,7 +189,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( l_VectorRotation->Z );
 
 		uint32_t l_RpcSetObjectRotation = 0x00000032;
-		CNetGame__RPC_SendToEveryPlayer ( __NetGame, &l_RpcSetObjectRotation, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcSetObjectRotation, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
@@ -204,9 +202,8 @@ cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )(__NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -236,9 +233,8 @@ cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )(__NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -268,9 +264,8 @@ cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 1 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )(__NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -284,9 +279,8 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 1 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	__ObjectPoolEx = ( tObjectPool* )(__NetGame->objectPool );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -301,7 +295,7 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
 
 		uint32_t l_RpcDestroyObject = 0x00000033;
-		CNetGame__RPC_SendToEveryPlayer ( __NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
