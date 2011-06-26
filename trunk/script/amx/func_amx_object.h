@@ -2,15 +2,15 @@
 #define __FUNC_AMX_OBJECT_H_
 
 //#define FUNC_CreateObject					0x00487A20
-//#define FUNC_AttachObjectToVehicle			0x00487AF0
+//#define FUNC_AttachObjectToVehicle		0x00487AF0
 //#define FUNC_SetObjectPos					0x0048D950
 //#define FUNC_SetObjectRot					0x0048DAB0
 //#define FUNC_GetObjectPos					0x00487B70
 //#define FUNC_GetObjectRot					0x00487C00
 //#define FUNC_IsValidObject				0x00487CA0
-//#define FUNC_DestroyObject					0x0048DC00
-#define FUNC_MoveObject					0x0048DD10
-#define FUNC_StopObject					0x0048DEF0
+//#define FUNC_DestroyObject				0x0048DC00
+#define FUNC_MoveObject						0x0048DD10
+#define FUNC_StopObject						0x0048DEF0
 
 #define FUNC_CreatePlayerObject					0x00487CE0
 #define FUNC_SetPlayerObjectPos					0x0048E040

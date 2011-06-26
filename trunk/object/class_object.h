@@ -100,6 +100,8 @@ public:
 	
 	void SetPosition ( tVector* a_Position );
 	tVector* GetPosition ( void );
+
+	void Move ( float a_float_X, float a_float_Y, float a_float_Z, float a_float_Speed );
 };
 
 // __CLASS_OBJECT_H_
