@@ -1,14 +1,14 @@
 #ifndef __FUNC_AMX_OBJECT_H_
 #define __FUNC_AMX_OBJECT_H_
 
-#define FUNC_CreateObject					0x00487A20
+//#define FUNC_CreateObject					0x00487A20
 //#define FUNC_AttachObjectToVehicle			0x00487AF0
 //#define FUNC_SetObjectPos					0x0048D950
 //#define FUNC_SetObjectRot					0x0048DAB0
 //#define FUNC_GetObjectPos					0x00487B70
 //#define FUNC_GetObjectRot					0x00487C00
 //#define FUNC_IsValidObject				0x00487CA0
-#define FUNC_DestroyObject					0x0048DC00
+//#define FUNC_DestroyObject					0x0048DC00
 #define FUNC_MoveObject					0x0048DD10
 #define FUNC_StopObject					0x0048DEF0
 
@@ -24,14 +24,14 @@
 #define FUNC_AttachObjectToPlayer					0x0048E990
 #define FUNC_AttachPlayerObjectToPlayer					0x00488400
 
-extern cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcAttachObjectToVehicle )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcSetObjectPos )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcSetObjectRot )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcGetObjectPos )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcGetObjectRot )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcIsValidObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params );

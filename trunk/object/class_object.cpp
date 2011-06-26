@@ -1,8 +1,6 @@
 #include "../main.h"
 #include "class_object.h"
 
-CObjectPool* __ObjectPoolEx = NULL;
-
 void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 {
 	RakNet::BitStream 
@@ -15,7 +13,7 @@ void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 		l_BitStream.Write ( this->m_Rotation.X );
 		l_BitStream.Write ( this->m_Rotation.Y );
 		l_BitStream.Write ( this->m_Rotation.Z );
-		l_BitStream.Write ( this->m_Unknown01 );
+		l_BitStream.Write ( this->m_float_DrawDistance );
 		l_BitStream.Write ( this->m_uint16_AttachedVehicleIndex );
 
 	if ( this->m_uint16_AttachedVehicleIndex != -1 )

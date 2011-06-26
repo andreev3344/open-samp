@@ -39,16 +39,16 @@ public:
 	uint16_t New ( float a_float_MinX, float a_float_MinY, float a_float_MaxX, float a_float_MaxY );
 	void Delete ( uint16_t a_uint16_ZoneIndex );
 	
-	void ShowForPlayer ( uint8_t a_uint8_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
+	void ShowForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
 	void ShowForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
 
-	void HideForPlayer ( uint8_t a_uint8_PlayerIndex, uint16_t a_uint16_ZoneIndex );
+	void HideForPlayer ( uint16_t a_uint8_PlayerIndex, uint16_t a_uint16_ZoneIndex );
 	void HideForAll ( uint16_t a_uint16_ZoneIndex );
 
-	void FlashForPlayer ( uint8_t a_uint8_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
+	void FlashForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
 	void FlashForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor );
 
-	void StopFlashForPlayer ( uint8_t a_uint8_PlayerIndex, uint16_t a_uint16_ZoneIndex );
+	void StopFlashForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex );
 	void StopFlashForAll ( uint16_t a_uint16_ZoneIndex );
 
 	BOOL GetSlotState ( uint16_t a_uint16_ZoneIndex );

@@ -38,6 +38,9 @@
     <ClCompile Include="script\amx\func_amx_textdraw.cpp">
       <Filter>script\amx</Filter>
     </ClCompile>
+    <ClCompile Include="pool\class_objectpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -114,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="script\amx\func_amx_textdraw.h">
       <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_objectpool.h">
+      <Filter>pool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

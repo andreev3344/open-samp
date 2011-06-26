@@ -97,6 +97,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object\class_object.cpp" />
     <ClCompile Include="pool\class_gangzonepool.cpp" />
+    <ClCompile Include="pool\class_objectpool.cpp" />
     <ClCompile Include="pool\class_pickuppool.cpp" />
     <ClCompile Include="pool\class_text3dlabels.cpp" />
     <ClCompile Include="pool\class_textdrawpool.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="object\class_object.h" />
     <ClInclude Include="pool\class_gangzonepool.h" />
+    <ClInclude Include="pool\class_objectpool.h" />
     <ClInclude Include="pool\class_pickuppool.h" />
     <ClInclude Include="pool\class_text3dlabels.h" />
     <ClInclude Include="pool\class_textdrawpool.h" />

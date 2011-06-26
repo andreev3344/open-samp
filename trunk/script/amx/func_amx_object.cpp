@@ -4,14 +4,14 @@
 #include "../func_amx.h"
 #include "func_amx_object.h"
 
-cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateObject;
+//cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateObject;
 //cell ( __cdecl* _funcAttachObjectToVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToVehicle;
 //cell ( __cdecl* _funcSetObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetObjectPos;
 //cell ( __cdecl* _funcSetObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetObjectRot;
 //cell ( __cdecl* _funcGetObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetObjectPos;
 //cell ( __cdecl* _funcGetObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetObjectRot;
 //cell ( __cdecl* _funcIsValidObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidObject;
-cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyObject;
+//cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyObject;
 cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MoveObject;
 cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopObject;
 cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreatePlayerObject;
@@ -31,63 +31,56 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcCreateObject()" );
 
+	CHECK_PARAMS ( 8 );
+
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
+	
+	if ( !__ObjectPoolEx )
+		return -1;
 
-	for ( int i = 0; i < 400; i++ )
+	tVector* 
+		l_VectorPosition = new tVector();
+		l_VectorPosition->X = amx_ctof ( a_Params[ 2 ] );
+		l_VectorPosition->Y = amx_ctof ( a_Params[ 3 ] );
+		l_VectorPosition->Z = amx_ctof ( a_Params[ 4 ] );
+
+	tVector* 
+		l_VectorRotation = new tVector();
+		l_VectorRotation->X = amx_ctof ( a_Params[ 5 ] );
+		l_VectorRotation->Y = amx_ctof ( a_Params[ 6 ] );
+		l_VectorRotation->Z = amx_ctof ( a_Params[ 7 ] );
+
+	uint16_t l_ObjectIndex = __ObjectPool->New ( a_Params[ 1 ], l_VectorPosition, l_VectorRotation, amx_ctof ( a_Params[ 8 ] ) );
+	
+	if ( l_ObjectIndex == -1 )
+		return -1;
+
+	CObject* l_Object = NULL;
+	if ( l_ObjectIndex < 400 )
 	{
-		if ( __ObjectPoolEx->m_pObjects[ i ] )
-			logprintf ( "Object %d : %f %f %f", i, __ObjectPoolEx->m_pObjects[ i ]->m_Position.X, __ObjectPoolEx->m_pObjects[ i ]->m_Position.Y, __ObjectPoolEx->m_pObjects[ i ]->m_Position.Z ); 
+		l_Object = __ObjectPoolEx->m_pObjects[ l_ObjectIndex ];
 	}
-/*
-  unsigned __int16 l_ObjectIndex; // bp@3
-  void *l_Object; // ebx@5
-  int l_PlayerPool; // edi@7
-  signed int l_PlayerIndex; // esi@9
-  int a_Rotation; // [sp+4h] [bp-18h]@3
-  int v8; // [sp+8h] [bp-14h]@3
-  int v9; // [sp+Ch] [bp-10h]@3
-  int a_Position; // [sp+10h] [bp-Ch]@3
-  int v11; // [sp+14h] [bp-8h]@3
-  int v12; // [sp+18h] [bp-4h]@3
-
-  if ( !*(_DWORD *)(_NetGame + 20) )
-    return 0;
-  a_Position = a_Params[2];
-  v11 = a_Params[3];
-  v12 = a_Params[4];
-  a_Rotation = a_Params[5];
-  v8 = a_Params[6];
-  v9 = a_Params[7];
-  l_ObjectIndex = CObjectPool__New(a_Params[1], (VECTOR *)&a_Position, (VECTOR *)&a_Rotation, a_Params[8]); // Draw Distance(Param8)
-  if ( l_ObjectIndex == -1 )
-    return l_ObjectIndex;
-  if ( l_ObjectIndex < 400u )
-    l_Object = *(void **)(*(_DWORD *)(_NetGame + 20) + 4 * l_ObjectIndex + 1600);
-  else
-    l_Object = 0;
-  l_PlayerPool = *(_DWORD *)(_NetGame + 4);
-  if ( l_Object && l_PlayerPool )
-  {
-    l_PlayerIndex = 0;
-    do
-    {
-      if ( (_WORD)l_PlayerIndex < 500u )
-      {
-        if ( *(_DWORD *)(l_PlayerPool + 4 * (unsigned __int16)l_PlayerIndex) )
-          SpawnForPlayer(l_Object, l_PlayerIndex);
-      }
-      ++l_PlayerIndex;
-    }
-    while ( l_PlayerIndex < 500 );
-    return l_ObjectIndex;
-  }
-  return 0;
-  */
-
-	return _funcCreateObject ( a_AmxInterface, a_Params );
+	else
+	{
+		l_Object = NULL;
+	}
+	
+	uint32_t __PlayerPoolEx = *( uint32_t* )( *( uint32_t* )( __NetGame + 0x04 ) );
+	if ( l_Object && __PlayerPoolEx )
+	{
+		for ( uint16_t l_PlayerIndex = 0; l_PlayerIndex < 500; l_PlayerIndex++ )
+		{
+			if ( ( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * l_PlayerIndex ) ) )
+			{
+				l_Object->SpawnForPlayer ( l_PlayerIndex );
+			}
+		}
+		return l_ObjectIndex;
+	}
+	return -1;
 }
 
 cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Params )
@@ -98,7 +91,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -133,7 +126,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -173,7 +166,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -213,7 +206,7 @@ cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -245,7 +238,7 @@ cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -277,7 +270,7 @@ cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 
 		//// TODO: Remove that Shitty !
 	__NetGame = *( uint32_t* )( 0x004F6270 );
-	__ObjectPoolEx = ( CObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
 
 	if ( !__ObjectPoolEx )
 		return -1;
@@ -288,7 +281,31 @@ cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDestroyObject()" );
-	return _funcDestroyObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 1 );
+
+		//// TODO: Remove that Shitty !
+	__NetGame = *( uint32_t* )( 0x004F6270 );
+	__ObjectPoolEx = ( tObjectPool* )( *( uint32_t* )( __NetGame + 0x14 ) );
+
+	if ( !__ObjectPoolEx )
+		return -1;
+
+    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] ) )
+	{
+		__ObjectPool->Delete ( a_Params[ 1 ] );
+
+		
+		RakNet::BitStream 
+			l_BitStream;
+			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
+
+		uint32_t l_RpcDestroyObject = 0x00000033;
+		CNetGame__RPC_SendToEveryPlayer ( __NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
+
+		return 1;
+	}
+	return -1;
 }
 cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 {

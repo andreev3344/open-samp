@@ -29,6 +29,7 @@ extern void *pAMXFunctions;
 
 CPickupPool* __PickupPool = NULL;
 CGangZonePool* __GangZonePool = NULL;
+CObjectPool* __ObjectPool = NULL;
 CTextDrawPool* __TextDrawPool = NULL;
 
 uint32_t __NetGame = NULL;
@@ -76,6 +77,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();
+	__ObjectPool = new CObjectPool();
 	__TextDrawPool = new CTextDrawPool();
 	
 	/***
@@ -195,6 +197,9 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload( )
 {
 	if ( __PickupPool )
 		delete __PickupPool;
+
+	if ( __ObjectPool )
+		delete __ObjectPool;
 
 	if ( __GangZonePool )
 		delete __GangZonePool;
