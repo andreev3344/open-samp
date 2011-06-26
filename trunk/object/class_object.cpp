@@ -1,6 +1,11 @@
 #include "../main.h"
 #include "class_object.h"
 
+void CObject::SetIndex ( uint16_t a_uint16_ObjectIndex )
+{
+	this->m_uint16_ObjectIndex = a_uint16_ObjectIndex;
+}
+
 void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 {
 	RakNet::BitStream 

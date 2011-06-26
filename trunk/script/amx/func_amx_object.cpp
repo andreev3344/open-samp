@@ -61,7 +61,7 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 	CObject* l_Object = NULL;
 	if ( l_ObjectIndex < 400 )
 	{
-		l_Object = __ObjectPoolEx->m_pObjects[ l_ObjectIndex ];
+		l_Object = __ObjectPoolEx->m_Object[ l_ObjectIndex ];
 	}
 	else
 	{
@@ -97,7 +97,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 		return -1;
 
 	uint16_t l_ObjectIndex = a_Params[ 1 ];
-	if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] )
+	if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_Object[ a_Params[ 1 ] ] )
 	{
 		tVector* 
 			l_AttachedOffset = new tVector();
@@ -111,7 +111,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 			l_AttachedRotation->Y = amx_ctof ( a_Params[ 7 ] );
 			l_AttachedRotation->Z = amx_ctof ( a_Params[ 8 ] );
 
-		__ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ]->AttachToVehicle ( a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
+		__ObjectPoolEx->m_Object[ a_Params[ 1 ] ]->AttachToVehicle ( a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
 
 		return 1;
 	}
@@ -132,7 +132,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 		return -1;
 
 	uint16_t l_ObjectIndex = a_Params[ 1 ];
-	if ( ( l_ObjectIndex < 400 ) && __ObjectPoolEx->m_pObjects[ l_ObjectIndex ] )
+	if ( ( l_ObjectIndex < 400 ) && __ObjectPoolEx->m_Object[ l_ObjectIndex ] )
 	{
 		tVector* 
 			l_VectorPosition = new tVector();
@@ -140,7 +140,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 			l_VectorPosition->Y = amx_ctof ( a_Params[ 3 ] );
 			l_VectorPosition->Z = amx_ctof ( a_Params[ 4 ] );
 
-		__ObjectPoolEx->m_pObjects[ l_ObjectIndex ]->SetPosition ( l_VectorPosition );
+		__ObjectPoolEx->m_Object[ l_ObjectIndex ]->SetPosition ( l_VectorPosition );
 
 		
 		RakNet::BitStream 
@@ -172,7 +172,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 		return -1;
 
 	uint16_t l_ObjectIndex = a_Params[ 1 ];
-	if ( ( l_ObjectIndex < 400 ) && __ObjectPoolEx->m_pObjects[ l_ObjectIndex ] )
+	if ( ( l_ObjectIndex < 400 ) && __ObjectPoolEx->m_Object[ l_ObjectIndex ] )
 	{
 		tVector* 
 			l_VectorRotation = new tVector();
@@ -180,7 +180,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 			l_VectorRotation->Y = amx_ctof ( a_Params[ 3 ] );
 			l_VectorRotation->Z = amx_ctof ( a_Params[ 4 ] );
 
-		__ObjectPoolEx->m_pObjects[ l_ObjectIndex ]->SetRotation ( l_VectorRotation );
+		__ObjectPoolEx->m_Object[ l_ObjectIndex ]->SetRotation ( l_VectorRotation );
 
 		
 		RakNet::BitStream 
@@ -211,9 +211,9 @@ cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPoolEx )
 		return -1;
 
-    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] )
+    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_Object[ a_Params[ 1 ] ] )
     {
-		tVector* l_VectorPosition = __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ]->GetPosition();
+		tVector* l_VectorPosition = __ObjectPoolEx->m_Object[ a_Params[ 1 ] ]->GetPosition();
 
 		cell* cptr;
 		amx_GetAddr ( a_AmxInterface, a_Params[ 2 ], &cptr);
@@ -243,9 +243,9 @@ cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPoolEx )
 		return -1;
 
-    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] )
+    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPoolEx->m_Object[ a_Params[ 1 ] ] )
     {
-		tVector* l_VectorRotation = __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ]->GetRotation();
+		tVector* l_VectorRotation = __ObjectPoolEx->m_Object[ a_Params[ 1 ] ]->GetRotation();
 
 		cell* cptr;
 		amx_GetAddr ( a_AmxInterface, a_Params[ 2 ], &cptr);
@@ -275,7 +275,7 @@ cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPoolEx )
 		return -1;
 
-    return ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] ) );
+    return ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPoolEx->m_Object[ a_Params[ 1 ] ] ) );
 }
 
 cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
@@ -291,7 +291,7 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPoolEx )
 		return -1;
 
-    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPoolEx->m_pObjects[ a_Params[ 1 ] ] ) )
+    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPoolEx->m_Object[ a_Params[ 1 ] ] ) )
 	{
 		__ObjectPool->Delete ( a_Params[ 1 ] );
 
