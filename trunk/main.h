@@ -35,6 +35,8 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint3
 #include "pool/class_textdrawpool.h"
 #include "pool/class_text3dlabels.h"
 
+#include "object/class_object.h"
+
 
 
 

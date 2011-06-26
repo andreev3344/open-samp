@@ -231,6 +231,7 @@ AMX_NATIVE_INFO HelloWorldNatives[ ] =
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad( AMX *amx ) 
 {
+
 	return amx_Register( amx, HelloWorldNatives, -1 );
 }
 
