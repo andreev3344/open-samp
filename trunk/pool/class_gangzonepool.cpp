@@ -43,7 +43,7 @@ void CGangZonePool::Delete ( uint16_t a_uint16_ZoneIndex )
 	CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcRemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
-void CGangZonePool::ShowForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
+void CGangZonePool::ShowForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
 {
 	logprintf ( "[Call]-> CGangZonePool::ShowForPlayer ( %d, %d, 0x%0.6X )", a_uint16_PlayerIndex, a_uint16_ZoneIndex, a_uint32_ZoneColor );
 
@@ -83,7 +83,7 @@ void CGangZonePool::ShowForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_
 	CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcAddGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
-void CGangZonePool::HideForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
+void CGangZonePool::HideForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
 {
 	logprintf ( "[Call]-> CGangZonePool::HideForPlayer ( %d, %d )", a_uint16_PlayerIndex, a_uint16_ZoneIndex );
 
@@ -110,7 +110,7 @@ void CGangZonePool::HideForAll ( uint16_t a_uint16_ZoneIndex )
 	CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcRemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
-void CGangZonePool::FlashForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
+void CGangZonePool::FlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
 {
 	logprintf ( "[Call]-> CGangZonePool::FlashForPlayer ( %d, %d, 0x%X )", a_uint16_PlayerIndex, a_uint16_ZoneIndex, a_uint32_ZoneColor );
 
@@ -143,7 +143,7 @@ void CGangZonePool::FlashForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32
 	CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcFlashGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
-void CGangZonePool::StopFlashForPlayer ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
+void CGangZonePool::StopFlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
 {
 	logprintf ( "[Call]-> CGangZonePool::FlashForPlayer ( %d, %d )", a_uint16_PlayerIndex, a_uint16_ZoneIndex );
 

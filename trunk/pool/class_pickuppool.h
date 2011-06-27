@@ -51,7 +51,7 @@ public:
 
 	uint32_t New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, float a_float_X, float a_float_Y, float a_float_Z, uint8_t a_uint8_Static = 0 );
 	uint8_t Destroy ( uint32_t a_uint32_PickupIndex );
-	void InitForPlayer ( uint8_t a_uint8_PlayerIndex );
+	void InitForPlayer ( _PlayerID a_uint8_PlayerIndex );
 };
 
 // __CLASS_PICKUPPOOL_H_

@@ -37,7 +37,7 @@ public:
 	int Delete3DTextLabel( int labelID );
 	int Update3DTextLabelText( int labelID, DWORD color, char* text );
 	int Attach3DTextLabelToVehicle( int labelID, WORD vehicleID, float offsetX, float offsetY, float offsetZ );
-	int Attach3DTextLabelPlayer( int labelID, WORD playerID, float offsetX, float offsetY, float offsetZ );
+	int Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ );
 
 	CText3DLabels( );
 	~CText3DLabels( );

@@ -153,7 +153,7 @@ uint8_t CPickupPool::Destroy ( uint32_t a_uint32_PickupIndex )
 	return 0;
 }
 
-void CPickupPool::InitForPlayer ( uint8_t a_uint8_PlayerIndex )
+void CPickupPool::InitForPlayer ( _PlayerID a_uint8_PlayerIndex )
 {	
 	/*
 	//RakNet::BitStream *pbsPickup;

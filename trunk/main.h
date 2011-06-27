@@ -23,6 +23,9 @@ typedef struct Vector_t
 } tVector;
 
 
+
+typedef uint16_t	_PlayerID;
+
 #include "raknet/BitStream.h"
 
 

@@ -215,7 +215,7 @@ int CTextDrawPool::setString( WORD textDrawID, char* text ) // Ref: 0x47D740
 	return 1;
 }
 
-int CTextDrawPool::showForPlayer( WORD playerid, WORD textDrawID ) //Ref: 0x47D340
+int CTextDrawPool::showForPlayer( _PlayerID playerid, WORD textDrawID ) //Ref: 0x47D340
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -238,7 +238,7 @@ int CTextDrawPool::showForPlayer( WORD playerid, WORD textDrawID ) //Ref: 0x47D3
 
 }
 
-int CTextDrawPool::hideForPlayer( WORD playerid, WORD textDrawID )
+int CTextDrawPool::hideForPlayer( _PlayerID playerid, WORD textDrawID )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;

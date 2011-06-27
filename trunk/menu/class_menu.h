@@ -28,7 +28,15 @@ class CMenu
 	
 
 public:
-	CMenu( );
+
+	BYTE AddMenuItem( BYTE column, char* item );
+	void SetColumnHeader( BYTE column, char* title );
+
+
+	void showForPlayer( _PlayerID playerID );
+	void hideForPlayer( _PlayerID playerID );
+
+	CMenu( char *title, int columns, float x, float y, float col1width, float col2width );
 	~CMenu( );
 private:
 };

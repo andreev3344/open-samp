@@ -30,10 +30,10 @@ class CTextDrawPool
 {
 #pragma pack( 1 )
 public:
-	BOOL			isCreated[MAX_TEXTDRAW];			// + 0x0000
-	tTextDraw*		textDraw[MAX_TEXTDRAW];				// + 0x2000
-	char*			text[MAX_TEXTDRAW];					// + 0x4000
-	BYTE			textDrawOwner[MAX_TEXTDRAW][500];	// + 0x6000 /* MAX_PLAYERS sûrement pour savoir a qui appartient chaque TextDraw */
+	BOOL			isCreated[MAX_TEXTDRAW];					// + 0x0000
+	tTextDraw*		textDraw[MAX_TEXTDRAW];						// + 0x2000
+	char*			text[MAX_TEXTDRAW];							// + 0x4000
+	BYTE			textDrawOwner[MAX_TEXTDRAW][MAX_PLAYERS];	// + 0x6000 /* MAX_PLAYERS sûrement pour savoir a qui appartient chaque TextDraw */
 	
 	int Destroy( int textDrawID ); // Ref: 0x47D880
 	WORD Create( float x, float y, char* text ); // Ref: 0x47D0C0
@@ -53,8 +53,8 @@ public:
 
 	
 //	Besoin de RakNet
-	int showForPlayer( WORD playerid, WORD textDrawID ); //Ref: 0x47D340
-	int hideForPlayer( WORD playerid, WORD textDrawID );
+	int showForPlayer( _PlayerID playerid, WORD textDrawID ); //Ref: 0x47D340
+	int hideForPlayer( _PlayerID playerid, WORD textDrawID );
 	int showForAll( WORD textDrawID );
 	int hideForAll( WORD textDrawID ); // Ref: 0x47D670
 

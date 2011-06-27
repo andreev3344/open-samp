@@ -360,7 +360,7 @@ int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, WORD vehicleID, floa
 	return 1;
 }
 
-int CText3DLabels::Attach3DTextLabelPlayer( int labelID, WORD playerID, float offsetX, float offsetY, float offsetZ )
+int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
