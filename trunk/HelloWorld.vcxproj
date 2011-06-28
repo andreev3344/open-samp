@@ -69,7 +69,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <OutputFile>C:\Users\Sasuke78200\Documents\samp server\scriptfiles\plug.dll</OutputFile>
+      <OutputFile>C:\Users\Sasuke78200\Documents\samp server\plugins\plug.dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,12 +98,15 @@
     <ClCompile Include="menu\class_menu.cpp" />
     <ClCompile Include="object\class_object.cpp" />
     <ClCompile Include="pool\class_gangzonepool.cpp" />
+    <ClCompile Include="pool\class_menupool.cpp" />
     <ClCompile Include="pool\class_objectpool.cpp" />
     <ClCompile Include="pool\class_pickuppool.cpp" />
+    <ClCompile Include="pool\class_playerpool.cpp" />
     <ClCompile Include="pool\class_text3dlabels.cpp" />
     <ClCompile Include="pool\class_textdrawpool.cpp" />
     <ClCompile Include="raknet\BitStream.cpp" />
     <ClCompile Include="script\amx\func_amx_gangzone.cpp" />
+    <ClCompile Include="script\amx\func_amx_menu.cpp" />
     <ClCompile Include="script\amx\func_amx_object.cpp" />
     <ClCompile Include="script\amx\func_amx_textdraw.cpp" />
     <ClCompile Include="script\func_amx.cpp" />
@@ -122,14 +125,17 @@
     <ClInclude Include="menu\class_menu.h" />
     <ClInclude Include="object\class_object.h" />
     <ClInclude Include="pool\class_gangzonepool.h" />
+    <ClInclude Include="pool\class_menupool.h" />
     <ClInclude Include="pool\class_objectpool.h" />
     <ClInclude Include="pool\class_pickuppool.h" />
+    <ClInclude Include="pool\class_playerpool.h" />
     <ClInclude Include="pool\class_text3dlabels.h" />
     <ClInclude Include="pool\class_textdrawpool.h" />
     <ClInclude Include="raknet\BitStream.h" />
     <ClInclude Include="raknet\Export.h" />
     <ClInclude Include="raknet\NetworkTypes.h" />
     <ClInclude Include="script\amx\func_amx_gangzone.h" />
+    <ClInclude Include="script\amx\func_amx_menu.h" />
     <ClInclude Include="script\amx\func_amx_object.h" />
     <ClInclude Include="script\amx\func_amx_textdraw.h" />
     <ClInclude Include="script\func_amx.h" />

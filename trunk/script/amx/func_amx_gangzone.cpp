@@ -37,10 +37,10 @@ cell AMX_NATIVE_CALL funcGangZoneDestroy ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 1 );
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 1 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 1 ] ) )
 		return -1;
 
-	__GangZonePool->Delete ( a_Params[ 1 ] );
+	__GangZonePool->Delete ( (uint16_t)a_Params[ 1 ] );
 
 	return 1;
 }
@@ -53,16 +53,16 @@ cell AMX_NATIVE_CALL funcGangZoneShowForPlayer ( AMX* a_AmxInterface, cell* a_Pa
 
 
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
+	if ( !( a_Params[ 1 ] < 500 ) && !( __NetGame->playerPool->isCreated[ a_Params[ 1 ] ]  ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
 	//	return -1;
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 2 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 2 ] ) )
 		return -1;
 
-	__GangZonePool->ShowForPlayer ( a_Params[ 1 ], a_Params[ 2 ], a_Params[ 3 ] );
+	__GangZonePool->ShowForPlayer ( (_PlayerID)a_Params[ 1 ], (uint16_t)a_Params[ 2 ], a_Params[ 3 ] );
 
 	return 1;
 }
@@ -73,10 +73,10 @@ cell AMX_NATIVE_CALL funcGangZoneShowForAll ( AMX* a_AmxInterface, cell* a_Param
 
 	CHECK_PARAMS ( 2 );
 		
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 1 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 1 ] ) )
 		return -1;
 
-	__GangZonePool->ShowForAll ( a_Params[ 1 ], a_Params[ 2 ] );
+	__GangZonePool->ShowForAll ( (uint16_t)a_Params[ 1 ], a_Params[ 2 ] );
 
 	return 1;
 }
@@ -88,17 +88,17 @@ cell AMX_NATIVE_CALL funcGangZoneHideForPlayer ( AMX* a_AmxInterface, cell* a_Pa
 	CHECK_PARAMS ( 2 );
 
 
-
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
+	
+	if ( !( a_Params[ 1 ] < 500 ) && !( __NetGame->playerPool->isCreated[ a_Params[ 1 ] ] ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
 	//	return -1;
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 2 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 2 ] ) )
 		return -1;
 
-	__GangZonePool->HideForPlayer ( a_Params[ 1 ], a_Params[ 2 ] );
+	__GangZonePool->HideForPlayer ( (_PlayerID)a_Params[ 1 ], (uint16_t)a_Params[ 2 ] );
 	
 	return 1;
 }
@@ -109,10 +109,10 @@ cell AMX_NATIVE_CALL funcGangZoneHideForAll ( AMX* a_AmxInterface, cell* a_Param
 
 	CHECK_PARAMS ( 1 );
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 1 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 1 ] ) )
 		return -1;
 
-	__GangZonePool->HideForAll ( a_Params[ 1 ] );
+	__GangZonePool->HideForAll ((uint16_t) a_Params[ 1 ] );
 
 	return 1;
 }
@@ -125,16 +125,16 @@ cell AMX_NATIVE_CALL funcGangZoneFlashForPlayer ( AMX* a_AmxInterface, cell* a_P
 
 
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
+	if ( !( a_Params[ 1 ] < 500 ) && !( __NetGame->playerPool->isCreated[ a_Params[ 1 ] ] ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
 	//	return -1;
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 2 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 2 ] ) )
 		return -1;
 
-	__GangZonePool->FlashForPlayer ( a_Params[ 1 ], a_Params[ 2 ], a_Params[ 3 ] );
+	__GangZonePool->FlashForPlayer ((_PlayerID) a_Params[ 1 ], (uint16_t) a_Params[ 2 ], a_Params[ 3 ] );
 	
 	return 1;
 }
@@ -145,10 +145,10 @@ cell AMX_NATIVE_CALL funcGangZoneFlashForAll ( AMX* a_AmxInterface, cell* a_Para
 
 	CHECK_PARAMS ( 2 );
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 1 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 1 ] ) )
 		return -1;
 
-	__GangZonePool->FlashForAll ( a_Params[ 1 ], a_Params[ 2 ] );
+	__GangZonePool->FlashForAll ((uint16_t) a_Params[ 1 ], a_Params[ 2 ] );
 	
 	return 1;
 }
@@ -161,16 +161,16 @@ cell AMX_NATIVE_CALL funcGangZoneStopFlashForPlayer ( AMX* a_AmxInterface, cell*
 
 
 
-	if ( !( a_Params[ 1 ] < 500 ) && !( *( uint32_t* )( (DWORD)__NetGame->playerPool + 4 * a_Params[ 1 ] ) ) )
+	if ( !( a_Params[ 1 ] < 500 ) && !( __NetGame->playerPool->isCreated[ a_Params[ 1 ] ] ) )
 		return -1;
 
 	//if ( __PlayerPool->GetSlotState ( a_Params[ 1 ] ) )
 	//	return -1;
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 2 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 2 ] ) )
 		return -1;
 
-	__GangZonePool->StopFlashForPlayer ( a_Params[ 1 ], a_Params[ 2 ] );
+	__GangZonePool->StopFlashForPlayer ( (_PlayerID)a_Params[ 1 ], (uint16_t)a_Params[ 2 ] );
 	
 	return 1;
 }
@@ -181,10 +181,10 @@ cell AMX_NATIVE_CALL funcGangZoneStopFlashForAll ( AMX* a_AmxInterface, cell* a_
 
 	CHECK_PARAMS ( 1 );
 
-	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( a_Params[ 1 ] ) )
+	if ( !__GangZonePool || !__GangZonePool->GetSlotState ( (uint16_t)a_Params[ 1 ] ) )
 		return -1;
 
-	__GangZonePool->StopFlashForAll ( a_Params[ 1 ] );
+	__GangZonePool->StopFlashForAll ( (uint16_t)a_Params[ 1 ] );
 	
 	return 1;
 }

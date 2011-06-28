@@ -33,8 +33,8 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 8 );
 
-		//// TODO: Remove that Shitty !
-	__NetGame = (CNetGame*)( *( uint32_t* )( 0x004F6270 ) );
+
+
 	__ObjectPoolEx = ( tObjectPool* )( __NetGame->objectPool );
 
 	
@@ -54,10 +54,9 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 		l_VectorRotation->Z = amx_ctof ( a_Params[ 7 ] );
 
 	uint16_t l_ObjectIndex = __ObjectPool->New ( a_Params[ 1 ], l_VectorPosition, l_VectorRotation, amx_ctof ( a_Params[ 8 ] ) );
-	
+
 	if ( l_ObjectIndex == -1 )
 		return -1;
-
 	CObject* l_Object = NULL;
 	if ( l_ObjectIndex < 400 )
 	{
@@ -67,19 +66,21 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 	{
 		l_Object = NULL;
 	}
-	
-	uint32_t __PlayerPoolEx = *( uint32_t* )( *( uint32_t* )( __NetGame + 0x04 ) );
-	if ( l_Object && __PlayerPoolEx )
+
+	if( l_Object && __NetGame->playerPool > 0 )
 	{
-		for ( uint16_t l_PlayerIndex = 0; l_PlayerIndex < 500; l_PlayerIndex++ )
+
+		for( _PlayerID playerid = 0; playerid < MAX_PLAYERS; playerid ++ )
 		{
-			if ( ( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * l_PlayerIndex ) ) )
+			if( __NetGame->playerPool->isCreated[ playerid ] != 0 )
 			{
-				l_Object->SpawnForPlayer ( l_PlayerIndex );
+				l_Object->SpawnForPlayer( playerid );
 			}
 		}
 		return l_ObjectIndex;
+
 	}
+	
 	return -1;
 }
 

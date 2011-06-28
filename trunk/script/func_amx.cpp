@@ -7,6 +7,7 @@
 #include "amx/func_amx_gangzone.h"
 #include "amx/func_amx_object.h"
 #include "amx/func_amx_textdraw.h"
+#include "amx/func_amx_menu.h"
 
 
 AMX_NATIVE_INFO __AmxScriptNative[];
@@ -234,16 +235,8 @@ cell ( __cdecl* _funcGameTextForPlayer )( AMX* a_AmxInterface, cell* a_Params ) 
 cell ( __cdecl* _funcSendPlayerMessageToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToPlayer;
 cell ( __cdecl* _funcSendPlayerMessageToAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToAll;
 
-cell ( __cdecl* _funcCreateMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreateMenu;
-cell ( __cdecl* _funcDestroyMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyMenu;
-cell ( __cdecl* _funcAddMenuItem )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddMenuItem;
-cell ( __cdecl* _funcSetMenuColumnHeader )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetMenuColumnHeader;
-cell ( __cdecl* _funcShowMenuForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_ShowMenuForPlayer;
-cell ( __cdecl* _funcHideMenuForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_HideMenuForPlayer;
-cell ( __cdecl* _funcIsValidMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidMenu;
-cell ( __cdecl* _funcDisableMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DisableMenu;
-cell ( __cdecl* _funcDisableMenuRow )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DisableMenuRow;
-cell ( __cdecl* _funcGetPlayerMenu )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerMenu;
+
+
 cell ( __cdecl* _funcSetPlayerTime )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerTime;
 cell ( __cdecl* _funcTogglePlayerClock )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_TogglePlayerClock;
 cell ( __cdecl* _funcGetPlayerTime )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerTime;
@@ -1417,56 +1410,7 @@ cell AMX_NATIVE_CALL funcSendPlayerMessageToAll ( AMX* a_AmxInterface, cell* a_P
 }
 
 
-cell AMX_NATIVE_CALL funcCreateMenu ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcCreateMenu()" );
-	return _funcCreateMenu ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDestroyMenu ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDestroyMenu()" );
-	return _funcDestroyMenu ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcAddMenuItem ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcAddMenuItem()" );
-	return _funcAddMenuItem ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcSetMenuColumnHeader ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcSetMenuColumnHeader()" );
-	return _funcSetMenuColumnHeader ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcShowMenuForPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcShowMenuForPlayer()" );
-	return _funcShowMenuForPlayer ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcHideMenuForPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcHideMenuForPlayer()" );
-	return _funcHideMenuForPlayer ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcIsValidMenu ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcIsValidMenu()" );
-	return _funcIsValidMenu ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDisableMenu ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDisableMenu()" );
-	return _funcDisableMenu ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDisableMenuRow ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDisableMenuRow()" );
-	return _funcDisableMenuRow ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcGetPlayerMenu ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetPlayerMenu()" );
-	return _funcGetPlayerMenu ( a_AmxInterface, a_Params );
-}
+
 cell AMX_NATIVE_CALL funcSetPlayerTime ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerTime()" );

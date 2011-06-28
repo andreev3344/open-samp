@@ -212,9 +212,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 
 	for( int i = 0; i < 500; i++ )
 	{
-		//logprintf( "Player %d %d", i, *(DWORD*)( CPlayerPool + i * 4 ) );
-		//  CNetGame->PlayerPool->isPlayerCreated( i ) == 0 
-		if( *(DWORD*)( CPlayerPool + i * 4 ) == 0 ) continue;
+		if( __NetGame->playerPool->isCreated[i] == 0 ) continue;
 		// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( i ); 
 		DWORD CPlayer = *(DWORD*)( CPlayerPool + i * 4 + 0x7D0 );
 		

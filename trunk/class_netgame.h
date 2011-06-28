@@ -55,22 +55,36 @@ Class CNetGame size 0x0365D
 
 */
 
-#define MAX_SPAWNS	500
+#define MAX_SPAWNS	300
 
+
+
+typedef struct SPAWNS_t // size 0x2E
+{
+	BYTE	Team;
+	int		Skin;
+	float	posX;
+	float	posY;
+	float	posZ;
+	float	zAngle;
+	int		weapons[ 3 ];
+	int		ammo[ 3 ];
+
+} tSPAWNS;
 
 class CNetGame // size 0x0365D
 {
 #pragma pack( 1 )
 public:
 	void*				rakServerInterface;					// + 0x0000
-	void*				playerPool;							// + 0x0004
+	CPlayerPool*		playerPool;							// + 0x0004
 	void*				vehiclePool;						// + 0x0008
 	CText3DLabels*		text3DLabelsPool;					// + 0x000C
 	CPickupPool*		pickupPool;							// + 0x0010
 	CObjectPool*		objectPool;							// + 0x0014
 	void*				gamemodeManager;					// + 0x0018
 	void*				filterscriptsManager;				// + 0x001C
-	void*				menuPool;							// + 0x0020
+	CMenuPool*			menuPool;							// + 0x0020
 	CTextDrawPool*		textDrawPool;						// + 0x0024
 	CGangZonePool*		gangZonePool;						// + 0x0028
 	DWORD				currentGameModeIndex;				// + 0x002C
@@ -86,7 +100,7 @@ public:
 	bool				allowInteriorWeapons;				// + 0x004A
 	bool				enableBonusStuntForAll;				// + 0x004B
 	BYTE				weather;							// + 0x004C
-	BYTE				unknown003[0x51-0x4D];				// + 0x004D
+	DWORD				gameState;							// + 0x004D
 	float				gravity;							// + 0x0051
 	DWORD				deathDropAmount;					// + 0x0055
 	DWORD				allowAdminTeleport;					// + 0x0059
@@ -100,6 +114,8 @@ public:
 	bool				useManualVehicleEngineAndLight;		// + 0x006B
 	bool				bLimitPlayerMarkerRadius;			// + 0x006C
 	float				limitPlayerMarkerRadius;			// + 0x006D
+	DWORD				spawnsNumber;						// + 0x0071
+	tSPAWNS				spawns[ MAX_SPAWNS];				// + 0x0075
 
 
 

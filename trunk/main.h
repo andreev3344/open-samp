@@ -43,6 +43,8 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint3
 #include "pool/class_textdrawpool.h"
 #include "pool/class_text3dlabels.h"
 #include "pool/class_objectpool.h"
+#include "pool/class_menupool.h"
+#include "pool/class_playerpool.h"
 
 #include "class_netgame.h"
 
@@ -55,6 +57,8 @@ extern CPickupPool* __PickupPool;
 extern CGangZonePool* __GangZonePool;
 extern CObjectPool* __ObjectPool;
 extern CTextDrawPool* __TextDrawPool;
+extern CMenuPool*	__MenuPool;
+
 
 extern CNetGame*	 __NetGame;
 

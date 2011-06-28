@@ -44,6 +44,15 @@
     <ClCompile Include="menu\class_menu.cpp">
       <Filter>menu</Filter>
     </ClCompile>
+    <ClCompile Include="pool\class_menupool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_menu.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_playerpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -131,5 +140,14 @@
       <Filter>menu</Filter>
     </ClInclude>
     <ClInclude Include="class_netgame.h" />
+    <ClInclude Include="pool\class_menupool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_menu.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_playerpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

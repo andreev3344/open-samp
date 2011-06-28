@@ -31,6 +31,7 @@ CPickupPool* __PickupPool = NULL;
 CGangZonePool* __GangZonePool = NULL;
 CObjectPool* __ObjectPool = NULL;
 CTextDrawPool* __TextDrawPool = NULL;
+CMenuPool*	__MenuPool	= NULL;
 
 CNetGame* __NetGame = NULL;
 
@@ -75,13 +76,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 
 	logprintf( "WE GONNA KILL YOU" );
 
-	__NetGame = (CNetGame*)( *(DWORD*)( 0x4F6270 ) );
+	
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();
 	__ObjectPool = new CObjectPool();
 	__TextDrawPool = new CTextDrawPool();
+	__MenuPool = new CMenuPool( );
 	
+
 	/***
 	*	HOOKING PARTY =D
 	*
@@ -238,7 +241,7 @@ AMX_NATIVE_INFO HelloWorldNatives[ ] =
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad( AMX *amx ) 
 {
-
+	__NetGame = (CNetGame*)( *(DWORD*)( 0x4F6270 ) );
 	return amx_Register( amx, HelloWorldNatives, -1 );
 }
 
