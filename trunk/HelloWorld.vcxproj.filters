@@ -41,9 +41,6 @@
     <ClCompile Include="pool\class_objectpool.cpp">
       <Filter>pool</Filter>
     </ClCompile>
-    <ClCompile Include="menu\class_menu.cpp">
-      <Filter>menu</Filter>
-    </ClCompile>
     <ClCompile Include="pool\class_menupool.cpp">
       <Filter>pool</Filter>
     </ClCompile>
@@ -52,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="pool\class_playerpool.cpp">
       <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_menu.cpp">
+      <Filter>object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +75,6 @@
     </Filter>
     <Filter Include="object">
       <UniqueIdentifier>{b24e6fd8-25e8-4920-97f7-d7477d404e45}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="menu">
-      <UniqueIdentifier>{e7afcfc9-ee1d-4b32-8895-2ad9dbbe4694}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +133,6 @@
     <ClInclude Include="pool\class_objectpool.h">
       <Filter>pool</Filter>
     </ClInclude>
-    <ClInclude Include="menu\class_menu.h">
-      <Filter>menu</Filter>
-    </ClInclude>
     <ClInclude Include="class_netgame.h" />
     <ClInclude Include="pool\class_menupool.h">
       <Filter>pool</Filter>
@@ -148,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="pool\class_playerpool.h">
       <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_menu.h">
+      <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

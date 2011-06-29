@@ -35,7 +35,7 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint3
 
 #define MAX_PLAYERS			500
 
-#include "menu/class_menu.h"
+#include "object/class_menu.h"
 #include "object/class_object.h"
 
 #include "pool/class_pickuppool.h"

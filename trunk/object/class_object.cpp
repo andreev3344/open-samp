@@ -63,7 +63,6 @@ void CObject::AttachToVehicle ( uint16_t a_uint16_VehicleIndex, tVector* a_Offse
 	
 		//// TODO: Remove that Shitty !
 
-	
 	uint32_t __PlayerPoolEx = *( uint32_t* )( *( uint32_t* )( __NetGame + 0x04 ) );
 	if ( __PlayerPoolEx )
 	{
