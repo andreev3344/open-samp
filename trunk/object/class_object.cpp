@@ -100,23 +100,18 @@ tVector* CObject::GetPosition ( void )
 	return &( this->m_Position );
 }
 
-void CObject::Move ( float a_float_X, float a_float_Y, float a_float_Z, float a_float_Speed )
+float CObject::Move ( float a_float_X, float a_float_Y, float a_float_Z, float a_float_Speed )
 {
-/*
- long double v6; // fst7@1
-  long double v7; // fst6@1
-  long double v8; // fst5@1
-  char v9; // al@1
+	this->m_Position.X = a_float_X;
+	this->m_Position.Y = a_float_Y;
+	this->m_Position.Z = a_float_Z;
 
-  v6 = a_float_X - *(float *)(this + 58);
-  *(_DWORD *)(this + 134) = LODWORD(a_float_X);
-  v7 = a_float_Y - *(float *)(this + 62);
-  *(_DWORD *)(this + 142) = LODWORD(a_float_Z);
-  v8 = a_float_Z - *(float *)(this + 66);
-  v9 = *(_BYTE *)(this + 150);
-  *(_DWORD *)(this + 138) = LODWORD(a_float_Y);
-  *(_DWORD *)(this + 151) = LODWORD(a_float_Speed);
-  *(_BYTE *)(this + 150) = v9 | 1;
-  return sqrt(v8 * v8 + v7 * v7 + v6 * v6) / a_float_Speed;
-  */
+	this->m_float_MoveSpeed = a_float_Speed;
+	this->m_uint8_IsMoving |= 1;
+	
+	float l_float_X = ( ( a_float_X - this->m_Position.X ) * ( a_float_X - this->m_Position.X ) );
+	float l_float_Y = ( ( a_float_Y - this->m_Position.Y ) * ( a_float_Y - this->m_Position.Y ) );
+	float l_float_Z = ( ( a_float_Z - this->m_Position.Z ) * ( a_float_Z - this->m_Position.Z ) );
+	
+	return ( sqrt ( l_float_X + l_float_Y + l_float_Z ) / a_float_Speed );
 }

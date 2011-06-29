@@ -245,6 +245,7 @@ AMX_NATIVE_INFO HelloWorldNatives[ ] =
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad( AMX *amx ) 
 {
 	__NetGame = (CNetGame*)( *(DWORD*)( 0x4F6270 ) );
+	//__NetGame = (CNetGame*)( 0x4F6270 );
 	return amx_Register( amx, HelloWorldNatives, -1 );
 }
 

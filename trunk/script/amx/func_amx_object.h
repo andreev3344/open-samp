@@ -9,7 +9,7 @@
 //#define FUNC_GetObjectRot					0x00487C00
 //#define FUNC_IsValidObject				0x00487CA0
 //#define FUNC_DestroyObject				0x0048DC00
-#define FUNC_MoveObject						0x0048DD10
+//#define FUNC_MoveObject						0x0048DD10
 #define FUNC_StopObject						0x0048DEF0
 
 #define FUNC_CreatePlayerObject					0x00487CE0
@@ -32,7 +32,7 @@
 //extern cell ( __cdecl* _funcGetObjectRot )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcIsValidObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params );

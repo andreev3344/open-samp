@@ -17,7 +17,7 @@ struct tObjectPool
 };
 
 
-extern tObjectPool* __ObjectPoolEx;
+//extern tObjectPool* __ObjectPoolEx;
 
 
 
@@ -36,7 +36,18 @@ public:
 
 	CObjectPool()
 	{
+		for ( uint16_t l_uint16_ObjectIndex = 0; l_uint16_ObjectIndex != LIMIT_MAX_OBJECT; l_uint16_ObjectIndex++ )
+		{
+			this->m_bool_ObjectSlotState[ l_uint16_ObjectIndex ] = FALSE;
+			this->m_Object[ l_uint16_ObjectIndex ] = NULL;
+			this->m_bool_PlayerObject[ l_uint16_ObjectIndex ] = FALSE;
 
+			for ( uint16_t l_uint16_PlayerIndex = 0; l_uint16_PlayerIndex < 500; l_uint16_PlayerIndex++ )
+			{
+				this->m_bool_PlayerObjectSlotState[ l_uint16_PlayerIndex ][ l_uint16_ObjectIndex ] = FALSE;
+				this->m_PlayerObject[ l_uint16_PlayerIndex ][ l_uint16_ObjectIndex ] = NULL;
+			}
+		}
 	};
 
 	~CObjectPool()
