@@ -209,6 +209,9 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload( )
 	if ( __GangZonePool )
 		delete __GangZonePool;
 
+	if( __MenuPool )
+		delete __MenuPool;
+
 	logprintf( "Plugin helloworld.dll got unloaded." );
 }
 
