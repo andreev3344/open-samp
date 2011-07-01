@@ -182,7 +182,7 @@ int CTextDrawPool::setDrawBoxColor( WORD textDrawID, DWORD color ) // Ref: 0x47D
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
-	this->textDraw[textDrawID]->boxColor = color;
+	this->textDraw[textDrawID]->boxColor = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
@@ -221,6 +221,8 @@ int CTextDrawPool::showForPlayer( _PlayerID playerid, WORD textDrawID ) //Ref: 0
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 	
 
+	if( 0 > playerid || playerid >= MAX_PLAYERS ) return 0;
+	if( __NetGame->playerPool->isCreated[ playerid ] == 0 ) return 0;
 
 	DWORD RPC_ShowTextDraw = 0x46;
 
@@ -242,6 +244,9 @@ int CTextDrawPool::hideForPlayer( _PlayerID playerid, WORD textDrawID )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
+
+	if( 0 > playerid || playerid >= MAX_PLAYERS ) return 0;
+	if( __NetGame->playerPool->isCreated[ playerid ] == 0 ) return 0;
 
 	if( this->textDrawOwner[textDrawID][playerid] == 0 ) return 0;
 

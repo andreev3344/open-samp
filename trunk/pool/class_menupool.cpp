@@ -19,7 +19,6 @@ BYTE CMenuPool::New( char* title, float x, float y, BYTE column, float col1width
 
 	while( menuID < MAX_MENUS )
 	{
-		logprintf( "IsMenuCreated[ %d ] = %d", menuID, this->isCreated[menuID]  );
 		if( this->isCreated[menuID] == 0 ) break;
 		menuID ++;
 	}

@@ -13,8 +13,8 @@
 #define FUNC_GetTickCount					0x004868A0
 #define FUNC_GetMaxPlayers					0x004868B0
 #define FUNC_SetTimerEx						0x00486C40
-#define FUNC_LimitGlobalChatRadius			0x004868D0
-#define FUNC_LimitPlayerMarkerRadius		0x004868F0
+//#define FUNC_LimitGlobalChatRadius			0x004868D0
+//#define FUNC_LimitPlayerMarkerRadius		0x004868F0
 #define FUNC_SetWeather						0x00486F30
 #define FUNC_SetPlayerWeather				0x0048D260
 #define FUNC_CallRemoteFunction				0x00487300
@@ -27,9 +27,9 @@
 
 #define FUNC_GameModeExit					0x004842E0
 #define FUNC_SetGameModeText				0x00484320
-#define FUNC_SetTeamCount					0x0040E460
-#define FUNC_AddPlayerClass					0x004843A0
-#define FUNC_AddPlayerClassEx				0x00484410
+//#define FUNC_SetTeamCount					0x0040E460
+//#define FUNC_AddPlayerClass					0x004843A0
+//#define FUNC_AddPlayerClassEx				0x00484410
 #define FUNC_AddStaticVehicle				0x00484480
 #define FUNC_AddStaticVehicleEx				0x004845D0
 #define FUNC_AddStaticPickup				0x00484AB0
@@ -253,8 +253,8 @@ extern cell ( __cdecl* _funcKillTimer )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetTickCount )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetMaxPlayers )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetTimerEx )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcLimitGlobalChatRadius )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcLimitPlayerMarkerRadius )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcLimitGlobalChatRadius )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcLimitPlayerMarkerRadius )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetWeather )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerWeather )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcCallRemoteFunction )( AMX* a_AmxInterface, cell* a_Params );
@@ -267,9 +267,9 @@ extern cell ( __cdecl* _funcGpci )( AMX* a_AmxInterface, cell* a_Params );
 
 extern cell ( __cdecl* _funcGameModeExit )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetGameModeText )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcSetTeamCount )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcAddPlayerClass )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcAddPlayerClassEx )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcSetTeamCount )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcAddPlayerClass )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcAddPlayerClassEx )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcAddStaticVehicle )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcAddStaticVehicleEx )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcAddStaticPickup )( AMX* a_AmxInterface, cell* a_Params );

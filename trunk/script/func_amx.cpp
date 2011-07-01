@@ -23,8 +23,8 @@ cell ( __cdecl* _funcKillTimer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell
 cell ( __cdecl* _funcGetTickCount )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetTickCount;
 cell ( __cdecl* _funcGetMaxPlayers )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetMaxPlayers;
 cell ( __cdecl* _funcSetTimerEx )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetTimerEx;
-cell ( __cdecl* _funcLimitGlobalChatRadius )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_LimitGlobalChatRadius;
-cell ( __cdecl* _funcLimitPlayerMarkerRadius )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_LimitPlayerMarkerRadius;
+//cell ( __cdecl* _funcLimitGlobalChatRadius )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_LimitGlobalChatRadius;
+//cell ( __cdecl* _funcLimitPlayerMarkerRadius )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_LimitPlayerMarkerRadius;
 cell ( __cdecl* _funcSetWeather )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetWeather;
 cell ( __cdecl* _funcSetPlayerWeather )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerWeather;
 cell ( __cdecl* _funcCallRemoteFunction )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CallRemoteFunction;
@@ -37,9 +37,9 @@ cell ( __cdecl* _funcGpci )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __
 
 cell ( __cdecl* _funcGameModeExit )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GameModeExit;
 cell ( __cdecl* _funcSetGameModeText )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetGameModeText;
-cell ( __cdecl* _funcSetTeamCount )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetTeamCount;
-cell ( __cdecl* _funcAddPlayerClass )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddPlayerClass;
-cell ( __cdecl* _funcAddPlayerClassEx )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddPlayerClassEx;
+//cell ( __cdecl* _funcSetTeamCount )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetTeamCount;
+//cell ( __cdecl* _funcAddPlayerClass )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddPlayerClass;
+//cell ( __cdecl* _funcAddPlayerClassEx )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddPlayerClassEx;
 cell ( __cdecl* _funcAddStaticVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddStaticVehicle;
 cell ( __cdecl* _funcAddStaticVehicleEx )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddStaticVehicleEx;
 cell ( __cdecl* _funcAddStaticPickup )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AddStaticPickup;
@@ -296,13 +296,17 @@ cell AMX_NATIVE_CALL funcSetTimerEx ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcLimitGlobalChatRadius ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcLimitGlobalChatRadius()" );
-	return _funcLimitGlobalChatRadius ( a_AmxInterface, a_Params );
+	//return _funcLimitGlobalChatRadius ( a_AmxInterface, a_Params );
+	__NetGame->limitGlobalChatRadius( amx_ctof( a_Params[1] ) );
+	return 0;
 }
 
 cell AMX_NATIVE_CALL funcLimitPlayerMarkerRadius ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcLimitPlayerMarkerRadius()" );
-	return _funcLimitPlayerMarkerRadius ( a_AmxInterface, a_Params );
+	//return _funcLimitPlayerMarkerRadius ( a_AmxInterface, a_Params );
+	__NetGame->limitPlayerMarkerRadius( amx_ctof( a_Params[1] ) );
+	return 0;
 }
 
 cell AMX_NATIVE_CALL funcSetWeather ( AMX* a_AmxInterface, cell* a_Params )
@@ -373,20 +377,53 @@ cell AMX_NATIVE_CALL funcSetGameModeText ( AMX* a_AmxInterface, cell* a_Params )
 
 cell AMX_NATIVE_CALL funcSetTeamCount ( AMX* a_AmxInterface, cell* a_Params )
 {
-	logprintf ( "[Call]-> funcSetTeamCount()" );
-	return _funcSetTeamCount ( a_AmxInterface, a_Params );
+	return 0;
 }
 
 cell AMX_NATIVE_CALL funcAddPlayerClass ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcAddPlayerClass()" );
-	return _funcAddPlayerClass ( a_AmxInterface, a_Params );
+//	return _funcAddPlayerClass ( a_AmxInterface, a_Params );
+
+	tSPAWNS spawn;
+
+	spawn.Skin = (int)a_Params[ 1 ];
+	spawn.posX = amx_ctof( a_Params[2] );
+	spawn.posY = amx_ctof( a_Params[3] );
+	spawn.posZ = amx_ctof( a_Params[4] );
+	spawn.zAngle = amx_ctof( a_Params[5] );
+	spawn.weapons[0] = (int)a_Params[ 6 ];
+	spawn.ammo[0] = (int)a_Params[ 7 ];
+	spawn.weapons[1] = (int)a_Params[ 8 ];
+	spawn.ammo[1] = (int)a_Params[ 9 ];
+	spawn.weapons[2] = (int)a_Params[ 10 ];
+	spawn.ammo[2] = (int)a_Params[ 11 ];
+	spawn.Team = 0xFF;
+
+	return __NetGame->addSpawn( spawn );
 }
 
 cell AMX_NATIVE_CALL funcAddPlayerClassEx ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcAddPlayerClassEx()" );
-	return _funcAddPlayerClassEx ( a_AmxInterface, a_Params );
+	//return _funcAddPlayerClassEx ( a_AmxInterface, a_Params );
+
+	tSPAWNS spawn;
+
+	spawn.Skin = (int)a_Params[ 2 ];
+	spawn.posX = amx_ctof( a_Params[3] );
+	spawn.posY = amx_ctof( a_Params[4] );
+	spawn.posZ = amx_ctof( a_Params[5] );
+	spawn.zAngle = amx_ctof( a_Params[6] );
+	spawn.weapons[0] = (int)a_Params[ 7 ];
+	spawn.ammo[0] = (int)a_Params[ 8 ];
+	spawn.weapons[1] = (int)a_Params[ 9 ];
+	spawn.ammo[1] = (int)a_Params[ 10 ];
+	spawn.weapons[2] = (int)a_Params[ 11 ];
+	spawn.ammo[2] = (int)a_Params[ 12 ];
+	spawn.Team = (uint8_t)a_Params[ 1 ];
+
+	return __NetGame->addSpawn( spawn );
 }
 
 cell AMX_NATIVE_CALL funcAddStaticVehicle ( AMX* a_AmxInterface, cell* a_Params )

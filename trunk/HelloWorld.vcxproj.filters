@@ -53,6 +53,7 @@
     <ClCompile Include="object\class_menu.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="class_netgame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />

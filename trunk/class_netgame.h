@@ -61,67 +61,74 @@ Class CNetGame size 0x0365D
 
 typedef struct SPAWNS_t // size 0x2E
 {
-	BYTE	Team;
-	int		Skin;
-	float	posX;
-	float	posY;
-	float	posZ;
-	float	zAngle;
-	int		weapons[ 3 ];
-	int		ammo[ 3 ];
-
+#pragma pack( 1 )
+	uint8_t		Team;
+	int			Skin;
+	uint8_t		unk;
+	float		posX;
+	float		posY;
+	float		posZ;
+	float		zAngle;
+	int			weapons[ 3 ];
+	int			ammo[ 3 ];
 } tSPAWNS;
 
 class CNetGame // size 0x0365D
 {
 #pragma pack( 1 )
 public:
-	void*				rakServerInterface;					// + 0x0000
-	CPlayerPool*		playerPool;							// + 0x0004
-	void*				vehiclePool;						// + 0x0008
-	CText3DLabels*		text3DLabelsPool;					// + 0x000C
-	CPickupPool*		pickupPool;							// + 0x0010
-	CObjectPool*		objectPool;							// + 0x0014
-	void*				gamemodeManager;					// + 0x0018
-	void*				filterscriptsManager;				// + 0x001C
-	CMenuPool*			menuPool;							// + 0x0020
-	CTextDrawPool*		textDrawPool;						// + 0x0024
-	CGangZonePool*		gangZonePool;						// + 0x0028
-	DWORD				currentGameModeIndex;				// + 0x002C
-	DWORD				unknown_GameMode;					// + 0x0030
-	bool				isFirstGameModeLoad;				// + 0x0034
-	bool				useLanMode;							// + 0x0035
-	WORD				unknown001;							// + 0x0036
-	void*				scriptTimerManager;					// + 0x0038
-	BYTE				unknown002[8];						// + 0x003C
-	DWORD				showPlayerMarkers;					// + 0x0044
-	bool				showNameTags;						// + 0x0048
-	BYTE				worldTime;							// + 0x0049
-	bool				allowInteriorWeapons;				// + 0x004A
-	bool				enableBonusStuntForAll;				// + 0x004B
-	BYTE				weather;							// + 0x004C
-	DWORD				gameState;							// + 0x004D
-	float				gravity;							// + 0x0051
-	DWORD				deathDropAmount;					// + 0x0055
-	DWORD				allowAdminTeleport;					// + 0x0059
-	bool				enableZoneName;						// + 0x005D
-	bool				blimitGlobalChatRadius;				// + 0x005F
-	bool				usePlayerPedAnims;					// + 0x0060
-	float				limitGlobalChatRadius;				// + 0x0061
-	float				nameTagDrawDistance;				// + 0x0065
-	bool				disableInteriorEnterExit;			// + 0x0069
-	bool				disableNameTagLineOfSight;			// + 0x006A
-	bool				useManualVehicleEngineAndLight;		// + 0x006B
-	bool				bLimitPlayerMarkerRadius;			// + 0x006C
-	float				limitPlayerMarkerRadius;			// + 0x006D
-	DWORD				spawnsNumber;						// + 0x0071
-	tSPAWNS				spawns[ MAX_SPAWNS];				// + 0x0075
+	void*				rakServerInterface;					// + 0x0000	0
+	CPlayerPool*		playerPool;							// + 0x0004 4
+	void*				vehiclePool;						// + 0x0008 8
+	CText3DLabels*		text3DLabelsPool;					// + 0x000C 12
+	CPickupPool*		pickupPool;							// + 0x0010 16
+	CObjectPool*		objectPool;							// + 0x0014 20
+	void*				gamemodeManager;					// + 0x0018 24
+	void*				filterscriptsManager;				// + 0x001C 28
+	CMenuPool*			menuPool;							// + 0x0020 32
+	CTextDrawPool*		textDrawPool;						// + 0x0024 36
+	CGangZonePool*		gangZonePool;						// + 0x0028 40
+	DWORD				currentGameModeIndex;				// + 0x002C 44
+	DWORD				unknown_GameMode;					// + 0x0030 48
+	bool				isFirstGameModeLoad;				// + 0x0034 52
+	bool				useLanMode;							// + 0x0035 53
+	WORD				unknown001;							// + 0x0036 54
+	void*				scriptTimerManager;					// + 0x0038 56
+	BYTE				unknown002[8];						// + 0x003C 60
+	DWORD				showPlayerMarkers;					// + 0x0044 68
+	bool				showNameTags;						// + 0x0048 72
+	BYTE				worldTime;							// + 0x0049	73
+	bool				allowInteriorWeapons;				// + 0x004A	74
+	bool				enableBonusStuntForAll;				// + 0x004B	75
+	BYTE				weather;							// + 0x004C	76
+	DWORD				gameState;							// + 0x004D	77
+	float				gravity;							// + 0x0051	81
+	DWORD				deathDropAmount;					// + 0x0055	85
+	DWORD				allowAdminTeleport;					// + 0x0059	89
+	bool				enableZoneName;						// + 0x005D	93
+	bool				blimitGlobalChatRadius;				// + 0x005E	94
+	bool				usePlayerPedAnims;					// + 0x005F	95
+	float				dlimitGlobalChatRadius;				// + 0x0060	96
+	float				nameTagDrawDistance;				// + 0x0064	100
+	bool				disableInteriorEnterExit;			// + 0x0068	104
+	bool				disableNameTagLineOfSight;			// + 0x0069	105
+	bool				useManualVehicleEngineAndLight;		// + 0x006A	106
+	bool				bLimitPlayerMarkerRadius;			// + 0x006B	107
+	float				dlimitPlayerMarkerRadius;			// + 0x006C	108
+	BYTE				unknown003;							// + 0x0070	112
+	DWORD				spawnsNumber;						// + 0x0071	113
+	tSPAWNS				spawns[ MAX_SPAWNS ];				// + 0x0075	117
 
 
 
 
-	CNetGame ( ) {};
-	~CNetGame( ) {};
+	uint32_t			addSpawn( tSPAWNS spawn );
+	void				limitGlobalChatRadius( float distance );
+	void				limitPlayerMarkerRadius( float distance );
+	void				setWeather( uint8_t weather );
+
+	CNetGame ( );
+	~CNetGame( );
 private:
 	
 
