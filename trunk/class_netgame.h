@@ -59,19 +59,6 @@ Class CNetGame size 0x0365D
 
 
 
-typedef struct SPAWNS_t // size 0x2E
-{
-#pragma pack( 1 )
-	uint8_t		Team;
-	int			Skin;
-	uint8_t		unk;
-	float		posX;
-	float		posY;
-	float		posZ;
-	float		zAngle;
-	int			weapons[ 3 ];
-	int			ammo[ 3 ];
-} tSPAWNS;
 
 class CNetGame // size 0x0365D
 {

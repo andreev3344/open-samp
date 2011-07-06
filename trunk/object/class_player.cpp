@@ -25,7 +25,7 @@ void CPlayer::setRaceCheckpoint( uint8_t type, tVector position, tVector next_po
 
 void CPlayer::showRaceCheckpoint( bool show )
 {
-	showRaceCheckpoint = (BOOL)(show ? 1 : 0 );
+	bshowRaceCheckpoint = (BOOL)(show ? 1 : 0 );
 	isInRaceCheckpoint = 0;
 
 	uint32_t RPC_ShowOrHideThatIsTheQuestion = 0x00;
@@ -59,7 +59,7 @@ void CPlayer::setCheckpoint( tVector position, float size )
 
 void CPlayer::showCheckpoint( bool show )
 {
-	this->showCheckpoint = (BOOL)( show ? 1 : 0 );
+	this->bshowCheckpoint = (BOOL)( show ? 1 : 0 );
 	this->isInCheckpoint = 0;
 
 	uint32_t RPC_ShowOrHideThatIsTheQuestion = 0x00;
