@@ -19,6 +19,8 @@ public:
 	BYTE New( char* title, float x, float y, BYTE column, float col1width, float col2width );
 	int Destroy( BYTE menuID );
 
+	void resetForPlayer( _PlayerID playerID );
+
 
 	CMenuPool( );
 	~CMenuPool( );

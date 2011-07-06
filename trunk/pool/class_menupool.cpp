@@ -12,6 +12,18 @@ CMenuPool::~CMenuPool( )
 {
 }
 
+void CMenuPool::resetForPlayer( _PlayerID playerID )
+{
+	if( 0 > playerID || playerID >= MAX_PLAYERS ) return;
+
+	for( uint8_t menuID = 0; menuID < MAX_MENUS; menuID ++ )
+	{
+
+		this->menu[menuID]->isInitiedForPlayer[ playerID ] = 0;
+
+	}
+
+}
 
 BYTE CMenuPool::New( char* title, float x, float y, BYTE column, float col1width, float col2width )
 {

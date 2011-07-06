@@ -37,6 +37,8 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint3
 
 #include "object/class_menu.h"
 #include "object/class_object.h"
+#include "object/class_player.h"
+
 
 #include "pool/class_pickuppool.h"
 #include "pool/class_gangzonepool.h"

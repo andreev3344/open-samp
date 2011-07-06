@@ -54,6 +54,9 @@
       <Filter>object</Filter>
     </ClCompile>
     <ClCompile Include="class_netgame.cpp" />
+    <ClCompile Include="object\class_player.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -145,6 +148,9 @@
       <Filter>pool</Filter>
     </ClInclude>
     <ClInclude Include="object\class_menu.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_player.h">
       <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>

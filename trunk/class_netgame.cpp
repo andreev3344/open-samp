@@ -43,7 +43,7 @@ void CNetGame::setWeather( uint8_t weather )
 	if( this->playerPool > 0 )
 	{
 		uint32_t RPC_ChangeWeather = 0x78;
-
+		CNetGame__RPC_SendToEveryPlayer( (uint32_t)this, &RPC_ChangeWeather, bStream, 0xFFFF, 2 );
 		
 
 	}

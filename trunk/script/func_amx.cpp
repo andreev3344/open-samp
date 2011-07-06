@@ -231,7 +231,7 @@ cell ( __cdecl* _funcSendClientMessage )( AMX* a_AmxInterface, cell* a_Params ) 
 cell ( __cdecl* _funcSendClientMessageToAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendClientMessageToAll;
 cell ( __cdecl* _funcSendDeathMessage )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendDeathMessage;
 cell ( __cdecl* _funcGameTextForAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GameTextForAll;
-cell ( __cdecl* _funcGameTextForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GameTextForPlayer;
+//cell ( __cdecl* _funcGameTextForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GameTextForPlayer;
 cell ( __cdecl* _funcSendPlayerMessageToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToPlayer;
 cell ( __cdecl* _funcSendPlayerMessageToAll )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SendPlayerMessageToAll;
 
@@ -932,6 +932,7 @@ cell AMX_NATIVE_CALL funcIsPlayerConnected ( AMX* a_AmxInterface, cell* a_Params
 }
 cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params )
 {
+
 	logprintf ( "[Call]-> funcGetPlayerState()" );
 	return _funcGetPlayerState ( a_AmxInterface, a_Params );
 }
@@ -1428,12 +1429,50 @@ cell AMX_NATIVE_CALL funcSendDeathMessage ( AMX* a_AmxInterface, cell* a_Params 
 cell AMX_NATIVE_CALL funcGameTextForAll ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGameTextForAll()" );
-	return _funcGameTextForAll ( a_AmxInterface, a_Params );
+//	return _funcGameTextForAll ( a_AmxInterface, a_Params );
+	if( __NetGame->playerPool == 0 ) return 0;
+	if( a_Params[ 1 ] >= MAX_PLAYERS ) return 0;
+
+	uint32_t text_len = 0, style = a_Params[3], duration = a_Params[4], RPC_ShowGameTextForPlayer = 0x15;
+	char* text = 0;
+
+	amx_StrParam( a_AmxInterface, a_Params[2], text );
+
+	if( ( text_len = strlen( text ) ) == 0 ) text = 0;
+
+	RakNet::BitStream bStream;
+	bStream.Write( (uint32_t)style );
+	bStream.Write( (uint32_t)duration );
+	bStream.Write( (uint32_t)text_len );
+	bStream.Write( (char*)text, text_len );
+
+	CNetGame__RPC_SendToEveryPlayer( (uint32_t)__NetGame, &RPC_ShowGameTextForPlayer, &bStream, 0xFFFF, 3 );
+	return 1;
 }
 cell AMX_NATIVE_CALL funcGameTextForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGameTextForPlayer()" );
-	return _funcGameTextForPlayer ( a_AmxInterface, a_Params );
+	//return _funcGameTextForPlayer ( a_AmxInterface, a_Params );
+
+	if( __NetGame->playerPool == 0 ) return 0;
+	if( a_Params[ 1 ] >= MAX_PLAYERS ) return 0;
+
+	uint32_t text_len = 0, style = a_Params[3], duration = a_Params[4], RPC_ShowGameTextForPlayer = 0x15;
+	char* text = 0;
+
+	amx_StrParam( a_AmxInterface, a_Params[2], text );
+
+	if( ( text_len = strlen( text ) ) == 0 ) text = 0;
+
+	RakNet::BitStream bStream;
+	bStream.Write( (uint32_t)style );
+	bStream.Write( (uint32_t)duration );
+	bStream.Write( (uint32_t)text_len );
+	bStream.Write( (char*)text, text_len );
+
+	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowGameTextForPlayer, &bStream, (_PlayerID)a_Params[1], 3 );
+
+	return 1;
 }
 cell AMX_NATIVE_CALL funcSendPlayerMessageToPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
