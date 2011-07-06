@@ -1,6 +1,33 @@
 #include "../main.h"
 #include "class_object.h"
 
+inline RakNet::BitStream* CObject::ComputeBitStream_Spawn ( void )
+{
+	RakNet::BitStream*
+		l_BitStream = new RakNet::BitStream();
+		l_BitStream->Write ( this->m_uint16_ObjectIndex );
+		l_BitStream->Write ( this->m_uint32_ModelIndex );
+		l_BitStream->Write ( this->m_Position.X );
+		l_BitStream->Write ( this->m_Position.Y );
+		l_BitStream->Write ( this->m_Position.Z );
+		l_BitStream->Write ( this->m_Rotation.X );
+		l_BitStream->Write ( this->m_Rotation.Y );
+		l_BitStream->Write ( this->m_Rotation.Z );
+		l_BitStream->Write ( this->m_float_DrawDistance );
+		l_BitStream->Write ( this->m_uint16_AttachedVehicleIndex );
+
+	if ( this->m_uint16_AttachedVehicleIndex != -1 )
+	{
+		l_BitStream->Write ( this->m_AttachedOffset.X );
+		l_BitStream->Write ( this->m_AttachedOffset.Y );
+		l_BitStream->Write ( this->m_AttachedOffset.Z );
+		l_BitStream->Write ( this->m_AttachedRotation.X );
+		l_BitStream->Write ( this->m_AttachedRotation.Y );
+		l_BitStream->Write ( this->m_AttachedRotation.Z );
+	}
+	return l_BitStream;
+}
+
 void CObject::SetIndex ( uint16_t a_uint16_ObjectIndex )
 {
 	this->m_uint16_ObjectIndex = a_uint16_ObjectIndex;
@@ -8,32 +35,26 @@ void CObject::SetIndex ( uint16_t a_uint16_ObjectIndex )
 
 void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 {
-	RakNet::BitStream 
-		l_BitStream;
-		l_BitStream.Write ( this->m_uint16_ObjectIndex );
-		l_BitStream.Write ( this->m_uint32_ModelIndex );
-		l_BitStream.Write ( this->m_Position.X );
-		l_BitStream.Write ( this->m_Position.Y );
-		l_BitStream.Write ( this->m_Position.Z );
-		l_BitStream.Write ( this->m_Rotation.X );
-		l_BitStream.Write ( this->m_Rotation.Y );
-		l_BitStream.Write ( this->m_Rotation.Z );
-		l_BitStream.Write ( this->m_float_DrawDistance );
-		l_BitStream.Write ( this->m_uint16_AttachedVehicleIndex );
-
-	if ( this->m_uint16_AttachedVehicleIndex != -1 )
+	RakNet::BitStream* l_BitStream = ComputeBitStream_Spawn();
+	if ( l_BitStream )
 	{
-		l_BitStream.Write ( this->m_AttachedOffset.X );
-		l_BitStream.Write ( this->m_AttachedOffset.Y );
-		l_BitStream.Write ( this->m_AttachedOffset.Z );
-		l_BitStream.Write ( this->m_AttachedRotation.X );
-		l_BitStream.Write ( this->m_AttachedRotation.Y );
-		l_BitStream.Write ( this->m_AttachedRotation.Z );
+		uint32_t l_RpcSpawnObject = 0x00000030;
+		CNetGame__RPC_SendToPlayer	( ( uint32_t )__NetGame, &l_RpcSpawnObject, l_BitStream, a_uint16_PlayerIndex, 2 );
+
+		delete l_BitStream;
 	}
+}
 
+void CObject::SpawnForAll ( void )
+{
+	RakNet::BitStream* l_BitStream = ComputeBitStream_Spawn();
+	if ( l_BitStream )
+	{
+		uint32_t l_RpcSpawnObject = 0x00000030;
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSpawnObject, l_BitStream, 0xFFFF, 2 );
 
-	uint32_t l_RpcSpawnObject = 0x00000030;
-	CNetGame__RPC_SendToPlayer ( (DWORD)__NetGame, &l_RpcSpawnObject, &l_BitStream, a_uint16_PlayerIndex, 2 );
+		delete l_BitStream;
+	}
 }
 
 
@@ -60,20 +81,7 @@ void CObject::AttachToVehicle ( uint16_t a_uint16_VehicleIndex, tVector* a_Offse
 		this->m_AttachedRotation.Z = a_Rotation->Z;
 	}
 
-	
-		//// TODO: Remove that Shitty !
-
-	uint32_t __PlayerPoolEx = *( uint32_t* )( *( uint32_t* )( __NetGame + 0x04 ) );
-	if ( __PlayerPoolEx )
-	{
-		for ( uint16_t l_PlayerIndex = 0; l_PlayerIndex < 500; l_PlayerIndex++ )
-		{
-			if ( ( *( uint32_t* )( *( uint32_t* )( __NetGame + 4 ) + 4 * l_PlayerIndex ) ) )
-			{
-				SpawnForPlayer ( l_PlayerIndex );
-			}
-		}
-	}
+	this->SpawnForAll();
 }
 
 void CObject::SetRotation ( tVector* a_Rotation )

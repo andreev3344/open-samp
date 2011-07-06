@@ -97,9 +97,12 @@ public:
 	
 	};
 
-	void SetIndex ( uint16_t a_uint16_ObjectIndex );
+	inline RakNet::BitStream* ComputeBitStream_Spawn ( void );
 
+	void SetIndex ( uint16_t a_uint16_ObjectIndex );
+	
 	void SpawnForPlayer ( uint16_t a_uint16_PlayerIndex );
+	void SpawnForAll ( void );
 
 	void AttachToVehicle ( uint16_t a_uint16_VehicleIndex, tVector* a_Offset, tVector* a_Rotation );
 

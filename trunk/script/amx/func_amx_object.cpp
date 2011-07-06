@@ -87,7 +87,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 	if ( !__ObjectPool )
 		return -1;
 
-	uint16_t l_ObjectIndex = (uint16_t)a_Params[ 1 ];
+	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 	if ( ( a_Params[ 1 ] < 400 ) && __ObjectPool->m_Object[ a_Params[ 1 ] ] )
 	{
 		tVector* 
@@ -102,7 +102,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 			l_AttachedRotation->Y = amx_ctof ( a_Params[ 7 ] );
 			l_AttachedRotation->Z = amx_ctof ( a_Params[ 8 ] );
 
-		__ObjectPool->m_Object[ a_Params[ 1 ] ]->AttachToVehicle ( (uint16_t)a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
+		__ObjectPool->m_Object[ a_Params[ 1 ] ]->AttachToVehicle ( ( uint16_t )a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
 
 		return 1;
 	}
@@ -118,7 +118,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPool )
 		return -1;
 
-	uint16_t l_ObjectIndex = (uint16_t)a_Params[ 1 ];
+	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 	if ( ( l_ObjectIndex < 400 ) && __ObjectPool->m_Object[ l_ObjectIndex ] )
 	{
 		tVector* 
@@ -154,7 +154,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPool )
 		return -1;
 
-	uint16_t l_ObjectIndex = (uint16_t)a_Params[ 1 ];
+	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 	if ( ( l_ObjectIndex < 400 ) && __ObjectPool->m_Object[ l_ObjectIndex ] )
 	{
 		tVector* 
@@ -260,7 +260,7 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 
     if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) )
 	{
-		__ObjectPool->Delete ( (uint16_t)a_Params[ 1 ] );
+		__ObjectPool->Delete ( ( uint16_t )a_Params[ 1 ] );
 		
 		RakNet::BitStream 
 			l_BitStream;
