@@ -110,6 +110,7 @@
     <ClCompile Include="script\amx\func_amx_gangzone.cpp" />
     <ClCompile Include="script\amx\func_amx_menu.cpp" />
     <ClCompile Include="script\amx\func_amx_object.cpp" />
+    <ClCompile Include="script\amx\func_amx_players.cpp" />
     <ClCompile Include="script\amx\func_amx_textdraw.cpp" />
     <ClCompile Include="script\func_amx.cpp" />
   </ItemGroup>
@@ -140,6 +141,7 @@
     <ClInclude Include="script\amx\func_amx_gangzone.h" />
     <ClInclude Include="script\amx\func_amx_menu.h" />
     <ClInclude Include="script\amx\func_amx_object.h" />
+    <ClInclude Include="script\amx\func_amx_players.h" />
     <ClInclude Include="script\amx\func_amx_textdraw.h" />
     <ClInclude Include="script\func_amx.h" />
   </ItemGroup>

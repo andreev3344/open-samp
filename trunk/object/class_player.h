@@ -1,6 +1,14 @@
 #ifndef __CPLAYER_H__
 #define __CPLAYER_H__
 
+#define PLAYER_STATE_NONE			0
+#define PLAYER_STATE_ONFOOT			1
+#define PLAYER_STATE_DRIVER			2
+#define PLAYER_STATE_PASSENGER		3
+#define PLAYER_STATE_WASTED			7
+#define PLAYER_STATE_SPAWNED		8
+#define PLAYER_STATE_SPECTACTING	9
+
 
 typedef struct SPAWNS_t // size 0x2E
 {
@@ -88,16 +96,16 @@ public:
 	BOOL		isInRaceCheckpoint;						// + 0x02B3
 
 	uint32_t	unknown02B7;							// + 0x02B7
-	bool		isPlayerStreamedIn[MAX_PLAYERS];		// + 0x02BB
-	bool		isVehicleStreamedIn[2000];				// + 0x04AF
+	bool		bisPlayerStreamedIn[MAX_PLAYERS];		// + 0x02BB
+	bool		bisVehicleStreamedIn[MAX_VEHICLES];		// + 0x04AF
 	uint8_t		unknown0C7F[400];						// + 0x0C7F
-	uint8_t		unknown0E0F[1024];						// + 0x0E0F
+	uint8_t		bisText3DLabelStreamedIn[MAX_TEXT_LABELS];// + 0x0E0F
 	uint8_t		unknown120F[2048];						// + 0x120F
 
 	uint32_t	unknown1A0F;							// + 0x1A0F
 	uint32_t	unknown1A13;							// + 0x1A13
 	uint32_t	unknown1A17;							// + 0x1A17
-	uint32_t	unknown1A1B;							// + 0x1A1B
+	uint32_t	Text3DLabelsNumber;						// + 0x1A1B
 
 	uint8_t		unknown1A1F[0x1A23-0x1A1B];				// + 0x1A1F
 
@@ -148,6 +156,15 @@ public:
 
 	void*		playerVarsClass;						// + 0x1AF4
 
+
+	void createText3DLabel( uint16_t labelID );
+	void destroyText3DLabel( uint16_t labelID );
+
+	float GetDistanceFrom3DPoint( tVector point );
+	float GetDistanceFrom3DPoint( float x, float y, float z );
+
+	bool isPlayerStreamedIn( _PlayerID playerID );
+	bool isVehicleStreamedIn( uint16_t vehicleID );
 
 	void setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size );
 	void showRaceCheckpoint( bool show );

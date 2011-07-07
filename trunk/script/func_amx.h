@@ -82,7 +82,7 @@
 #define FUNC_SetSpawnInfo					0x00484DC0
 #define FUNC_SpawnPlayer					0x0048AA50
 #define FUNC_SetPlayerTeam					0x0048B2C0
-#define FUNC_GetPlayerTeam					0x00484FD0
+
 #define FUNC_SetPlayerName					0x0048AB30
 #define FUNC_SetPlayerSkin					0x0048AD30
 #define FUNC_GetPlayerSkin					0x00485020
@@ -95,7 +95,7 @@
 #define FUNC_GetPlayerColor					0x00485A90
 #define FUNC_GetPlayerVehicleID					0x00485AC0
 #define FUNC_GetPlayerVehicleSeat					0x00485B50
-#define FUNC_GetPlayerSurfingVehicleID					0x00485B00
+
 #define FUNC_PutPlayerInVehicle					0x0048B730
 #define FUNC_RemovePlayerFromVehicle					0x00485250
 #define FUNC_IsPlayerInVehicle					0x00485320
@@ -127,7 +127,7 @@
 #define FUNC_GivePlayerMoney					0x0048C5D0
 #define FUNC_GetPlayerMoney					0x00486270
 #define FUNC_ResetPlayerMoney					0x004862A0
-#define FUNC_IsPlayerConnected					0x00486450
+
 #define FUNC_GetPlayerState					0x00486480
 #define FUNC_ResetPlayerWeapons					0x00486500
 #define FUNC_GivePlayerWeapon					0x0048C8C0
@@ -154,8 +154,8 @@
 #define FUNC_GetPlayerVelocity					0x004890C0
 #define FUNC_SetPlayerVelocity					0x0048EDC0
 #define FUNC_IsPlayerInRangeOfPoint					0x00485450
-#define FUNC_IsPlayerStreamedIn					0x004854D0
-#define FUNC_IsVehicleStreamedIn					0x00485530
+
+
 #define FUNC_SetPlayerVirtualWorld					0x00485060
 #define FUNC_GetPlayerVirtualWorld					0x004850A0
 #define FUNC_ShowPlayerNameTagForPlayer					0x0048CCD0
@@ -315,7 +315,7 @@ extern cell ( __cdecl* _funcGetServerVarAsBool )( AMX* a_AmxInterface, cell* a_P
 extern cell ( __cdecl* _funcSetSpawnInfo )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSpawnPlayer )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerTeam )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcGetPlayerTeam )( AMX* a_AmxInterface, cell* a_Params );
+
 extern cell ( __cdecl* _funcSetPlayerName )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerSkin )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetPlayerSkin )( AMX* a_AmxInterface, cell* a_Params );
@@ -328,7 +328,7 @@ extern cell ( __cdecl* _funcSetPlayerColor )( AMX* a_AmxInterface, cell* a_Param
 extern cell ( __cdecl* _funcGetPlayerColor )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetPlayerVehicleID )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetPlayerVehicleSeat )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcGetPlayerSurfingVehicleID )( AMX* a_AmxInterface, cell* a_Params );
+
 extern cell ( __cdecl* _funcPutPlayerInVehicle )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcRemovePlayerFromVehicle )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcIsPlayerInVehicle )( AMX* a_AmxInterface, cell* a_Params );
@@ -360,7 +360,7 @@ extern cell ( __cdecl* _funcGetPlayerFacingAngle )( AMX* a_AmxInterface, cell* a
 extern cell ( __cdecl* _funcGivePlayerMoney )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetPlayerMoney )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcResetPlayerMoney )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcIsPlayerConnected )( AMX* a_AmxInterface, cell* a_Params );
+
 extern cell ( __cdecl* _funcGetPlayerState )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcResetPlayerWeapons )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGivePlayerWeapon )( AMX* a_AmxInterface, cell* a_Params );
@@ -387,8 +387,8 @@ extern cell ( __cdecl* _funcSetPlayerFightingStyle )( AMX* a_AmxInterface, cell*
 extern cell ( __cdecl* _funcGetPlayerVelocity )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerVelocity )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcIsPlayerInRangeOfPoint )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcIsPlayerStreamedIn )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcIsVehicleStreamedIn )( AMX* a_AmxInterface, cell* a_Params );
+
+
 extern cell ( __cdecl* _funcSetPlayerVirtualWorld )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcGetPlayerVirtualWorld )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcShowPlayerNameTagForPlayer )( AMX* a_AmxInterface, cell* a_Params );
@@ -548,7 +548,7 @@ cell AMX_NATIVE_CALL funcGetServerVarAsBool ( AMX* a_AmxInterface, cell* a_Param
 cell AMX_NATIVE_CALL funcSetSpawnInfo ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSpawnPlayer ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPlayerTeam ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcGetPlayerTeam ( AMX* a_AmxInterface, cell* a_Params );
+
 cell AMX_NATIVE_CALL funcSetPlayerName ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPlayerSkin ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerSkin ( AMX* a_AmxInterface, cell* a_Params );
@@ -561,7 +561,7 @@ cell AMX_NATIVE_CALL funcSetPlayerColor ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerColor ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerVehicleID ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerVehicleSeat ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* a_Params );
+
 cell AMX_NATIVE_CALL funcPutPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcRemovePlayerFromVehicle ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcIsPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params );
@@ -593,7 +593,7 @@ cell AMX_NATIVE_CALL funcGetPlayerFacingAngle ( AMX* a_AmxInterface, cell* a_Par
 cell AMX_NATIVE_CALL funcGivePlayerMoney ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcResetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcIsPlayerConnected ( AMX* a_AmxInterface, cell* a_Params );
+
 cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcResetPlayerWeapons ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGivePlayerWeapon ( AMX* a_AmxInterface, cell* a_Params );
@@ -620,8 +620,8 @@ cell AMX_NATIVE_CALL funcSetPlayerFightingStyle ( AMX* a_AmxInterface, cell* a_P
 cell AMX_NATIVE_CALL funcGetPlayerVelocity ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPlayerVelocity ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcIsPlayerInRangeOfPoint ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcIsPlayerStreamedIn ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcIsVehicleStreamedIn ( AMX* a_AmxInterface, cell* a_Params );
+
+
 cell AMX_NATIVE_CALL funcSetPlayerVirtualWorld ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcGetPlayerVirtualWorld ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcShowPlayerNameTagForPlayer ( AMX* a_AmxInterface, cell* a_Params );

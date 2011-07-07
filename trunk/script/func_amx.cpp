@@ -8,6 +8,7 @@
 #include "amx/func_amx_object.h"
 #include "amx/func_amx_textdraw.h"
 #include "amx/func_amx_menu.h"
+#include "amx/func_amx_players.h"
 
 
 AMX_NATIVE_INFO __AmxScriptNative[];
@@ -86,7 +87,7 @@ cell ( __cdecl* _funcGetServerVarAsBool )( AMX* a_AmxInterface, cell* a_Params )
 cell ( __cdecl* _funcSetSpawnInfo )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetSpawnInfo;
 cell ( __cdecl* _funcSpawnPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SpawnPlayer;
 cell ( __cdecl* _funcSetPlayerTeam )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerTeam;
-cell ( __cdecl* _funcGetPlayerTeam )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerTeam;
+
 cell ( __cdecl* _funcSetPlayerName )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerName;
 cell ( __cdecl* _funcSetPlayerSkin )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerSkin;
 cell ( __cdecl* _funcGetPlayerSkin )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerSkin;
@@ -99,7 +100,7 @@ cell ( __cdecl* _funcSetPlayerColor )( AMX* a_AmxInterface, cell* a_Params ) = (
 cell ( __cdecl* _funcGetPlayerColor )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerColor;
 cell ( __cdecl* _funcGetPlayerVehicleID )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerVehicleID;
 cell ( __cdecl* _funcGetPlayerVehicleSeat )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerVehicleSeat;
-cell ( __cdecl* _funcGetPlayerSurfingVehicleID )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerSurfingVehicleID;
+
 cell ( __cdecl* _funcPutPlayerInVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_PutPlayerInVehicle;
 cell ( __cdecl* _funcRemovePlayerFromVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_RemovePlayerFromVehicle;
 cell ( __cdecl* _funcIsPlayerInVehicle )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsPlayerInVehicle;
@@ -130,7 +131,7 @@ cell ( __cdecl* _funcGetPlayerFacingAngle )( AMX* a_AmxInterface, cell* a_Params
 cell ( __cdecl* _funcGivePlayerMoney )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GivePlayerMoney;
 cell ( __cdecl* _funcGetPlayerMoney )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerMoney;
 cell ( __cdecl* _funcResetPlayerMoney )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_ResetPlayerMoney;
-cell ( __cdecl* _funcIsPlayerConnected )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsPlayerConnected;
+
 cell ( __cdecl* _funcGetPlayerState )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerState;
 cell ( __cdecl* _funcResetPlayerWeapons )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_ResetPlayerWeapons;
 cell ( __cdecl* _funcGivePlayerWeapon )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GivePlayerWeapon;
@@ -157,8 +158,8 @@ cell ( __cdecl* _funcSetPlayerFightingStyle )( AMX* a_AmxInterface, cell* a_Para
 cell ( __cdecl* _funcGetPlayerVelocity )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerVelocity;
 cell ( __cdecl* _funcSetPlayerVelocity )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerVelocity;
 cell ( __cdecl* _funcIsPlayerInRangeOfPoint )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsPlayerInRangeOfPoint;
-cell ( __cdecl* _funcIsPlayerStreamedIn )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsPlayerStreamedIn;
-cell ( __cdecl* _funcIsVehicleStreamedIn )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsVehicleStreamedIn;
+
+
 cell ( __cdecl* _funcSetPlayerVirtualWorld )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerVirtualWorld;
 cell ( __cdecl* _funcGetPlayerVirtualWorld )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerVirtualWorld;
 cell ( __cdecl* _funcShowPlayerNameTagForPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_ShowPlayerNameTagForPlayer;
@@ -704,11 +705,7 @@ cell AMX_NATIVE_CALL funcSetPlayerTeam ( AMX* a_AmxInterface, cell* a_Params )
 	logprintf ( "[Call]-> funcSetPlayerTeam()" );
 	return _funcSetPlayerTeam ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcGetPlayerTeam ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetPlayerTeam()" );
-	return _funcGetPlayerTeam ( a_AmxInterface, a_Params );
-}
+
 cell AMX_NATIVE_CALL funcSetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerName()" );
@@ -769,11 +766,7 @@ cell AMX_NATIVE_CALL funcGetPlayerVehicleSeat ( AMX* a_AmxInterface, cell* a_Par
 	logprintf ( "[Call]-> funcGetPlayerVehicleSeat()" );
 	return _funcGetPlayerVehicleSeat ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcGetPlayerSurfingVehicleID()" );
-	return _funcGetPlayerSurfingVehicleID ( a_AmxInterface, a_Params );
-}
+
 cell AMX_NATIVE_CALL funcPutPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPutPlayerInVehicle()" );
@@ -925,11 +918,7 @@ cell AMX_NATIVE_CALL funcResetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params 
 	logprintf ( "[Call]-> funcResetPlayerMoney()" );
 	return _funcResetPlayerMoney ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcIsPlayerConnected ( AMX* a_AmxInterface, cell* a_Params )
-{
-	//logprintf ( "[Call]-> funcIsPlayerConnected()" );
-	return _funcIsPlayerConnected ( a_AmxInterface, a_Params );
-}
+
 cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params )
 {
 
@@ -1061,16 +1050,8 @@ cell AMX_NATIVE_CALL funcIsPlayerInRangeOfPoint ( AMX* a_AmxInterface, cell* a_P
 	logprintf ( "[Call]-> funcIsPlayerInRangeOfPoint()" );
 	return _funcIsPlayerInRangeOfPoint ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcIsPlayerStreamedIn ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcIsPlayerStreamedIn()" );
-	return _funcIsPlayerStreamedIn ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcIsVehicleStreamedIn ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcIsVehicleStreamedIn()" );
-	return _funcIsVehicleStreamedIn ( a_AmxInterface, a_Params );
-}
+
+
 cell AMX_NATIVE_CALL funcSetPlayerVirtualWorld ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerVirtualWorld()" );

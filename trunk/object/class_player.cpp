@@ -10,7 +10,54 @@ CPlayer::~CPlayer( )
 {
 }
 
+void CPlayer::createText3DLabel( uint16_t labelID )
+{
 
+	if( __NetGame->text3DLabelsPool > 0 )
+	{
+		__NetGame->text3DLabelsPool->showForPlayer( labelID, this->myPlayerID );
+		this->bisText3DLabelStreamedIn[ labelID ]++;
+		this->Text3DLabelsNumber++;
+	}
+
+}
+
+void CPlayer::destroyText3DLabel( uint16_t labelID )
+{
+	if( __NetGame->text3DLabelsPool > 0 )
+	{
+		__NetGame->text3DLabelsPool->hideForPlayer( labelID, this->myPlayerID );
+		this->bisText3DLabelStreamedIn[ labelID ] = 0;
+		this->Text3DLabelsNumber--;
+	}
+}
+
+float CPlayer::GetDistanceFrom3DPoint( tVector point )
+{
+	return this->GetDistanceFrom3DPoint( point.X, point.Y, point.Z );
+}
+
+float CPlayer::GetDistanceFrom3DPoint( float x, float y, float z )
+{
+
+	return sqrt( (float) ( this->position.X - x ) * ( this->position.X - x ) +
+		( this->position.Y - y ) * ( this->position.Y - y ) +
+		( this->position.Z - z ) * ( this->position.Z - z ) );
+
+}
+
+bool CPlayer::isPlayerStreamedIn( _PlayerID playerID )
+{
+
+	if( 0 > playerID || playerID >= MAX_PLAYERS ) return false;
+	return this->bisPlayerStreamedIn[ playerID ];
+}
+
+bool CPlayer::isVehicleStreamedIn( uint16_t vehicleID )
+{
+	if( 0 > vehicleID || vehicleID >= MAX_VEHICLES ) return false;
+	return this->bisVehicleStreamedIn[ vehicleID ];
+}
 
 void CPlayer::setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size )
 {

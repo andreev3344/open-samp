@@ -279,7 +279,7 @@ int CTextDrawPool::showForAll( WORD textDrawID )
 
 	for( int i = 0; i < 500; i++ )
 	{
-		if( __NetGame->playerPool->isCreated[ i ] )
+		if( __NetGame->playerPool->GetSlotState( i ) )
 		{
 			this->textDrawOwner[ textDrawID ][ i ] = 1;
 			CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_ShowTextDraw, &bStream, i, 2 );
@@ -302,7 +302,7 @@ int CTextDrawPool::hideForAll( WORD textDrawID ) // Ref: 0x47D670
 
 	for( WORD i = 0; i < 500; i++ )
 	{
-		if( __NetGame->playerPool->isCreated[i] && this->textDrawOwner[textDrawID][i] != 0 )
+		if( __NetGame->playerPool->GetSlotState( i ) && this->textDrawOwner[textDrawID][i] != 0 )
 		{
 			CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_HideTextDraw, &bStream, i, 2 );
 			this->textDrawOwner[textDrawID][i] = 0;

@@ -57,6 +57,9 @@
     <ClCompile Include="object\class_player.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="script\amx\func_amx_players.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -152,6 +155,9 @@
     </ClInclude>
     <ClInclude Include="object\class_player.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_players.h">
+      <Filter>script\amx</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

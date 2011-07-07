@@ -199,53 +199,69 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 
 	this->isCreated[id] = 1;
 
-/*
-	TODO ( Yoann ):
-		Lire le code assembleur, on voit qu'on a besoin de CNetGame->PlayerPool
-		( Sasuke78200 ):
-		Retiré toute cette dépendence aux adresses dès qu'on aura CNetGame
-*/
 	
 
 	DWORD CPlayerPool = *(DWORD*)( __NetGame->playerPool );
 
 
-	for( int i = 0; i < 500; i++ )
+	for( _PlayerID i = 0; i < MAX_PLAYERS; i++ )
 	{
-		if( __NetGame->playerPool->isCreated[i] == 0 ) continue;
-		// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( i ); 
-		DWORD CPlayer = *(DWORD*)( CPlayerPool + i * 4 + 0x7D0 );
-		
-		if( CPlayer == 0 ) continue; // Inutile ?
 
-		if( *(BYTE*)( CPlayer + 0x281 ) == 9 ) continue; // ?
+		if( __NetGame->playerPool->GetSlotState( i ) == true )
+		{
+			CPlayer* player = 0;
+			if( ( player = __NetGame->playerPool->GetPlayer( i ) ) > 0 )
+			{
 
-		float* playerPos = (float*)CPlayer;
-		/* float distance = CPlayer->GetDistanceBetWeen3DPoint( x, y, z );*/
+				if( player->getState( ) != PLAYER_STATE_SPECTACTING )
+				{
 
-		float distance = (float)sqrt( (playerPos[0]-x)*(playerPos[0]-x) + (playerPos[1]-y)*(playerPos[1]-y) + (playerPos[2]-z)*(playerPos[2]-z) );
-//		logprintf( "Position of Labels %f %f %f distance %f", x, y, z, distance );		
-		if( distance > drawDistance ) continue;
+					if( player->GetDistanceFrom3DPoint( x, y, z ) < drawDistance ) 
+					{
+						showForPlayer( ( uint16_t )id, i );
+					}
 
-		
-		RakNet::BitStream* bStream = new RakNet::BitStream( );
-		
-		bStream->Write( (DWORD)id );
-		bStream->Write( (DWORD)color );
-		bStream->Write( (float)x );
-		bStream->Write( (float)y );
-		bStream->Write( (float)z );
-		bStream->Write( (float)drawDistance );
-		bStream->Write( (bool) useLOS );
-		bStream->Write( (WORD)0xFFFF );
-		bStream->Write( (WORD)0xFFFF );
+				}
 
-		DWORD RPC_CreateText3DLabels = 0x91;
-		CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_CreateText3DLabels, bStream, i, 2 );
+			}
+		}
+
+
 
 	}
 	
 	return id;
+}
+
+
+void CText3DLabels::showForPlayer( uint16_t labelID, _PlayerID playerID )
+{
+	
+	RakNet::BitStream* bStream = new RakNet::BitStream( );
+		
+	bStream->Write( ( uint32_t )labelID );
+	bStream->Write( ( uint32_t )this->TextLabels[ labelID ].color );
+	bStream->Write( (float)this->TextLabels[ labelID ].posX );
+	bStream->Write( (float)this->TextLabels[ labelID ].posY );
+	bStream->Write( (float)this->TextLabels[ labelID ].posZ );
+	bStream->Write( (float)this->TextLabels[ labelID ].drawDistance );
+	bStream->Write( (bool)this->TextLabels[ labelID ].useLineOfSight );
+	bStream->Write( (WORD)this->TextLabels[ labelID ].attachedToPlayerID );
+	bStream->Write( (WORD)this->TextLabels[ labelID ].attachedToVehicleID );
+
+	DWORD RPC_ShowText3DLabels = 0x91;
+
+/* besoin de plus d'info sur ça, je trouve un peu le code chelou
+
+
+.text:0047B1E3                 call    sub_47A140
+.text:0047B1E8                 mov     ecx, eax
+.text:0047B1EA                 call    sub_47A4B0
+
+*/
+
+	CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_ShowText3DLabels, bStream, playerID, 2 );
+
 }
 
 int CText3DLabels::Delete3DTextLabel( int labelID )
@@ -272,34 +288,7 @@ int CText3DLabels::Delete3DTextLabel( int labelID )
 
 	this->isCreated[labelID] = 0;
 	
-	/*
-			sub_47AD10
-	*/
-
-	//__NetGame = *(DWORD*) 0x4F6270;
-	//DWORD CPlayerPool = *(DWORD*)( __NetGame + 0x04 );
-
-
-	//for( int playerid = 0; playerid < 500; playerid ++ )
-	//{
-	//	/* CNetGame->PlayerPool->isPlayerCreated( playerid ) */
-	//	if( *(DWORD*)( CPlayerPool + 4 * playerid ) == 0 ) continue;
-	//	// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( playerid ); 
-
-	//	DWORD CPlayer = *(DWORD*)( CPlayerPool + playerid * 4 + 0x7D0 );
-	//	
-	//	if( *(DWORD*)( CPlayer + labelID + 0xE0F ) == 0 ) continue;
-
-	//	DWORD RPC_Delete_Text3DLabel = 0x92;
-
-	//	RakNet::BitStream bStream;
-	//	bStream.Write( (int)labelID );
-
-	//	CNetGame__RPC_SendToPlayer( __NetGame, &RPC_Delete_Text3DLabel, &bStream, playerid, 2 );
-	//	
-
-	//}
-
+	hideForAll( ( uint16_t )labelID );
 
 	return 1;
 }
@@ -317,24 +306,7 @@ int CText3DLabels::Update3DTextLabelText( int labelID, DWORD color, char* text )
 
 	
 
-	//for( int playerid = 0; playerid < 500; playerid ++ )
-	//{
-	//	/* CNetGame->PlayerPool->isPlayerCreated( playerid ) */
-	//	if( *(DWORD*)( CPlayerPool + 4 * playerid ) == 0 ) continue;
-	//	// CPlayer* CPlayer = CNetGame->PlayerPool->GetPlayer( playerid ); 
-
-	//	DWORD CPlayer = *(DWORD*)( CPlayerPool + playerid * 4 + 0x7D0 );
-	//	
-	//	if( *(DWORD*)( CPlayer + labelID + 0xE0F ) == 0 ) continue;
-
-	//	DWORD RPC_Delete_Text3DLabel = 0x92;
-
-	//	RakNet::BitStream bStream;
-	//	bStream.Write( (int)labelID );
-
-	//	CNetGame__RPC_SendToPlayer( __NetGame, &RPC_Delete_Text3DLabel, &bStream, playerid, 2 );
-	//}
-
+	hideForAll( ( uint16_t )labelID );
 
 
 	return 1;
@@ -363,10 +335,8 @@ int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, flo
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
 
-	/*
-		Dans le code assembleur on voit que le code vérifie si le joueur existe bien, mais bon la on peut pas
-		la class n'est pas recodé :p
-	*/
+	if( __NetGame->playerPool->GetSlotState( playerID ) == false ) return 0;
+
 
 	this->TextLabels[labelID].attachedToPlayerID = playerID;
 	this->TextLabels[labelID].posX = offsetX;
@@ -376,3 +346,47 @@ int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, flo
 	return 1;
 }
 
+void CText3DLabels::hideForPlayer( uint16_t labelID, _PlayerID playerID )
+{
+	if( 0 > labelID || labelID >= MAX_TEXT_LABELS ) return;
+
+	RakNet::BitStream bStream;
+	uint32_t RPC_HideText3DLabel = 0x92;
+
+	bStream.Write( ( uint16_t )labelID );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_HideText3DLabel, &bStream, playerID, 2 );
+	
+	
+
+
+}
+
+void CText3DLabels::hideForAll( uint16_t labelID )
+{
+
+	if( __NetGame->playerPool > 0 )
+	{
+
+		for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID++ )
+		{
+			if( __NetGame->playerPool->GetSlotState( playerID ) )
+			{
+				CPlayer* player = 0;
+				if( ( player = __NetGame->playerPool->GetPlayer( playerID ) ) > 0 )
+				{
+
+					if( player->bisText3DLabelStreamedIn[ labelID ] )
+					{
+						player->destroyText3DLabel( labelID );
+					}
+
+				}
+				
+
+			}
+		}
+
+	}
+
+
+}

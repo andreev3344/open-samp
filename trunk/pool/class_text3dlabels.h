@@ -1,7 +1,7 @@
 #ifndef __TEXT3DLABELS_H__
 #define __TEXT3DLABELS_H__
 
-#define MAX_TEXT_LABELS		1024
+
 
 
 /*
@@ -38,6 +38,11 @@ public:
 	int Update3DTextLabelText( int labelID, DWORD color, char* text );
 	int Attach3DTextLabelToVehicle( int labelID, WORD vehicleID, float offsetX, float offsetY, float offsetZ );
 	int Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ );
+
+	void showForPlayer( uint16_t labelID, _PlayerID playerID );
+
+	void hideForPlayer( uint16_t labelID, _PlayerID playerID );
+	void hideForAll( uint16_t labelID );
 
 	CText3DLabels( );
 	~CText3DLabels( );
