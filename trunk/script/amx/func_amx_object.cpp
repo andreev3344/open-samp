@@ -13,14 +13,14 @@
 //cell ( __cdecl* _funcIsValidObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidObject;
 //cell ( __cdecl* _funcDestroyObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyObject;
 //cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MoveObject;
-cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopObject;
-cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreatePlayerObject;
+//cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopObject;
+//cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_CreatePlayerObject;
 cell ( __cdecl* _funcSetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerObjectPos;
 cell ( __cdecl* _funcSetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerObjectRot;
 cell ( __cdecl* _funcGetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerObjectPos;
 cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerObjectRot;
 cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidPlayerObject;
-cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyPlayerObject;
+//cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyPlayerObject;
 cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MovePlayerObject;
 cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopPlayerObject;
 cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToPlayer;
@@ -307,7 +307,7 @@ cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( l_MoveSpeed );
 
 		uint32_t l_RpcMoveObject = 0x00000038;
-		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcMoveObject, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcMoveObject, &l_BitStream, 0xFFFFu, 2 );
 
 		l_Return = __ObjectPool->m_Object[ a_Params[ 1 ] ]->Move ( l_VectorRotation->X, l_VectorRotation->Y, l_VectorRotation->Z, l_MoveSpeed );
 	}
@@ -317,18 +317,151 @@ cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcStopObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcStopObject()" );
-	return _funcStopObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 1 );
+
+	if ( !__ObjectPool )
+		return -1;
+
+    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) )
+	{
+		__ObjectPool->m_Object[ a_Params[ 1 ] ]->m_uint8_IsMoving &= 0xFEu;
+
+		RakNet::BitStream 
+			l_BitStream;
+			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
+			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->X );
+			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Y );
+			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Z );
+
+		uint32_t l_RpcStopObject = 0x00000039;
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcStopObject, &l_BitStream, 0xFFFFu, 2 );
+
+		return 1;
+	}
+	return -1;
 }
+
 cell AMX_NATIVE_CALL funcCreatePlayerObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcCreatePlayerObject()" );
-	return _funcCreatePlayerObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 9 );
+
+	if ( !__ObjectPool )
+		return -1;
+
+	uint16_t l_uint16_PlayerIndex = ( uint16_t )a_Params[ 1 ];
+
+	if ( ( l_uint16_PlayerIndex < 500 ) && __NetGame->playerPool->isCreated[ l_uint16_PlayerIndex ] != 0 )
+	{
+		tVector* 
+			l_VectorPosition = new tVector();
+			l_VectorPosition->X = amx_ctof ( a_Params[ 3 ] );
+			l_VectorPosition->Y = amx_ctof ( a_Params[ 4 ] );
+			l_VectorPosition->Z = amx_ctof ( a_Params[ 5 ] );
+
+		tVector* 
+			l_VectorRotation = new tVector();
+			l_VectorRotation->X = amx_ctof ( a_Params[ 6 ] );
+			l_VectorRotation->Y = amx_ctof ( a_Params[ 7 ] );
+			l_VectorRotation->Z = amx_ctof ( a_Params[ 8 ] );
+
+		uint16_t l_ObjectIndex = __ObjectPool->New ( ( uint32_t )a_Params[ 2 ], l_uint16_PlayerIndex, l_VectorPosition, l_VectorRotation, amx_ctof ( a_Params[ 9 ] ) );
+
+		if ( l_ObjectIndex == -1 )
+			return -1;
+
+		CObject* l_Object = NULL;
+		if ( l_Object = __ObjectPool->Get ( l_uint16_PlayerIndex, l_ObjectIndex ) )
+		{
+			l_Object->SpawnForPlayer( l_uint16_PlayerIndex );
+
+			return l_ObjectIndex;
+		}
+	}
+	return -1;
 }
+
+cell AMX_NATIVE_CALL funcDestroyPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
+{
+	logprintf ( "[Call]-> funcDestroyPlayerObject()" );
+
+	CHECK_PARAMS ( 2 );
+
+	if ( ( __NetGame->playerPool > 0 ) && ( a_Params[ 1 ] < 500 ) && ( __NetGame->playerPool->isCreated[ a_Params[ 1 ] ] ) )
+	{
+		if ( __ObjectPool && ( a_Params[ 2 ] < LIMIT_MAX_OBJECT ) && ( __ObjectPool->Get ( ( uint16_t )a_Params[ 1 ], ( uint16_t )a_Params[ 2 ] ) ) )
+		{
+			__ObjectPool->Delete ( ( uint16_t )a_Params[ 1 ], ( uint16_t )a_Params[ 2 ] );
+
+			RakNet::BitStream 
+				l_BitStream;
+				l_BitStream.Write ( ( uint16_t )a_Params[ 2 ] );
+
+			uint32_t l_RpcDestroyObject = 0x00000033;
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcDestroyObject, &l_BitStream, ( uint16_t )a_Params[ 1 ], 2 );
+
+			return 1;
+		}
+	}
+	return -1;
+}
+
 cell AMX_NATIVE_CALL funcSetPlayerObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerObjectPos()" );
+
+/*
+  l_PlayerPool = *(_DWORD *)(_NetGame + 4);
+  if ( l_PlayerPool && (l_ObjectPool = *(void **)(_NetGame + 20)) != 0 )
+  {
+    l_PlayerIndex = *((_WORD *)a_Params + 2);
+    if ( l_PlayerIndex < 500u
+      && *(_DWORD *)(l_PlayerPool + 4 * l_PlayerIndex)
+      && CObjectPool__GetPlayerObjectSlotState(l_ObjectPool, l_PlayerIndex, *((_WORD *)a_Params + 4)) )
+    {
+      v6 = a_Params[3];
+      v7 = a_Params[5];
+      v13 = a_Params[4];
+      v12 = v6;
+      v14 = v7;
+      BitStream__New(&v15);
+      v8 = *((_WORD *)a_Params + 4);
+      v16 = 0;
+      v11 = v8;
+      BitStream__Write((int)&v15, (unsigned __int8 *)&v11, (void *)0x10, 1);
+      v11 = v12;
+      BitStream__Write((int)&v15, (unsigned __int8 *)&v11, (void *)0x20, 1);
+      v11 = v13;
+      BitStream__Write((int)&v15, (unsigned __int8 *)&v11, (void *)0x20, 1);
+      v11 = v14;
+      BitStream__Write((int)&v15, (unsigned __int8 *)&v11, (void *)0x20, 1);
+      CNetGame__RPC_SendToPlayer(_NetGame, (int)&RPC_SetObjectPosition, (int)&v15, *((_WORD *)a_Params + 2), 2);
+      v9 = CObjectPool__GetPlayerObject(*(void **)(_NetGame + 20), *((_WORD *)a_Params + 2), *((_WORD *)a_Params + 4));
+      v10 = v13;
+      *(_DWORD *)(v9 + 58) = v12;
+      *(_DWORD *)(v9 + 66) = v14;
+      *(_DWORD *)(v9 + 62) = v10;
+      v16 = -1;
+      BitStream__Delete((int)&v15);
+      result = 1;
+    }
+    else
+    {
+      result = 0;
+    }
+  }
+  else
+  {
+    result = 0;
+  }
+  return result;
+
+*/
 	return _funcSetPlayerObjectPos ( a_AmxInterface, a_Params );
 }
+
 cell AMX_NATIVE_CALL funcSetPlayerObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerObjectRot()" );
@@ -348,11 +481,6 @@ cell AMX_NATIVE_CALL funcIsValidPlayerObject ( AMX* a_AmxInterface, cell* a_Para
 {
 	logprintf ( "[Call]-> funcIsValidPlayerObject()" );
 	return _funcIsValidPlayerObject ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcDestroyPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcDestroyPlayerObject()" );
-	return _funcDestroyPlayerObject ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcMovePlayerObject ( AMX* a_AmxInterface, cell* a_Params )
 {

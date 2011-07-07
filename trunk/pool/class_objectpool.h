@@ -54,9 +54,18 @@ public:
 	{
 	
 	};
-
+	
 	uint16_t New ( uint32_t a_uint32_ModelIndex, tVector* a_Position, tVector* a_Rotation, float a_float_DrawDistance );
+	uint16_t New ( uint32_t a_uint32_ModelIndex, uint16_t a_uint16_PlayerIndex, tVector* a_Position, tVector* a_Rotation, float a_float_DrawDistance );
+
+	CObject* Get ( uint16_t a_uint16_ObjectIndex );
+	CObject* Get ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ObjectIndex );
+
+	BOOL GetSlotState ( uint16_t a_uint16_ObjectIndex );
+	BOOL GetSlotState ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ObjectIndex );
+
 	void Delete ( uint16_t a_uint16_ObjectIndex );
+	void Delete ( uint16_t a_uint16_PlayerIndex, uint16_t a_uint16_ObjectIndex );
 };
 
 // __CLASS_OBJECTPOOL_H_
