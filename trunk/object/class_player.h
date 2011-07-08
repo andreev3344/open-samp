@@ -25,6 +25,47 @@ typedef struct SPAWNS_t // size 0x2E
 } tSPAWNS;
 
 
+typedef struct AttachedObject_t // size 0x2C
+{
+#pragma pack( 1 )
+	uint32_t	modelID;
+	uint32_t	boneID;
+	tVector		offset;
+	tVector		rotation;
+	tVector		scale;
+} tAttachedObject;
+
+
+
+typedef struct ON_FOOT_SYNC_t // size 0x44
+{
+#pragma pack( 1 )
+	uint16_t	leftRightKeysOnfoot;					// + 0x0000
+	uint16_t	updownKeysOnfoot;						// + 0x0002
+	uint16_t	keysOnfoot;								// + 0x0004
+	tVector		position;								// + 0x0006 -> 0x000E
+	float		zAngle;									// + 0x0012
+
+	uint8_t		unknown0016[0x22-0x16];					// + 0x0016
+
+	uint8_t		health;									// + 0x0022		Chelou d'utiliser des uint8_t au lieu de float mais bon Kye, c'est Kye
+	uint8_t		armour;									// + 0x0023
+	uint8_t		weapon;									// + 0x0024
+	uint8_t		specialAction;							// + 0x0025
+	tVector		velocity;								// + 0x0026
+
+	uint8_t		unknown0032[0x3E-0x32];					// + 0x0032
+
+
+	uint16_t	surfingVehicleID;						// + 0x003E	
+	uint16_t	animationIndex;							// + 0x0040
+
+	uint16_t	unknown0042;
+
+
+} ON_FOOT_SYNC;
+
+
 class CPlayer // size 0x1AF8
 {
 #pragma pack( 1 )
@@ -40,32 +81,23 @@ public:
 	float		facingAngle;							// + 0x0024 - 36
 	BOOL		allowedToTeleport;						// + 0x0028 - 40
 	tVector		velocity;								// + 0x002C - 44
-	uint32_t	unknown0038;							// + 0x0038 - 56
+	void*		playerText3DLabels;						// + 0x0038 - 56
 	uint16_t	myPlayerID;								// + 0x003C - 60
 	uint32_t	unknown003E;							// + 0x003E - 62
-	uint16_t	leftRightKeysOnfoot;					// + 0x0042 - 66
-	uint16_t	updownKeysOnfoot;						// + 0x0044 - 68
-	uint16_t	keysOnfoot;								// + 0x0046 - 70
 
-	uint8_t		unknown0048[0x67-0x46];					// + 0x0048 - 72	
+	ON_FOOT_SYNC onFootSyncData;						// + 0x0042
 
-	uint8_t		specialAction;							// + 0x0067
-	
-	uint8_t		unknown0068[0x80-0x67];					// + 0x0068
-
-	uint16_t	surfingVehicleID;						// + 0x0080	- 128
-	uint16_t	animationIndex;							// + 0x0082
-	uint8_t		unknown0084[0x8C-0x82];					// + 0x0084
+	uint8_t		unknown0086[0x8C-0x86];					// + 0x0084
 	uint16_t	leftRightKeysOnVehicle;					// + 0x008C
 	uint16_t	updownKeysOnVehicle;					// + 0x008A
 	uint16_t	keysOnVehicle;							// + 0x0088
 
-	uint8_t		unknown008A[0xDE-0x88];					// + 0x008A
+	uint8_t		unknown008A[0xDE-0x8A];					// + 0x008A
 
 	tVector		cameraFrontVector;						// + 0x00DE	- 0xE6
 	tVector		cameraPosition;							// + 0x00EA - 0xF2
 
-	uint8_t		unknown00F6[0xFA-0xF2];					// + 0x00F6
+	uint8_t		unknown00F6[0xFA-0xF6];					// + 0x00F6
 
 	uint8_t		weaponState;							// + 0x00FA - 250
 
@@ -73,17 +105,17 @@ public:
 	uint16_t	updownKeysOnSpectating;					// + 0x00FE
 	uint16_t	keysOnSpectating;						// + 0x0100
 
-	uint8_t		unknown0102[0x183-0x100];				// + 0x0102
+	uint8_t		unknown0102[0x183-0x102];				// + 0x0102
 
-	uint8_t		unknown0183[5][44];						// + 0x0183 -> 0x025F
-
-	uint8_t		unknown0260[0x273-0x25F];				// + 0x0260
+//	uint8_t		unknown0183[5][44];						// + 0x0183 -> 0x025F
+	tAttachedObject	attachedObject[5];					// + 0x0183 -> 0x025F
+	BOOL		attachedObjectSlot[5];					// + 0x025F -> 0x273
 
 	uint16_t	unknown0273;							// + 0x0273
 	uint32_t	unknown0275;							// + 0x0275
 	uint32_t	unknown0279;							// + 0x0279
 
-	uint8_t		unknown027D[0x281-0x279];				// + 0x027D						
+	uint8_t		unknown027D[0x281-0x27D];				// + 0x027D						
 
 	uint8_t		playerState;							// + 0x0281	- 641
 	tVector		checkpointPosition;						// + 0x0282 - 0x28A
@@ -107,27 +139,16 @@ public:
 	uint32_t	unknown1A17;							// + 0x1A17
 	uint32_t	Text3DLabelsNumber;						// + 0x1A1B
 
-	uint8_t		unknown1A1F[0x1A23-0x1A1B];				// + 0x1A1F
+	uint8_t		unknown1A1F[0x1A23-0x1A1F];				// + 0x1A1F
 
 	uint32_t	unknown1A23;							// + 0x1A23
 	uint32_t	unknown1A27;							// + 0x1A27
-	uint32_t	unknown1A37;							// + 0x1A37
-	uint32_t	unknown1A3B;							// + 0x1A3B
-	uint32_t	unknown1A3F;							// + 0x1A3F
-	uint32_t	unknown1A43;							// + 0x1A43
-	uint32_t	unknown1A47;							// + 0x1A47
-	uint16_t	unknown1A4B;							// + 0x1A4B
+
+	uint16_t	skillsLevel[11];						// + 0x1A37 -> 0x1A4D
 	uint32_t	unknown1A4D;							// + 0x1A4D
 
 
 	tSPAWNS		customSpawn;							// + 0x1A51
-	/*struct												// + 0x1A51
-	{
-		uint8_t		team;
-		uint32_t	skin;
-		uint8_t		unkown1A56[39];
-	};*/
-
 
 	BOOL		hasCustomSpawn;							// + 0x1A7F
 	uint8_t		wantedLevel;							// + 0x1A83 - 6787
@@ -140,21 +161,24 @@ public:
 	uint32_t	currentInterior;						// + 0x1A94	- 6804
 	uint16_t	ammoInSlot[ 13 ];						// + 0x1A98	- 6808
 
-	uint8_t		unknown1B7C[0x1ACC-0x1A98];				// + 0x1B7C
+	uint8_t		unknown1AB2[0x1ACC-0x1AB2];				// + 0x1AB2
 
 	uint8_t		weaponInSlot[ 13 ];						// + 0x1ACC	- 6860
-	uint8_t		unknown1AD9;							// + 0x1AD9
+	uint8_t		currentWeapon;							// + 0x1AD9
 	uint8_t		time;									// + 0x1ADA
 	float		gameTime;								// + 0x1ADB
 	uint8_t		spectateType;							// + 0x1ADF	- 6879
 	uint32_t	spectateID;								// + 0x1AE0
 	uint32_t	unknown1AE4;							// + 0x1AE4
-	uint32_t	unknown1AE8;							// + 0x1AE8
-	uint32_t	unknown1AEC;							// + 0x1AEC
-
-	uint8_t		unknown1AF0[0x1AF4-0x1AEC];				// + 0x1AF0
+	uint32_t	NPCRecordingType;						// + 0x1AE8				http://wiki.sa-mp.com/wiki/Recordingtypes
+	FILE*		ioFileNPC;								// + 0x1AEC
+	uint32_t	lastNPCWritingInFile;					// + 0x1AF0	
 
 	void*		playerVarsClass;						// + 0x1AF4
+
+
+	int stopNPCRecordingData( );
+	int startNPCRecordingData( int recordType, char* recordname );
 
 
 	void createText3DLabel( uint16_t labelID );

@@ -42,7 +42,7 @@ public:
 	void showForPlayer( uint16_t labelID, _PlayerID playerID );
 
 	void hideForPlayer( uint16_t labelID, _PlayerID playerID );
-	void hideForAll( uint16_t labelID );
+	void hideForAll( uint16_t labelID, bool to_update = false );
 
 	CText3DLabels( );
 	~CText3DLabels( );

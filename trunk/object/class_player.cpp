@@ -10,6 +10,76 @@ CPlayer::~CPlayer( )
 {
 }
 
+int CPlayer::stopNPCRecordingData( )
+{
+
+	if( this->ioFileNPC )
+	{
+		fclose( this->ioFileNPC );
+		this->ioFileNPC = 0;
+	}
+	this->NPCRecordingType = 0;
+
+	return 1;
+}
+
+int CPlayer::startNPCRecordingData( int recordType, char* recordname )
+{
+	if( this->ioFileNPC )
+	{
+		fclose( this->ioFileNPC );
+	}
+
+	if( recordname != 0 )
+	{
+		uint32_t recordname_len = strlen( recordname );
+		
+		char record[256] = "";
+
+		for( int i = 0, a = 0; i < recordname_len && a < 256; i++ )
+		{
+			if( recordname[i] == 0xFF ) break;
+
+			if( recordname[i] != '.' && recordname[i] != '/' && recordname[i] != '\\' )
+			{
+				record[a] = recordname[i];
+				a++;
+			}
+
+		}
+
+		char path[ 512 ] = "";
+		sprintf( path, "scriptfiles/%s.rec", record );
+
+		this->ioFileNPC = fopen( path, "wb" );
+		if( this->ioFileNPC )
+		{
+			uint32_t version = 0x3E8;
+
+			fwrite( &version, 1, 4, this->ioFileNPC );
+			fwrite( &recordType, 1, 4, this->ioFileNPC );
+			uint32_t dwReturn = ( uint32_t )__NetGame, CNetGame__GetElapsedTime = 0x498A90;
+			_asm
+			{
+				pushad
+				mov ecx, dwReturn
+				call CNetGame__GetElapsedTime
+				mov dwReturn, eax
+				popad
+			}
+
+			lastNPCWritingInFile = dwReturn;
+
+		}
+
+		return 1;
+
+	}
+
+	return 0;
+}
+
+
 void CPlayer::createText3DLabel( uint16_t labelID )
 {
 

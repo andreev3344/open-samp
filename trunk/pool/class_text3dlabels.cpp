@@ -260,7 +260,7 @@ void CText3DLabels::showForPlayer( uint16_t labelID, _PlayerID playerID )
 
 */
 
-	CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_ShowText3DLabels, bStream, playerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowText3DLabels, bStream, playerID, 2 );
 
 }
 
@@ -306,7 +306,7 @@ int CText3DLabels::Update3DTextLabelText( int labelID, DWORD color, char* text )
 
 	
 
-	hideForAll( ( uint16_t )labelID );
+	hideForAll( ( uint16_t )labelID, true );
 
 
 	return 1;
@@ -327,6 +327,8 @@ int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, WORD vehicleID, floa
 	this->TextLabels[labelID].posY = offsetY;
 	this->TextLabels[labelID].posZ = offsetZ;
 
+	hideForAll( ( uint16_t )labelID, true );
+
 	return 1;
 }
 
@@ -342,6 +344,9 @@ int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, flo
 	this->TextLabels[labelID].posX = offsetX;
 	this->TextLabels[labelID].posY = offsetY;
 	this->TextLabels[labelID].posZ = offsetZ;
+
+	hideForAll( ( uint16_t )labelID, true );
+
 
 	return 1;
 }
@@ -361,7 +366,7 @@ void CText3DLabels::hideForPlayer( uint16_t labelID, _PlayerID playerID )
 
 }
 
-void CText3DLabels::hideForAll( uint16_t labelID )
+void CText3DLabels::hideForAll( uint16_t labelID, bool to_update )
 {
 
 	if( __NetGame->playerPool > 0 )
@@ -378,6 +383,10 @@ void CText3DLabels::hideForAll( uint16_t labelID )
 					if( player->bisText3DLabelStreamedIn[ labelID ] )
 					{
 						player->destroyText3DLabel( labelID );
+						if( to_update == true )
+						{
+							player->createText3DLabel( labelID );
+						}
 					}
 
 				}
