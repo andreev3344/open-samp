@@ -37,7 +37,7 @@ cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* 
 
 	if( player->getState( ) == PLAYER_STATE_ONFOOT )
 	{
-		return player->surfingVehicleID;
+		//return player->surfingVehicleID;
 	}
 
 
@@ -47,7 +47,7 @@ cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* 
 cell AMX_NATIVE_CALL funcIsPlayerConnected ( AMX* a_AmxInterface, cell* a_Params )
 {
 	CHECK_PARAMS( 1 );
-	logprintf ( "[Call]-> funcIsPlayerConnected()" );
+	//logprintf ( "[Call]-> funcIsPlayerConnected()" );
 
 	_PlayerID playerID = (_PlayerID)a_Params[ 1 ];
 

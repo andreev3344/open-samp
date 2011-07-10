@@ -15,12 +15,12 @@
 //#define FUNC_CreatePlayerObject			0x00487CE0
 //#define FUNC_DestroyPlayerObject			0x0048E3D0
 
-#define FUNC_SetPlayerObjectPos					0x0048E040
-#define FUNC_SetPlayerObjectRot					0x0048E200
+//#define FUNC_SetPlayerObjectPos			0x0048E040
+//#define FUNC_SetPlayerObjectRot			0x0048E200
 
-#define FUNC_GetPlayerObjectPos			0x00487DB0
-#define FUNC_GetPlayerObjectRot			0x00487E60
-#define FUNC_IsValidPlayerObject					0x00487F30
+//#define FUNC_GetPlayerObjectPos			0x00487DB0
+//#define FUNC_GetPlayerObjectRot			0x00487E60
+//#define FUNC_IsValidPlayerObject					0x00487F30
 #define FUNC_MovePlayerObject					0x0048E500
 #define FUNC_StopPlayerObject					0x0048E710
 #define FUNC_AttachObjectToPlayer					0x0048E990
@@ -37,12 +37,12 @@
 //extern cell ( __cdecl* _funcMoveObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcStopObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcCreatePlayerObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcSetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcSetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcGetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcSetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcSetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcGetPlayerObjectPos )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params );

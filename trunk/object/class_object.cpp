@@ -1,33 +1,6 @@
 #include "../main.h"
 #include "class_object.h"
 
-inline RakNet::BitStream* CObject::ComputeBitStream_Spawn ( void )
-{
-	RakNet::BitStream*
-		l_BitStream = new RakNet::BitStream();
-		l_BitStream->Write ( this->m_uint16_ObjectIndex );
-		l_BitStream->Write ( this->m_uint32_ModelIndex );
-		l_BitStream->Write ( this->m_Position.X );
-		l_BitStream->Write ( this->m_Position.Y );
-		l_BitStream->Write ( this->m_Position.Z );
-		l_BitStream->Write ( this->m_Rotation.X );
-		l_BitStream->Write ( this->m_Rotation.Y );
-		l_BitStream->Write ( this->m_Rotation.Z );
-		l_BitStream->Write ( this->m_float_DrawDistance );
-		l_BitStream->Write ( this->m_uint16_AttachedVehicleIndex );
-
-	if ( this->m_uint16_AttachedVehicleIndex != -1 )
-	{
-		l_BitStream->Write ( this->m_AttachedOffset.X );
-		l_BitStream->Write ( this->m_AttachedOffset.Y );
-		l_BitStream->Write ( this->m_AttachedOffset.Z );
-		l_BitStream->Write ( this->m_AttachedRotation.X );
-		l_BitStream->Write ( this->m_AttachedRotation.Y );
-		l_BitStream->Write ( this->m_AttachedRotation.Z );
-	}
-	return l_BitStream;
-}
-
 void CObject::SetIndex ( uint16_t a_uint16_ObjectIndex )
 {
 	this->m_uint16_ObjectIndex = a_uint16_ObjectIndex;
