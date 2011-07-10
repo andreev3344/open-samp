@@ -20,11 +20,10 @@
 
 //#define FUNC_GetPlayerObjectPos			0x00487DB0
 //#define FUNC_GetPlayerObjectRot			0x00487E60
-//#define FUNC_IsValidPlayerObject					0x00487F30
-#define FUNC_MovePlayerObject					0x0048E500
-#define FUNC_StopPlayerObject					0x0048E710
-#define FUNC_AttachObjectToPlayer					0x0048E990
-#define FUNC_AttachPlayerObjectToPlayer					0x00488400
+//#define FUNC_IsValidPlayerObject			0x00487F30
+//#define FUNC_MovePlayerObject				0x0048E500
+//#define FUNC_StopPlayerObject				0x0048E710
+//#define FUNC_AttachObjectToPlayer			0x0048E990
 
 //extern cell ( __cdecl* _funcCreateObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcAttachObjectToVehicle )( AMX* a_AmxInterface, cell* a_Params );
@@ -43,10 +42,9 @@
 //extern cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
 //extern cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcAttachPlayerObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params );
+//extern cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params );
 
 cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Params );
@@ -68,7 +66,6 @@ cell AMX_NATIVE_CALL funcDestroyPlayerObject ( AMX* a_AmxInterface, cell* a_Para
 cell AMX_NATIVE_CALL funcMovePlayerObject ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcStopPlayerObject ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcAttachObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcAttachPlayerObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params );
 
 // __FUNC_AMX_OBJECT_H_
 #endif

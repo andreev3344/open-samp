@@ -96,3 +96,24 @@ float CObject::Move ( float a_float_X, float a_float_Y, float a_float_Z, float a
 	
 	return ( sqrt ( l_float_X + l_float_Y + l_float_Z ) / a_float_Speed );
 }
+
+float CObject::Move ( tVector* a_Position, float a_float_Speed )
+{
+	this->m_Position.X = a_Position->X;
+	this->m_Position.Y = a_Position->Y;
+	this->m_Position.Z = a_Position->Z;
+
+	this->m_float_MoveSpeed = a_float_Speed;
+	this->m_uint8_IsMoving |= 1;
+	
+	float l_float_X = ( ( a_Position->X - this->m_Position.X ) * ( a_Position->X - this->m_Position.X ) );
+	float l_float_Y = ( ( a_Position->Y - this->m_Position.Y ) * ( a_Position->Y - this->m_Position.Y ) );
+	float l_float_Z = ( ( a_Position->Z - this->m_Position.Z ) * ( a_Position->Z - this->m_Position.Z ) );
+	
+	return ( sqrt ( l_float_X + l_float_Y + l_float_Z ) / a_float_Speed );
+}
+
+void CObject::Stop ( void )
+{
+	this->m_uint8_IsMoving &= 0xFEu;
+}

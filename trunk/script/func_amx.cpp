@@ -1785,7 +1785,7 @@ AMX_NATIVE_INFO __AmxScriptNative[] =
 	{ "MovePlayerObject",					funcMovePlayerObject },					// 263
 	{ "StopPlayerObject",					funcStopPlayerObject },					// 264
 	{ "AttachObjectToPlayer",					funcAttachObjectToPlayer },					// 265
-	{ "AttachPlayerObjectToPlayer",					funcAttachPlayerObjectToPlayer },					// 266
+	{ "AttachPlayerObjectToPlayer",					NULL },					// 266 LOLOLOL
 	{ "CreateMenu",					funcCreateMenu },					// 267
 	{ "DestroyMenu",					funcDestroyMenu },					// 268
 	{ "AddMenuItem",					funcAddMenuItem },					// 269

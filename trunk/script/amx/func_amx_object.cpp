@@ -21,10 +21,9 @@
 //cell ( __cdecl* _funcGetPlayerObjectRot )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerObjectRot;
 //cell ( __cdecl* _funcIsValidPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsValidPlayerObject;
 //cell ( __cdecl* _funcDestroyPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_DestroyPlayerObject;
-cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MovePlayerObject;
-cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopPlayerObject;
-cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToPlayer;
-cell ( __cdecl* _funcAttachPlayerObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachPlayerObjectToPlayer;
+//cell ( __cdecl* _funcMovePlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_MovePlayerObject;
+//cell ( __cdecl* _funcStopPlayerObject )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_StopPlayerObject;
+//cell ( __cdecl* _funcAttachObjectToPlayer )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_AttachObjectToPlayer;
 
 
 cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
@@ -48,32 +47,31 @@ cell AMX_NATIVE_CALL funcCreateObject ( AMX* a_AmxInterface, cell* a_Params )
 		l_VectorRotation->Y = amx_ctof ( a_Params[ 6 ] );
 		l_VectorRotation->Z = amx_ctof ( a_Params[ 7 ] );
 
-	uint16_t l_ObjectIndex = __ObjectPool->New ( a_Params[ 1 ], l_VectorPosition, l_VectorRotation, amx_ctof ( a_Params[ 8 ] ) );
+	uint16_t l_uint16_ObjectIndex = __ObjectPool->New ( a_Params[ 1 ], l_VectorPosition, l_VectorRotation, amx_ctof ( a_Params[ 8 ] ) );
 
-	if ( l_ObjectIndex == -1 )
+	if ( l_uint16_ObjectIndex == -1 )
 		return -1;
 
 	CObject* l_Object = NULL;
-	if ( l_ObjectIndex < 400 )
+	if ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT )
 	{
-		l_Object = __ObjectPool->m_Object[ l_ObjectIndex ];
+		l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex );
 	}
 	else
 	{
 		l_Object = NULL;
 	}
 
-	if( l_Object && __NetGame->playerPool > 0 )
+	if ( l_Object && __NetGame->playerPool > 0 )
 	{
-
-		for( _PlayerID playerid = 0; playerid < MAX_PLAYERS; playerid ++ )
+		for ( _PlayerID playerid = 0; playerid < MAX_PLAYERS; playerid++ )
 		{
-			if( __NetGame->playerPool->isCreated[ playerid ] != 0 )
+			if ( __NetGame->playerPool->isCreated[ playerid ] != 0 )
 			{
 				l_Object->SpawnForPlayer( playerid );
 			}
 		}
-		return l_ObjectIndex;
+		return l_uint16_ObjectIndex;
 	}
 	return -1;
 }
@@ -84,11 +82,10 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 
 	CHECK_PARAMS ( 8 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
-	if ( ( a_Params[ 1 ] < 400 ) && __ObjectPool->m_Object[ a_Params[ 1 ] ] )
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
 		tVector* 
 			l_AttachedOffset = new tVector();
@@ -102,7 +99,7 @@ cell AMX_NATIVE_CALL funcAttachObjectToVehicle ( AMX* a_AmxInterface, cell* a_Pa
 			l_AttachedRotation->Y = amx_ctof ( a_Params[ 7 ] );
 			l_AttachedRotation->Z = amx_ctof ( a_Params[ 8 ] );
 
-		__ObjectPool->m_Object[ a_Params[ 1 ] ]->AttachToVehicle ( ( uint16_t )a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
+		l_Object->AttachToVehicle ( ( uint16_t )a_Params[ 2 ], l_AttachedOffset, l_AttachedRotation );
 
 		return 1;
 	}
@@ -115,11 +112,10 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
-	if ( ( l_ObjectIndex < 400 ) && __ObjectPool->m_Object[ l_ObjectIndex ] )
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
 		tVector* 
 			l_VectorPosition = new tVector();
@@ -127,20 +123,16 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 			l_VectorPosition->Y = amx_ctof ( a_Params[ 3 ] );
 			l_VectorPosition->Z = amx_ctof ( a_Params[ 4 ] );
 
-		__ObjectPool->m_Object[ l_ObjectIndex ]->SetPosition ( l_VectorPosition );
-
+		l_Object->SetPosition ( l_VectorPosition );
 		
-		RakNet::BitStream 
-			l_BitStream;
-			l_BitStream.Write ( l_ObjectIndex );
-			l_BitStream.Write ( l_VectorPosition->X );
-			l_BitStream.Write ( l_VectorPosition->Y );
-			l_BitStream.Write ( l_VectorPosition->Z );
+		RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetPosition();
+		if ( l_BitStream )
+		{
+			uint32_t l_RpcSetObjectPosition = 0x00000031;
+			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectPosition, l_BitStream, 0xFFFFu, 2 );
 
-		uint32_t l_RpcSetObjectPosition = 0x00000031;
-		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcSetObjectPosition, &l_BitStream, 0xFFFFu, 2 );
-
-		return 1;
+			return 1;
+		}
 	}
 	return -1;
 }
@@ -151,11 +143,10 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-	uint16_t l_ObjectIndex = ( uint16_t )a_Params[ 1 ];
-	if ( ( l_ObjectIndex < 400 ) && __ObjectPool->m_Object[ l_ObjectIndex ] )
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
 		tVector* 
 			l_VectorRotation = new tVector();
@@ -163,20 +154,16 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 			l_VectorRotation->Y = amx_ctof ( a_Params[ 3 ] );
 			l_VectorRotation->Z = amx_ctof ( a_Params[ 4 ] );
 
-		__ObjectPool->m_Object[ l_ObjectIndex ]->SetRotation ( l_VectorRotation );
+		l_Object->SetRotation ( l_VectorRotation );
 
-		
-		RakNet::BitStream 
-			l_BitStream;
-			l_BitStream.Write ( l_ObjectIndex );
-			l_BitStream.Write ( l_VectorRotation->X );
-			l_BitStream.Write ( l_VectorRotation->Y );
-			l_BitStream.Write ( l_VectorRotation->Z );
+		RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetRotation();
+		if ( l_BitStream )
+		{
+			uint32_t l_RpcSetObjectRotation = 0x00000032;
+			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectRotation, l_BitStream, 0xFFFFu, 2 );
 
-		uint32_t l_RpcSetObjectRotation = 0x00000032;
-		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcSetObjectRotation, &l_BitStream, 0xFFFFu, 2 );
-
-		return 1;
+			return 1;
+		}
 	}
 	return -1;
 }
@@ -187,12 +174,12 @@ cell AMX_NATIVE_CALL funcGetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPool->m_Object[ a_Params[ 1 ] ] )
-    {
-		tVector* l_VectorPosition = __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition();
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
+	{
+		tVector* l_VectorPosition = l_Object->GetPosition();
 
 		cell* cptr;
 		amx_GetAddr ( a_AmxInterface, a_Params[ 2 ], &cptr);
@@ -215,12 +202,12 @@ cell AMX_NATIVE_CALL funcGetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 4 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-    if ( ( a_Params[ 1 ] < 400 ) && __ObjectPool->m_Object[ a_Params[ 1 ] ] )
-    {
-		tVector* l_VectorRotation = __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetRotation();
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
+	{
+		tVector* l_VectorRotation = l_Object->GetRotation();
 
 		cell* cptr;
 		amx_GetAddr ( a_AmxInterface, a_Params[ 2 ], &cptr);
@@ -246,7 +233,7 @@ cell AMX_NATIVE_CALL funcIsValidObject ( AMX* a_AmxInterface, cell* a_Params )
 	if ( !__ObjectPool )
 		return -1;
 
-    return ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) );
+    return ( ( a_Params[ 1 ] < LIMIT_MAX_OBJECT ) && ( __ObjectPool->Get ( ( uint16_t )a_Params[ 1 ] ) ) );
 }
 
 cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
@@ -255,19 +242,19 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 1 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) )
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
-		__ObjectPool->Delete ( ( uint16_t )a_Params[ 1 ] );
+		__ObjectPool->Delete ( l_uint16_ObjectIndex );
 		
 		RakNet::BitStream 
 			l_BitStream;
-			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
+			l_BitStream.Write ( l_uint16_ObjectIndex );
 
 		uint32_t l_RpcDestroyObject = 0x00000033;
-		CNetGame__RPC_SendToEveryPlayer ( (DWORD)__NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
@@ -280,36 +267,36 @@ cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 5 );
 
-	if ( !__ObjectPool )
-		return -1;
-
 	float l_Return = 0.0f;
 
-    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) )
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
+
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
 		tVector* 
-			l_VectorRotation = new tVector();
-			l_VectorRotation->X = amx_ctof ( a_Params[ 2 ] );
-			l_VectorRotation->Y = amx_ctof ( a_Params[ 3 ] );
-			l_VectorRotation->Z = amx_ctof ( a_Params[ 4 ] );
+			l_VectorPosition = new tVector();
+			l_VectorPosition->X = amx_ctof ( a_Params[ 2 ] );
+			l_VectorPosition->Y = amx_ctof ( a_Params[ 3 ] );
+			l_VectorPosition->Z = amx_ctof ( a_Params[ 4 ] );
 
 		float l_MoveSpeed = amx_ctof ( a_Params[ 5 ] );
 
 		RakNet::BitStream 
 			l_BitStream;
 			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->X );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Y );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Z );
-			l_BitStream.Write ( l_VectorRotation->X );
-			l_BitStream.Write ( l_VectorRotation->Y );
-			l_BitStream.Write ( l_VectorRotation->Z );
+			l_BitStream.Write ( l_Object->GetPosition()->X );
+			l_BitStream.Write ( l_Object->GetPosition()->Y );
+			l_BitStream.Write ( l_Object->GetPosition()->Z );
+			l_BitStream.Write ( l_VectorPosition->X );
+			l_BitStream.Write ( l_VectorPosition->Y );
+			l_BitStream.Write ( l_VectorPosition->Z );
 			l_BitStream.Write ( l_MoveSpeed );
 
 		uint32_t l_RpcMoveObject = 0x00000038;
 		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcMoveObject, &l_BitStream, 0xFFFFu, 2 );
 
-		l_Return = __ObjectPool->m_Object[ a_Params[ 1 ] ]->Move ( l_VectorRotation->X, l_VectorRotation->Y, l_VectorRotation->Z, l_MoveSpeed );
+		l_Return = l_Object->Move ( l_VectorPosition, l_MoveSpeed );
 	}
 	return ( uint32_t )( l_Return * 1000.0f );
 }
@@ -320,19 +307,19 @@ cell AMX_NATIVE_CALL funcStopObject ( AMX* a_AmxInterface, cell* a_Params )
 
 	CHECK_PARAMS ( 1 );
 
-	if ( !__ObjectPool )
-		return -1;
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
 
-    if ( ( a_Params[ 1 ] < 400 ) && ( __ObjectPool->m_Object[ a_Params[ 1 ] ] ) )
+	CObject* l_Object = NULL;
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
 	{
-		__ObjectPool->m_Object[ a_Params[ 1 ] ]->m_uint8_IsMoving &= 0xFEu;
+		l_Object->Stop();
 
 		RakNet::BitStream 
 			l_BitStream;
-			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->X );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Y );
-			l_BitStream.Write ( __ObjectPool->m_Object[ a_Params[ 1 ] ]->GetPosition()->Z );
+			l_BitStream.Write ( l_uint16_ObjectIndex );
+			l_BitStream.Write ( l_Object->GetPosition()->X );
+			l_BitStream.Write ( l_Object->GetPosition()->Y );
+			l_BitStream.Write ( l_Object->GetPosition()->Z );
 
 		uint32_t l_RpcStopObject = 0x00000039;
 		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcStopObject, &l_BitStream, 0xFFFFu, 2 );
@@ -352,7 +339,6 @@ cell AMX_NATIVE_CALL funcCreatePlayerObject ( AMX* a_AmxInterface, cell* a_Param
 		return -1;
 
 	uint16_t l_uint16_PlayerIndex = ( uint16_t )a_Params[ 1 ];
-
 	if ( ( l_uint16_PlayerIndex < 500 ) && __NetGame->playerPool->isCreated[ l_uint16_PlayerIndex ] != 0 )
 	{
 		tVector* 
@@ -563,20 +549,108 @@ cell AMX_NATIVE_CALL funcIsValidPlayerObject ( AMX* a_AmxInterface, cell* a_Para
 cell AMX_NATIVE_CALL funcMovePlayerObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcMovePlayerObject()" );
-	return _funcMovePlayerObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 6 );
+
+	float l_Return = 0.0f;
+
+	uint16_t l_uint16_PlayerIndex = ( uint16_t )a_Params[ 1 ];
+	if ( ( __NetGame->playerPool > 0 ) && ( l_uint16_PlayerIndex < 500 ) && ( __NetGame->playerPool->isCreated[ l_uint16_PlayerIndex ] ) )
+	{
+		uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 2 ];
+
+		CObject* l_Object = NULL;
+		if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_PlayerIndex, l_uint16_ObjectIndex ) ) )
+		{
+			tVector* 
+				l_VectorPosition = new tVector();
+				l_VectorPosition->X = amx_ctof ( a_Params[ 3 ] );
+				l_VectorPosition->Y = amx_ctof ( a_Params[ 4 ] );
+				l_VectorPosition->Z = amx_ctof ( a_Params[ 5 ] );
+
+			float l_MoveSpeed = amx_ctof ( a_Params[ 6 ] );
+
+			RakNet::BitStream 
+				l_BitStream;
+				l_BitStream.Write ( l_uint16_ObjectIndex );
+				l_BitStream.Write ( l_Object->GetPosition()->X );
+				l_BitStream.Write ( l_Object->GetPosition()->Y );
+				l_BitStream.Write ( l_Object->GetPosition()->Z );
+				l_BitStream.Write ( l_VectorPosition->X );
+				l_BitStream.Write ( l_VectorPosition->Y );
+				l_BitStream.Write ( l_VectorPosition->Z );
+				l_BitStream.Write ( l_MoveSpeed );
+
+			uint32_t l_RpcMoveObject = 0x00000038;
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcMoveObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
+
+			l_Return = l_Object->Move ( l_VectorPosition, l_MoveSpeed );
+		}
+	}
+	return ( uint32_t )( l_Return * 1000.0f );
 }
+
 cell AMX_NATIVE_CALL funcStopPlayerObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcStopPlayerObject()" );
-	return _funcStopPlayerObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 2 );
+
+	uint16_t l_uint16_PlayerIndex = ( uint16_t )a_Params[ 1 ];
+	if ( ( __NetGame->playerPool > 0 ) && ( l_uint16_PlayerIndex < 500 ) && ( __NetGame->playerPool->isCreated[ l_uint16_PlayerIndex ] ) )
+	{
+		uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 2 ];
+
+		CObject* l_Object = NULL;
+		if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( l_Object = __ObjectPool->Get ( l_uint16_PlayerIndex, l_uint16_ObjectIndex ) ) )
+		{
+			l_Object->Stop();
+
+			RakNet::BitStream 
+				l_BitStream;
+				l_BitStream.Write ( l_uint16_ObjectIndex );
+				l_BitStream.Write ( l_Object->GetPosition()->X );
+				l_BitStream.Write ( l_Object->GetPosition()->Y );
+				l_BitStream.Write ( l_Object->GetPosition()->Z );
+
+			uint32_t l_RpcStopObject = 0x00000039;
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcStopObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
+
+			return 1;
+		}
+	}
+	return -1;
 }
+
 cell AMX_NATIVE_CALL funcAttachObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcAttachObjectToPlayer()" );
-	return _funcAttachObjectToPlayer ( a_AmxInterface, a_Params );
-}
-cell AMX_NATIVE_CALL funcAttachPlayerObjectToPlayer ( AMX* a_AmxInterface, cell* a_Params )
-{
-	logprintf ( "[Call]-> funcAttachPlayerObjectToPlayer()" );
-	return _funcAttachPlayerObjectToPlayer ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS ( 8 );
+
+	uint16_t l_uint16_ObjectIndex = ( uint16_t )a_Params[ 1 ];
+	if ( __ObjectPool && ( l_uint16_ObjectIndex < LIMIT_MAX_OBJECT ) && ( __ObjectPool->Get ( l_uint16_ObjectIndex ) ) )
+	{
+		uint16_t l_uint16_PlayerIndex = ( uint16_t )a_Params[ 2 ];
+		if ( ( __NetGame->playerPool > 0 ) && ( l_uint16_PlayerIndex < 500 ) && ( __NetGame->playerPool->isCreated[ l_uint16_PlayerIndex ] ) )
+		{
+			RakNet::BitStream 
+				l_BitStream;
+				l_BitStream.Write ( l_uint16_ObjectIndex );
+				l_BitStream.Write ( l_uint16_PlayerIndex );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 3 ] ) );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 4 ] ) );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 5 ] ) );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 6 ] ) );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 7 ] ) );
+				l_BitStream.Write ( amx_ctof ( a_Params[ 8 ] ) );
+
+				
+			uint32_t l_RpcAttachObjectToPlayer = 0x00000041;
+			CNetGame__RPC_SendToUnknown ( ( uint32_t )__NetGame, &l_RpcAttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcAttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			return 1;
+		}
+	}
+	return -1;
 }

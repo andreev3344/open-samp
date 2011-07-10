@@ -3,7 +3,7 @@
 
 class CObject // Size: 189
 {
-public:
+private:
 
 	uint16_t m_uint16_ObjectIndex;				// - 0x0000 - 0000
 	uint32_t m_uint32_ModelIndex;				// - 0x0002 - 0002
@@ -111,6 +111,8 @@ public:
 	tVector* GetPosition ( void );
 
 	float Move ( float a_float_X, float a_float_Y, float a_float_Z, float a_float_Speed );
+	float Move ( tVector* a_Position, float a_float_Speed );
+	void Stop ( void );
 
 	inline RakNet::BitStream* ComputeBitStream_Spawn ( void )
 	{
