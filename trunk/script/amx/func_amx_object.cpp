@@ -284,7 +284,7 @@ cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 
 		RakNet::BitStream 
 			l_BitStream;
-			l_BitStream.Write ( ( uint16_t )a_Params[ 1 ] );
+			l_BitStream.Write ( l_uint16_ObjectIndex );
 			l_BitStream.Write ( l_Object->GetPosition()->X );
 			l_BitStream.Write ( l_Object->GetPosition()->Y );
 			l_BitStream.Write ( l_Object->GetPosition()->Z );
