@@ -176,7 +176,7 @@
 #define FUNC_StopRecordingPlayerData					0x004858C0
 #define FUNC_PlayCrimeReportForPlayer					0x0048F450
 #define FUNC_SetPlayerShopName					0x00489A00
-#define FUNC_SetPlayerSkillLevel					0x00489B50
+
 #define FUNC_SetPlayerChatBubble					0x0048F250
 #define FUNC_SetPVarInt					0x00489BA0
 #define FUNC_SetPVarString					0x00489C70
@@ -409,7 +409,7 @@ extern cell ( __cdecl* _funcStartRecordingPlayerData )( AMX* a_AmxInterface, cel
 extern cell ( __cdecl* _funcStopRecordingPlayerData )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcPlayCrimeReportForPlayer )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPlayerShopName )( AMX* a_AmxInterface, cell* a_Params );
-extern cell ( __cdecl* _funcSetPlayerSkillLevel )( AMX* a_AmxInterface, cell* a_Params );
+
 extern cell ( __cdecl* _funcSetPlayerChatBubble )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPVarInt )( AMX* a_AmxInterface, cell* a_Params );
 extern cell ( __cdecl* _funcSetPVarString )( AMX* a_AmxInterface, cell* a_Params );
@@ -642,7 +642,7 @@ cell AMX_NATIVE_CALL funcStartRecordingPlayerData ( AMX* a_AmxInterface, cell* a
 cell AMX_NATIVE_CALL funcStopRecordingPlayerData ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcPlayCrimeReportForPlayer ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPlayerShopName ( AMX* a_AmxInterface, cell* a_Params );
-cell AMX_NATIVE_CALL funcSetPlayerSkillLevel ( AMX* a_AmxInterface, cell* a_Params );
+
 cell AMX_NATIVE_CALL funcSetPlayerChatBubble ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPVarInt ( AMX* a_AmxInterface, cell* a_Params );
 cell AMX_NATIVE_CALL funcSetPVarString ( AMX* a_AmxInterface, cell* a_Params );

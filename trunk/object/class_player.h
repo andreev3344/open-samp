@@ -46,24 +46,42 @@ typedef struct ON_FOOT_SYNC_t // size 0x44
 	tVector		position;								// + 0x0006 -> 0x000E
 	float		zAngle;									// + 0x0012
 
-	uint8_t		unknown0016[0x22-0x16];					// + 0x0016
+	uint8_t		unknown0016[0x0C];						// + 0x0016
 
-	uint8_t		health;									// + 0x0022		Chelou d'utiliser des uint8_t au lieu de float mais bon Kye, c'est Kye
+	uint8_t		health;									// + 0x0022
 	uint8_t		armour;									// + 0x0023
 	uint8_t		weapon;									// + 0x0024
 	uint8_t		specialAction;							// + 0x0025
 	tVector		velocity;								// + 0x0026
 
-	uint8_t		unknown0032[0x3E-0x32];					// + 0x0032
-
-
+	tVector		surfingOffsets;							// + 0x0032
 	uint16_t	surfingVehicleID;						// + 0x003E	
 	uint16_t	animationIndex;							// + 0x0040
 
 	uint16_t	unknown0042;
-
-
 } ON_FOOT_SYNC;
+
+
+
+typedef struct ON_VEHICLE_SYNC_t // size 0x3F
+{
+#pragma pack( 1 )
+	uint16_t	vehicleID;								// + 0x0000
+	uint8_t		unknown0000[4];							// + 0x0002
+	uint16_t	leftRightKeysOnVehicle;					// + 0x0006
+	uint16_t	updownKeysOnVehicle;					// + 0x0008
+	uint16_t	keysOnVehicle;							// + 0x000A
+	uint8_t		unknown001[0xC];						// + 0x000C
+	tVector		position;								// + 0x0018
+	tVector		velocity;								// + 0x0024
+	float		health;									// + 0x0030
+	uint8_t		playerHealth;							// + 0x0034
+	uint8_t		playerArmor;							// + 0x0035
+	uint8_t		playerWeapon;							// + 0x0036
+	uint8_t		unknown003[0x08];			
+
+} IN_VEHICLE_SYNC;
+
 
 
 class CPlayer // size 0x1AF8
@@ -74,7 +92,7 @@ public:
 	tVector		position;								// + 0x000	- 0x08
 	float		health;									// + 0x000C - 12
 	float		armour;									// + 0x0010	- 16
-	uint32_t	unknown0014;							// + 0x0014	- 20
+	uint32_t	unknown0014;							// + 0x0014	- 20 <-- FacingAngle aussi ? :o
 	uint32_t	unknown0018;							// + 0x0018	- 24
 	uint32_t	unknown001C;							// + 0x001C	- 28
 	uint32_t	unknown0020;							// + 0x0020 - 32
@@ -83,16 +101,12 @@ public:
 	tVector		velocity;								// + 0x002C - 44
 	void*		playerText3DLabels;						// + 0x0038 - 56
 	uint16_t	myPlayerID;								// + 0x003C - 60
-	uint32_t	unknown003E;							// + 0x003E - 62
+	uint32_t	SyncingDataType;						// + 0x003E - 62
 
 	ON_FOOT_SYNC onFootSyncData;						// + 0x0042
+	IN_VEHICLE_SYNC onVehicleSyncData;					// + 0x0086
 
-	uint8_t		unknown0086[0x8C-0x86];					// + 0x0084
-	uint16_t	leftRightKeysOnVehicle;					// + 0x008C
-	uint16_t	updownKeysOnVehicle;					// + 0x008A
-	uint16_t	keysOnVehicle;							// + 0x0088
-
-	uint8_t		unknown008A[0xDE-0x8A];					// + 0x008A
+	uint8_t		unknown00C5[0xDE-0xC5];					// + 0x00C5
 
 	tVector		cameraFrontVector;						// + 0x00DE	- 0xE6
 	tVector		cameraPosition;							// + 0x00EA - 0xF2
@@ -144,6 +158,8 @@ public:
 	uint32_t	unknown1A23;							// + 0x1A23
 	uint32_t	unknown1A27;							// + 0x1A27
 
+	tVector		unknown1A2B;							// + 0x1A2B
+
 	uint16_t	skillsLevel[11];						// + 0x1A37 -> 0x1A4D
 	uint32_t	unknown1A4D;							// + 0x1A4D
 
@@ -177,6 +193,14 @@ public:
 	void*		playerVarsClass;						// + 0x1AF4
 
 
+	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
+	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
+
+
+	uint16_t getSkillLevel( int skill );
+	void setSkillLevel( int skill, uint16_t level );
+
+
 	int stopNPCRecordingData( );
 	int startNPCRecordingData( int recordType, char* recordname );
 
@@ -204,6 +228,8 @@ public:
 	tVector* getPosition( );
 
 	float getFacingAngle( );
+
+	void setState( uint8_t state );
 	uint8_t getState( );
 
 	

@@ -10,6 +10,141 @@ CPlayer::~CPlayer( )
 {
 }
 
+void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProcess )
+{
+	this->position.X = x;
+	this->position.Y = y;
+	this->position.Z = z;
+
+
+	if( this->unknown1A23 == 0 )
+	{
+		if( forceStreamingProces )
+		{
+			// this->sub_492400(  ); <----- StreamingProcess
+		}
+		else
+		{
+			//if( GetElaspedTime( ) - this->unknown1AE4 > *(uint32_t*)0x4E6408 )
+			//{
+			//	// this->sub_492400(  ); <----- StreamingProcess
+			//	this->unknown1AE4 = GetElapsedTime( );
+			//}
+		}
+	}
+
+	/*
+			Hé ouais, on peut retaper du code sans avoir le code source comme certains Trolls le pense ....
+			C'est pas très clair mais ça le deviendra ...
+	*/
+
+	//if( GetElapsedTime( ) - this->unknown1A27 >= 5000 || this->GetDistanceFrom3DPoint( this->unknown1A2B ) <= *(float*)0x4E6404 )
+	//{
+	//	this->unknown1A23 = 0;
+	//	// this->sub_492400( );
+	//	if( this->bshowCheckpoint )
+	//	{
+
+	//		if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
+	//		{
+	//			if( this->isInCheckpoint != 0 )
+	//			{
+	//				this->isInCheckpoint = 0;
+	//				__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
+	//				if( __NetGame->gamemodeManager )
+	//					__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
+
+	//			}
+
+	//		}
+	//		else
+	//		{
+	//			if( this->isInCheckpoint == 0 )
+	//			{
+	//				this->isInCheckpoint = 1;
+	//				__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+	//				if( __NetGame->gamemodeManager )
+	//					__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+	//			}
+
+	//		}
+	//	}
+
+	//}
+
+	//if( this->bshowCheckpoint )
+	//{
+	//	if( this->GetDistanceFrom3DPoint( this->raceCheckpointPos ) >= this->raceCheckpointSize )
+	//	{
+	//		if( this->isInRaceCheckpoint != 0 ) 
+	//		{
+	//			this->isInRaceCheckpoint = 0;
+	//			__NetGame->filterscriptsManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
+	//			if( __NetGame->gamemodeManager )
+	//				__NetGame->gamemodeManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if( this->isInRaceCheckpoint == 0 )
+	//		{
+	//			this->isInRaceCheckpoint = 1;
+	//			__NetGame->filterscriptsManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
+	//			if( __NetGame->gamemodeManager )
+	//				__NetGame->gamemodeManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
+	//		}
+	//	}
+	//}
+
+}
+
+
+void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
+{
+	this->currentVehicleID = 0;
+	memcpy( (void*)this->onFootSyncData, (void*)syncData, sizeof( ON_FOOT_SYNC ) );
+
+	UpdatePosition( this->onFootSyncData.position.X, this->onFootSyncData.position.Y, this->onFootSyncData.position.Z, 0 );
+
+	this->unknown0014 = this->onFootSyncData.zAngle;
+	this->unknown0018 = *( uint32_t* ) &this->onFootSyncData.unknown0016[0];
+	this->unknown001C = *( uint32_t* ) &this->onFootSyncData.unknown0016[4];
+	this->unknown0020 = *( uint32_t* ) &this->onFootSyncData.unknown0016[8];
+
+	this->SyncingDataType = 1;
+
+}
+
+uint16_t CPlayer::getSkillLevel( int skill )
+{
+	if( 0 > skill || skill >= 11 ) return 0;
+	return this->skillsLevel[ skill ];
+}
+
+void CPlayer::setSkillLevel( int skill, uint16_t level )
+{
+	if( 0 > skill || skill >= 11 ) return;
+
+	uint32_t RPC_SetSkillLevel = 0x8F;
+
+	RakNet::BitStream bStream;
+
+	bStream.Write( ( uint16_t )this->myPlayerID );
+	bStream.Write( ( uint32_t )skill );
+	bStream.Write( ( uint16_t )this->skillsLevel[ skill ] );
+
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetSkillLevel, &bStream, this->myPlayerID, 2 );
+
+	if( this->playerState && this->playerState != PLAYER_STATE_SPECTACTING )
+	{
+		CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_SetSkillLevel, &bStream, this->myPlayerID, 2 );
+	}
+
+
+
+}
+
+
 int CPlayer::stopNPCRecordingData( )
 {
 
@@ -217,6 +352,10 @@ tVector* CPlayer::getCameraFrontVector( )
 float CPlayer::getFacingAngle( )
 {
 	return this->facingAngle;
+}
+
+void CPlayer::setState( uint8_t state )
+{
 }
 
 uint8_t CPlayer::getState( )

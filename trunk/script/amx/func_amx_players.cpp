@@ -10,8 +10,24 @@
 //cell ( __cdecl* _funcIsVehicleStreamedIn )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_IsVehicleStreamedIn;
 //cell ( __cdecl* _funcGetPlayerSurfingVehicleID )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerSurfingVehicleID;
 //cell ( __cdecl* _funcGetPlayerTeam )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_GetPlayerTeam;
+//cell ( __cdecl* _funcSetPlayerSkillLevel )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __cdecl* )( AMX*, cell* ) )FUNC_SetPlayerSkillLevel;
 
 
+cell AMX_NATIVE_CALL funcSetPlayerSkillLevel ( AMX* a_AmxInterface, cell* a_Params )
+{
+	logprintf ( "[Call]-> funcSetPlayerSkillLevel()" );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+	uint32_t skillID = a_Params[ 2 ];
+	uint16_t skillLevel = ( uint16_t )a_Params[ 3 ];
+	CPlayer* player = 0;
+	if( ( player = __NetGame->playerPool->GetPlayer( playerID ) ) > 0 )
+	{
+		player->setSkillLevel( skillID, skillLevel );
+		return 1;
+	}
+	return 0;
+}
 
 cell AMX_NATIVE_CALL funcGetPlayerTeam ( AMX* a_AmxInterface, cell* a_Params )
 {
@@ -37,7 +53,7 @@ cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* 
 
 	if( player->getState( ) == PLAYER_STATE_ONFOOT )
 	{
-		//return player->surfingVehicleID;
+		return player->onFootSyncData.surfingVehicleID;
 	}
 
 
