@@ -19,7 +19,7 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 
 	if( this->unknown1A23 == 0 )
 	{
-		if( forceStreamingProces )
+		if( forceStreamingProcess )
 		{
 			// this->sub_492400(  ); <----- StreamingProcess
 		}
@@ -102,9 +102,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 {
 	this->currentVehicleID = 0;
-	memcpy( (void*)this->onFootSyncData, (void*)syncData, sizeof( ON_FOOT_SYNC ) );
+	memcpy( (void*)&this->onFootSyncData, (void*)syncData, sizeof( ON_FOOT_SYNC ) );
 
-	UpdatePosition( this->onFootSyncData.position.X, this->onFootSyncData.position.Y, this->onFootSyncData.position.Z, 0 );
+	UpdatePosition( this->onFootSyncData.position.X, this->onFootSyncData.position.Y, this->onFootSyncData.position.Z, false );
 
 	this->unknown0014 = this->onFootSyncData.zAngle;
 	this->unknown0018 = *( uint32_t* ) &this->onFootSyncData.unknown0016[0];
