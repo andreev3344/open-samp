@@ -19,6 +19,8 @@ public:
 	uint32_t	drunkLevel[ MAX_PLAYERS ];				// + 0x6790 - 26512
 
 
+	int	ShowPlayerForPlayer( _PlayerID forPlayerID, _PlayerID playerID  );
+
 	bool GetSlotState( _PlayerID playerID );
 	CPlayer* GetPlayer( _PlayerID playerID );
 

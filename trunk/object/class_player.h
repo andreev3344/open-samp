@@ -1,6 +1,8 @@
 #ifndef __CPLAYER_H__
 #define __CPLAYER_H__
 
+#define MAX_ATTACHED_OBJECT			5
+
 #define PLAYER_STATE_NONE			0
 #define PLAYER_STATE_ONFOOT			1
 #define PLAYER_STATE_DRIVER			2
@@ -9,6 +11,9 @@
 #define PLAYER_STATE_SPAWNED		8
 #define PLAYER_STATE_SPECTACTING	9
 
+
+#define RECORD_TYPE_INVEHICLE		1
+#define RECORD_TYPE_ONFOOT			2
 
 typedef struct SPAWNS_t // size 0x2E
 {
@@ -92,9 +97,10 @@ public:
 	tVector		position;								// + 0x000	- 0x08
 	float		health;									// + 0x000C - 12
 	float		armour;									// + 0x0010	- 16
-	uint32_t	unknown0014;							// + 0x0014	- 20 <-- FacingAngle aussi ? :o
+	float		unknown0014;							// + 0x0014	- 20 <-- FacingAngle aussi ? :o
 	uint32_t	unknown0018;							// + 0x0018	- 24
-	uint32_t	unknown001C;							// + 0x001C	- 28
+	uint16_t	unknown001C;							// + 0x001C	- 28
+	int16_t		unknown001E;							// + 0x001E	- 30
 	uint32_t	unknown0020;							// + 0x0020 - 32
 	float		facingAngle;							// + 0x0024 - 36
 	BOOL		allowedToTeleport;						// + 0x0028 - 40
@@ -122,10 +128,10 @@ public:
 	uint8_t		unknown0102[0x183-0x102];				// + 0x0102
 
 //	uint8_t		unknown0183[5][44];						// + 0x0183 -> 0x025F
-	tAttachedObject	attachedObject[5];					// + 0x0183 -> 0x025F
-	BOOL		attachedObjectSlot[5];					// + 0x025F -> 0x273
+	tAttachedObject	attachedObject[MAX_ATTACHED_OBJECT];// + 0x0183 -> 0x025F
+	BOOL		attachedObjectSlot[MAX_ATTACHED_OBJECT];// + 0x025F -> 0x273
 
-	uint16_t	unknown0273;							// + 0x0273
+	uint16_t	lastKeysState;							// + 0x0273
 	uint32_t	unknown0275;							// + 0x0275
 	uint32_t	unknown0279;							// + 0x0279
 
@@ -148,10 +154,10 @@ public:
 	uint8_t		bisText3DLabelStreamedIn[MAX_TEXT_LABELS];// + 0x0E0F
 	uint8_t		unknown120F[2048];						// + 0x120F
 
-	uint32_t	unknown1A0F;							// + 0x1A0F
+	uint32_t	StreamedInPlayers;						// + 0x1A0F
 	uint32_t	unknown1A13;							// + 0x1A13
 	uint32_t	unknown1A17;							// + 0x1A17
-	uint32_t	Text3DLabelsNumber;						// + 0x1A1B
+	uint32_t	StreamedInText3DLabelsNumber;			// + 0x1A1B
 
 	uint8_t		unknown1A1F[0x1A23-0x1A1F];				// + 0x1A1F
 
@@ -192,6 +198,18 @@ public:
 
 	void*		playerVarsClass;						// + 0x1AF4
 
+
+	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
+
+	int showForPlayer( _PlayerID playerID );
+
+	void streamInPlayer( _PlayerID playerID );
+	void streamOutPlayer( _PlayerID playerID );
+
+	void ProcessStreaming( );
+	void CheckKeysUpdate( uint16_t keys );
+
+	int GetWeaponSlot( uint8_t weapon );
 
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );

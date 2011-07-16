@@ -10,6 +10,15 @@ CPlayerPool::~CPlayerPool( )
 {
 }
 
+int	CPlayerPool::ShowPlayerForPlayer( _PlayerID forPlayerID, _PlayerID playerID  )
+{
+	if( 0 > forPlayerID || forPlayerID >= MAX_PLAYERS ) return 0;
+	if( 0 > playerID || playerID >= MAX_PLAYERS ) return 0;
+
+
+	return this->player[ forPlayerID ]->showForPlayer( playerID );
+}
+
 bool CPlayerPool::GetSlotState( _PlayerID playerID )
 {
 	if( 0 > playerID || playerID >= MAX_PLAYERS ) return false;

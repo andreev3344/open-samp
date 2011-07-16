@@ -9,6 +9,149 @@ CPlayer::CPlayer( )
 CPlayer::~CPlayer( )
 {
 }
+void CPlayer::ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID )
+{
+	if( 0 > objectID || objectID >= MAX_ATTACHED_OBJECT ) return;
+
+	if( this->attachedObjectSlot[ objectID ] )
+	{
+		uint32_t RPC_ShowAttachedObject = 0x5B;
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint16_t ) this->unknown001E );
+		bStream.Write( ( uint32_t ) objectID );
+		//bStream.sub_465330( );
+		bStream.Write( ( char* ) &attachedObject[ objectID ], sizeof( tAttachedObject ) );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowAttachedObject, &bStream, toPlayerID, 2 );
+	}
+
+}
+
+int CPlayer::showForPlayer( _PlayerID playerID )
+{
+	uint32_t RPC_ShowPlayer = 0x65;	// je pense plutot à renommer en spawnForPlayer mais bon
+
+	RakNet::BitStream bStream;
+
+
+
+	bStream.Write( ( uint16_t ) this->unknown001E );
+	bStream.Write( ( uint8_t ) this->customSpawn.Team );
+	bStream.Write( ( uint8_t ) this->customSpawn.Skin );
+	bStream.Write( ( tVector ) this->position );
+	bStream.Write( ( float ) this->facingAngle );
+	bStream.Write( ( uint32_t ) this->nickNameColor );
+	bStream.Write( ( uint8_t ) this->fightingStyle );
+
+	bStream.Write( ( char* )skillsLevel, sizeof( uint16_t ) * 11 );
+
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowPlayer, &bStream, playerID, 2 );
+
+	for( uint32_t i = 0; i < MAX_ATTACHED_OBJECT; i++ )
+	{
+		if( this->attachedObjectSlot[ i ] )
+		{
+			ShowPlayerAttachedObjectToPlayer( playerID, ( uint8_t )i );
+		}
+
+	}
+
+	return 1;
+}
+
+void CPlayer::streamInPlayer( _PlayerID playerID )	
+{
+	if( __NetGame->playerPool )
+	{
+		if( this->bisPlayerStreamedIn[ playerID ] == 0 )
+		{
+			__NetGame->playerPool->ShowPlayerForPlayer( playerID, this->myPlayerID );
+			// playerPool->sub_47C510( playerID, this->myPlayerID );
+
+			this->bisPlayerStreamedIn[ playerID ] ++;
+			this->StreamedInPlayers++;
+
+			//if( __NetGame->filterscriptsManager )
+			//	__NetGame->filterscriptsManager->OnPlayerStreamedIn( playerID, this->myPlayerID );
+			//if( __NetGame->gamemodeManager )
+			//	__NetGame->gamemodeManager->OnPlayerStreamedIn( playerID, this->myPlayerID );
+		}
+	
+
+	}
+
+}
+
+void CPlayer::streamOutPlayer( _PlayerID playerID )
+{
+}
+
+void CPlayer::ProcessStreaming( )
+{
+	CPlayerPool* playerPool = __NetGame->playerPool;
+//	CVehiclePool* vehiclePool = __NetGame->vehiclePool;
+	CText3DLabels* text3dlabelsPool = __NetGame->text3DLabelsPool;
+	CPickupPool* pickupsPool = __NetGame->pickupPool;
+
+	uint32_t currentVirtualWorld = 0;
+
+	if( this->myPlayerID < MAX_PLAYERS )
+	{
+		currentVirtualWorld = playerPool->playersVirtualWorlds[ this->myPlayerID ];
+	}
+
+	float streamDistance = *(float*)0x4E6404 * *(float*)0x4E6404; // 0x4E6404 correspond à la variable contenant la distance de stream
+
+	if( /*vehiclePool == 0* ||*/ playerPool == 0 || text3dlabelsPool == 0 || pickupsPool == 0 )
+		return;
+
+	// this->sub_491EB0( );
+
+
+	//for( uint32_t vehicleID = 0; vehicleID < MAX_VEHICLES; vehicleID ++ ) // <-- ici se passent les calculs concernant le streaming des véhicles au joueur
+	//{
+	//	CVehicle* vehicle = vehiclePool->GetVehicle( vehicleID );
+	//	if( vehicle == 0 ) continue;
+	//}
+
+	for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ )
+	{
+		if( playerID == this->myPlayerID ) continue;
+
+		CPlayer* player = playerPool->GetPlayer( playerID );
+		if( player == 0 || playerPool->playersVirtualWorlds[ playerID ] != currentVirtualWorld || player->getState( ) == 0 || player->getState( ) == PLAYER_STATE_SPECTACTING )
+		{
+			if( this->bisPlayerStreamedIn[ playerID ] )
+				streamOutPlayer( playerID );
+			continue;
+		}
+
+		if( player->getState( ) != PLAYER_STATE_PASSENGER )
+		{
+			if( this->isPlayerStreamedIn( playerID ) )
+				streamOutPlayer( playerID );
+			continue;
+		}
+
+
+		//CVehicle* vehicle = 0;
+		//if( sub_47AB80( player->currentVehicleID ) && ( vehicle = vehiclePool->GetVehicle( player->currentVehicleID ) ) )
+		//{
+		//	float distance = vehicle->GetDistanceBetween2DPoint( this->position.X, this->position.Y );
+		//	if( distance <= streamDistance )
+		//	{
+		//		if( this->isPlayerStreamedIn( playerID ) == false )
+		//		{
+		//		//	sub_491410( playerID );
+		//			streamInPlayer( playerID );
+		//		}
+		//	}
+		//}
+
+	}
+
+
+}
 
 void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProcess )
 {
@@ -98,6 +241,105 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 
 }
 
+void CPlayer::CheckKeysUpdate( uint16_t keys )
+{
+	if( this->lastKeysState != keys )
+	{
+		
+		if( __NetGame->gamemodeManager )
+//			__NetGame->gamemodeManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
+		if( __NetGame->filterscriptsManager )
+//			__NetGame->filterscriptsManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
+
+		this->lastKeysState = keys;
+	}
+
+
+}
+
+int CPlayer::GetWeaponSlot( uint8_t weapon )
+{
+  int result;
+
+  switch ( weapon )
+  {
+    case 0:
+    case 1:
+      result = 0;
+      break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+      result = 1;
+      break;
+    case 0x16:
+    case 0x17:
+    case 0x18:
+      result = 2;
+      break;
+    case 0x19:
+    case 0x1A:
+    case 0x1B:
+      result = 3;
+      break;
+    case 0x1C:
+    case 0x1D:
+    case 0x20:
+      result = 4;
+      break;
+    case 0x1E:
+    case 0x1F:
+      result = 5;
+      break;
+    case 0x21:
+    case 0x22:
+      result = 6;
+      break;
+    case 0x23:
+    case 0x24:
+    case 0x25:
+    case 0x26:
+      result = 7;
+      break;
+    case 0x10:
+    case 0x11:
+    case 0x12:
+    case 0x27:
+      result = 8;
+      break;
+    case 0x29:
+    case 0x2A:
+    case 0x2B:
+      result = 9;
+      break;
+    case 0xA:
+    case 0xB:
+    case 0xC:
+    case 0xD:
+    case 0xE:
+    case 0xF:
+      result = 10;
+      break;
+    case 0x2C:
+    case 0x2D:
+    case 0x2E:
+      result = 11;
+      break;
+    case 0x28:
+      result = 12;
+      break;
+    default:
+      result = -1;
+      break;
+  }
+  return result;
+}
+
 
 void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 {
@@ -107,11 +349,60 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 	UpdatePosition( this->onFootSyncData.position.X, this->onFootSyncData.position.Y, this->onFootSyncData.position.Z, false );
 
 	this->unknown0014 = this->onFootSyncData.zAngle;
-	this->unknown0018 = *( uint32_t* ) &this->onFootSyncData.unknown0016[0];
-	this->unknown001C = *( uint32_t* ) &this->onFootSyncData.unknown0016[4];
-	this->unknown0020 = *( uint32_t* ) &this->onFootSyncData.unknown0016[8];
+	this->unknown0018 = *( uint32_t* ) &this->onFootSyncData.unknown0016[0]; // <-- What is that ?
+	this->unknown001C = *( uint32_t* ) &this->onFootSyncData.unknown0016[4]; // and that ?
+	this->unknown0020 = *( uint32_t* ) &this->onFootSyncData.unknown0016[8]; // that too ?
 
 	this->SyncingDataType = 1;
+
+	// sub_495630( this->unknown0014, &bufOut ); // la flème de m'y pencher :D
+	
+	this->health = ( float ) this->onFootSyncData.health;
+	this->armour = ( float ) this->onFootSyncData.armour;
+
+	int slot = GetWeaponSlot( this->onFootSyncData.weapon );
+	if( slot == -1 )
+	{
+		this->onFootSyncData.weapon = 0;
+	}
+	else
+	{
+		this->weaponInSlot[ slot ] = this->onFootSyncData.weapon;
+		this->currentWeapon = this->onFootSyncData.weapon;
+	}
+
+	this->velocity = this->onFootSyncData.velocity;
+
+	this->setState( PLAYER_STATE_ONFOOT );
+
+	CheckKeysUpdate( this->onFootSyncData.keysOnfoot );
+
+	if( this->onFootSyncData.surfingVehicleID != 0 && this->onFootSyncData.surfingVehicleID != 0xFFFF &&
+		this->onFootSyncData.surfingVehicleID >= MAX_VEHICLES && this->onFootSyncData.surfingVehicleID < MAX_VEHICLES + LIMIT_MAX_OBJECT )
+	{
+		if( __NetGame->objectPool )
+		{
+
+			if( __NetGame->objectPool->GetSlotState( this->onFootSyncData.surfingVehicleID - MAX_VEHICLES ) == 0 )
+			{
+				this->onFootSyncData.surfingVehicleID = 0xFFFF;
+				this->onFootSyncData.surfingOffsets.X = 
+					this->onFootSyncData.surfingOffsets.Y =
+					this->onFootSyncData.surfingOffsets.Z = 0.0f;
+			}
+		}
+	}
+
+	if( this->NPCRecordingType == RECORD_TYPE_ONFOOT )
+	{
+		if( this->ioFileNPC )
+		{
+			//uint32_t timeElapsed = GetElapsedTime( ) - this->lastNPCWritingInFile;
+			//fwrite( &timeElapsed, 4, 1, this->ioFileNPC );
+			//fwrite( syncData, sizeof( ON_FOOT_SYNC ), 1, this->ioFileNPC );
+		}
+	}
+
 
 }
 
@@ -171,7 +462,7 @@ int CPlayer::startNPCRecordingData( int recordType, char* recordname )
 		
 		char record[256] = "";
 
-		for( int i = 0, a = 0; i < recordname_len && a < 256; i++ )
+		for( uint32_t i = 0, a = 0; i < recordname_len && a < 256; i++ )
 		{
 			if( recordname[i] == 0xFF ) break;
 
@@ -222,7 +513,7 @@ void CPlayer::createText3DLabel( uint16_t labelID )
 	{
 		__NetGame->text3DLabelsPool->showForPlayer( labelID, this->myPlayerID );
 		this->bisText3DLabelStreamedIn[ labelID ]++;
-		this->Text3DLabelsNumber++;
+		this->StreamedInText3DLabelsNumber++;
 	}
 
 }
@@ -233,7 +524,7 @@ void CPlayer::destroyText3DLabel( uint16_t labelID )
 	{
 		__NetGame->text3DLabelsPool->hideForPlayer( labelID, this->myPlayerID );
 		this->bisText3DLabelStreamedIn[ labelID ] = 0;
-		this->Text3DLabelsNumber--;
+		this->StreamedInText3DLabelsNumber--;
 	}
 }
 
