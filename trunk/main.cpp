@@ -20,6 +20,9 @@
 
 logprintf_t logprintf;
 
+typedef CNetGame* (*getNetGame_t)();
+getNetGame_t GetNetGame;
+
 
 int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499020;
 int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499240;
@@ -74,6 +77,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 {
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 	logprintf = (logprintf_t)ppData[PLUGIN_DATA_LOGPRINTF];
+	GetNetGame = (getNetGame_t)ppData[0xE1];
 
 	logprintf( "WE GONNA KILL YOU" );
 
@@ -245,7 +249,7 @@ AMX_NATIVE_INFO HelloWorldNatives[ ] =
 
 PLUGIN_EXPORT int PLUGIN_CALL AmxLoad( AMX *amx ) 
 {
-	__NetGame = (CNetGame*)( *(DWORD*)( 0x4F6270 ) );
+	if(!__NetGame) __NetGame = GetNetGame();
 	//__NetGame = (CNetGame*)( 0x4F6270 );
 	return amx_Register( amx, HelloWorldNatives, -1 );
 }
