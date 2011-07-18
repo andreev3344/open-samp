@@ -199,6 +199,9 @@ public:
 	void*		playerVarsClass;						// + 0x1AF4
 
 
+	float getSquaredDistance( tVector position );
+	float getSquaredDistance( float x, float y, float z );
+
 	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
 
 	int showForPlayer( _PlayerID playerID );
@@ -228,6 +231,10 @@ public:
 
 	float GetDistanceFrom3DPoint( tVector point );
 	float GetDistanceFrom3DPoint( float x, float y, float z );
+
+	float getSquaredDistanceFrom3DPoint( tVector position );
+	float getSquaredDistanceFrom3DPoint( float x, float y, float z );
+
 
 	bool isPlayerStreamedIn( _PlayerID playerID );
 	bool isVehicleStreamedIn( uint16_t vehicleID );

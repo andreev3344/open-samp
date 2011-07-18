@@ -18,7 +18,7 @@ public:
 	uint32_t	playersMoney[ MAX_PLAYERS ];			// + 0x5FC0 - 24512
 	uint32_t	drunkLevel[ MAX_PLAYERS ];				// + 0x6790 - 26512
 
-
+	int HidePlayerForPlayer( _PlayerID playerID, _PlayerID forPlayerID );
 	int	ShowPlayerForPlayer( _PlayerID forPlayerID, _PlayerID playerID  );
 
 	bool GetSlotState( _PlayerID playerID );

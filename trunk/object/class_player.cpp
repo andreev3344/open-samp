@@ -84,6 +84,24 @@ void CPlayer::streamInPlayer( _PlayerID playerID )
 
 void CPlayer::streamOutPlayer( _PlayerID playerID )
 {
+	if( __NetGame->playerPool )
+	{
+
+		if( this->bisPlayerStreamedIn[ playerID ] != 0 )
+		{
+			// le call ici
+			this->bisPlayerStreamedIn[ playerID ] = 0;
+			this->StreamedInPlayers--;
+
+			//if( __NetGame->filterscriptsManager )
+			//	__NetGame->filterscriptsManager->OnPlayerStreamOut( playerID, this->myPlayerID );
+			//if( __NetGame->gamemodeManager )
+			//	__NetGame->gamemodeManager->OnPlayerStreamOut( playerID, this->myPlayerID );
+
+
+		}
+
+	}
 }
 
 void CPlayer::ProcessStreaming( )
@@ -114,7 +132,7 @@ void CPlayer::ProcessStreaming( )
 	//	if( vehicle == 0 ) continue;
 	//}
 
-	for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ )
+	for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ ) // Player process
 	{
 		if( playerID == this->myPlayerID ) continue;
 
@@ -146,11 +164,50 @@ void CPlayer::ProcessStreaming( )
 		//			streamInPlayer( playerID );
 		//		}
 		//	}
-		//}
+		//} 
 
+	} // Player process end
+
+
+	for( uint16_t text3dID = 0; text3dID < MAX_TEXT_LABELS; text3dID++ )
+	{
+		bool isStreamedIn = ( this->bisText3DLabelStreamedIn[ text3dID ] ? true : false );
+		if( text3dlabelsPool->isCreated[ text3dID ] == 0 )
+		{
+			if( isStreamedIn == true )
+			{
+				this->destroyText3DLabel( text3dID );
+				continue;
+			}
+		}
+
+		if( text3dlabelsPool->TextLabels[ text3dID ].attachedToPlayerID != 0xFFFF )
+		{
+			if( isPlayerStreamedIn( text3dlabelsPool->TextLabels[ text3dID ].attachedToPlayerID ) )
+				this->createText3DLabel( text3dID );
+			else
+				this->destroyText3DLabel( text3dID );
+		}
+
+		if( text3dlabelsPool->TextLabels[ text3dID ].attachedToVehicleID != 0xFFFF )
+		{
+			if( isVehicleStreamedIn( text3dlabelsPool->TextLabels[ text3dID ].attachedToVehicleID ) )
+				this->createText3DLabel( text3dID );
+			else
+				this->destroyText3DLabel( text3dID );
+		}
+
+
+		if( currentVirtualWorld == text3dlabelsPool->TextLabels[ text3dID ].virtualWorld && getSquaredDistanceFrom3DPoint( text3dlabelsPool->TextLabels[ text3dID ].posX, 
+			text3dlabelsPool->TextLabels[ text3dID ].posX, text3dlabelsPool->TextLabels[ text3dID ].posZ ) <= ( text3dlabelsPool->TextLabels[ text3dID ].drawDistance * text3dlabelsPool->TextLabels[ text3dID ].drawDistance ) )
+		{
+			if( bisText3DLabelStreamedIn[ text3dID ] == 0 ) createText3DLabel( text3dID );
+		}
+		else
+		{
+			if( bisText3DLabelStreamedIn[ text3dID ] != 0 ) destroyText3DLabel( text3dID );
+		}
 	}
-
-
 }
 
 void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProcess )
@@ -530,16 +587,27 @@ void CPlayer::destroyText3DLabel( uint16_t labelID )
 
 float CPlayer::GetDistanceFrom3DPoint( tVector point )
 {
-	return this->GetDistanceFrom3DPoint( point.X, point.Y, point.Z );
+	return sqrt( this->getSquaredDistanceFrom3DPoint( point.X, point.Y, point.Z ) );
 }
 
 float CPlayer::GetDistanceFrom3DPoint( float x, float y, float z )
 {
 
-	return sqrt( (float) ( this->position.X - x ) * ( this->position.X - x ) +
-		( this->position.Y - y ) * ( this->position.Y - y ) +
-		( this->position.Z - z ) * ( this->position.Z - z ) );
+	return sqrt( getSquaredDistanceFrom3DPoint( x, y, z )  );
 
+}
+
+float CPlayer::getSquaredDistanceFrom3DPoint( tVector position )
+{
+	return getSquaredDistanceFrom3DPoint( position.X, position.Y, position.Z );
+}
+
+float CPlayer::getSquaredDistanceFrom3DPoint( float x, float y, float z )
+{
+	return ( (float) ( this->position.X - x ) * ( this->position.X - x ) +
+		( this->position.Y - y ) * ( this->position.Y - y ) +
+		( this->position.Z - z ) * ( this->position.Z - z )
+		);
 }
 
 bool CPlayer::isPlayerStreamedIn( _PlayerID playerID )
