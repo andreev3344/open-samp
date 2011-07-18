@@ -151,8 +151,8 @@ public:
 	bool		bisPlayerStreamedIn[MAX_PLAYERS];		// + 0x02BB
 	bool		bisVehicleStreamedIn[MAX_VEHICLES];		// + 0x04AF
 	uint8_t		unknown0C7F[400];						// + 0x0C7F
-	uint8_t		bisText3DLabelStreamedIn[MAX_TEXT_LABELS];// + 0x0E0F
-	uint8_t		unknown120F[2048];						// + 0x120F
+	bool		bisText3DLabelStreamedIn[MAX_TEXT_LABELS];// + 0x0E0F
+	bool		bisPickupStreamedIn[LIMIT_MAX_PICKUPS];	// + 0x120F
 
 	uint32_t	StreamedInPlayers;						// + 0x1A0F
 	uint32_t	unknown1A13;							// + 0x1A13
@@ -191,16 +191,13 @@ public:
 	float		gameTime;								// + 0x1ADB
 	uint8_t		spectateType;							// + 0x1ADF	- 6879
 	uint32_t	spectateID;								// + 0x1AE0
-	uint32_t	unknown1AE4;							// + 0x1AE4
+	uint32_t	lastStreaming;							// + 0x1AE4
 	uint32_t	NPCRecordingType;						// + 0x1AE8				http://wiki.sa-mp.com/wiki/Recordingtypes
 	FILE*		ioFileNPC;								// + 0x1AEC
 	uint32_t	lastNPCWritingInFile;					// + 0x1AF0	
 
 	void*		playerVarsClass;						// + 0x1AF4
 
-
-	float getSquaredDistance( tVector position );
-	float getSquaredDistance( float x, float y, float z );
 
 	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
 
@@ -235,6 +232,8 @@ public:
 	float getSquaredDistanceFrom3DPoint( tVector position );
 	float getSquaredDistanceFrom3DPoint( float x, float y, float z );
 
+	float getDistanceFrom2DPoint( float x, float y );
+	float getSquaredDistanceFrom2DPoint( float x, float y );
 
 	bool isPlayerStreamedIn( _PlayerID playerID );
 	bool isVehicleStreamedIn( uint16_t vehicleID );

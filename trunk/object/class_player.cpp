@@ -132,41 +132,47 @@ void CPlayer::ProcessStreaming( )
 	//	if( vehicle == 0 ) continue;
 	//}
 
-	for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ ) // Player process
+
+	for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ ) 
 	{
 		if( playerID == this->myPlayerID ) continue;
-
 		CPlayer* player = playerPool->GetPlayer( playerID );
-		if( player == 0 || playerPool->playersVirtualWorlds[ playerID ] != currentVirtualWorld || player->getState( ) == 0 || player->getState( ) == PLAYER_STATE_SPECTACTING )
+
+		if( player && player->getState( ) != 0 && currentVirtualWorld == playerPool->playersVirtualWorlds[ playerID ] )
 		{
-			if( this->bisPlayerStreamedIn[ playerID ] )
-				streamOutPlayer( playerID );
-			continue;
+			if( player->getState( ) == PLAYER_STATE_PASSENGER )
+			{
+				//CVehicle* vehicle = 0;
+				//if( ( vehicle = vehiclePool->GetVehicle( player->currentVehicleID ) ) )
+				//{
+				//	if( vehicle->getSquaredDistanceFrom2DPoint( player->position.X, player->position.Y ) <= streamDistance )
+				//	{
+				//		if( isPlayerStreamedIn( playerID ) == false ) streamInPlayer( playerID );
+				//	}
+				//	else
+				//	{
+				//		if( isPlayerStreamedIn( playerID ) == true ) streamOutPlayer( playerID );
+				//	}
+				//}
+			}
+			else
+			{
+				if( getSquaredDistanceFrom2DPoint( player->position.X, player->position.Y ) <= streamDistance  )
+				{
+					if( isPlayerStreamedIn( playerID ) == false ) streamInPlayer( playerID );
+				}
+				else
+				{
+					if( isPlayerStreamedIn( playerID ) == true ) streamOutPlayer( playerID );
+				}
+			}
 		}
-
-		if( player->getState( ) != PLAYER_STATE_PASSENGER )
+		else
 		{
-			if( this->isPlayerStreamedIn( playerID ) )
-				streamOutPlayer( playerID );
-			continue;
+			streamOutPlayer( playerID );
 		}
+	}
 
-
-		//CVehicle* vehicle = 0;
-		//if( sub_47AB80( player->currentVehicleID ) && ( vehicle = vehiclePool->GetVehicle( player->currentVehicleID ) ) )
-		//{
-		//	float distance = vehicle->GetDistanceBetween2DPoint( this->position.X, this->position.Y );
-		//	if( distance <= streamDistance )
-		//	{
-		//		if( this->isPlayerStreamedIn( playerID ) == false )
-		//		{
-		//		//	sub_491410( playerID );
-		//			streamInPlayer( playerID );
-		//		}
-		//	}
-		//} 
-
-	} // Player process end
 
 
 	for( uint16_t text3dID = 0; text3dID < MAX_TEXT_LABELS; text3dID++ )
@@ -208,6 +214,15 @@ void CPlayer::ProcessStreaming( )
 			if( bisText3DLabelStreamedIn[ text3dID ] != 0 ) destroyText3DLabel( text3dID );
 		}
 	}
+
+
+	for( uint16_t pickupID = 0; pickupID < LIMIT_MAX_PICKUPS; pickupID++ )
+	{
+		
+
+	}
+
+
 }
 
 void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProcess )
@@ -221,15 +236,15 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 	{
 		if( forceStreamingProcess )
 		{
-			// this->sub_492400(  ); <----- StreamingProcess
+			ProcessStreaming( );
 		}
 		else
 		{
-			//if( GetElaspedTime( ) - this->unknown1AE4 > *(uint32_t*)0x4E6408 )
-			//{
-			//	// this->sub_492400(  ); <----- StreamingProcess
-			//	this->unknown1AE4 = GetElapsedTime( );
-			//}
+			if( __NetGame->GetTime( ) - this->lastStreaming > *(uint32_t*)0x4E6408 ) // 0x4E6408 = stream_rate
+			{
+				ProcessStreaming( );
+				this->lastStreaming = __NetGame->GetTime( );
+			}
 		}
 	}
 
@@ -238,40 +253,36 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 			C'est pas très clair mais ça le deviendra ...
 	*/
 
-	//if( GetElapsedTime( ) - this->unknown1A27 >= 5000 || this->GetDistanceFrom3DPoint( this->unknown1A2B ) <= *(float*)0x4E6404 )
+	if( __NetGame->GetTime( ) - this->unknown1A27 >= 5000 || this->GetDistanceFrom3DPoint( this->unknown1A2B ) <= *(float*)0x4E6404 ) // 0x4E6404 = stream_distance
+	{
+		this->unknown1A23 = 0;
+		// this->sub_492400( );
+	}
+
+	//if( this->bshowCheckpoint )
 	//{
-	//	this->unknown1A23 = 0;
-	//	// this->sub_492400( );
-	//	if( this->bshowCheckpoint )
+
+	//	if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
 	//	{
-
-	//		if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
+	//		if( this->isInCheckpoint != 0 )
 	//		{
-	//			if( this->isInCheckpoint != 0 )
-	//			{
-	//				this->isInCheckpoint = 0;
-	//				__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
-	//				if( __NetGame->gamemodeManager )
-	//					__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
-
-	//			}
-
-	//		}
-	//		else
-	//		{
-	//			if( this->isInCheckpoint == 0 )
-	//			{
-	//				this->isInCheckpoint = 1;
-	//				__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
-	//				if( __NetGame->gamemodeManager )
-	//					__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
-	//			}
-
+	//			this->isInCheckpoint = 0;
+	//			__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
+	//			if( __NetGame->gamemodeManager )
+	//				__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
 	//		}
 	//	}
-
+	//	else
+	//	{
+	//		if( this->isInCheckpoint == 0 )
+	//		{
+	//			this->isInCheckpoint = 1;
+	//			__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+	//			if( __NetGame->gamemodeManager )
+	//				__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+	//		}
+	//	}
 	//}
-
 	//if( this->bshowCheckpoint )
 	//{
 	//	if( this->GetDistanceFrom3DPoint( this->raceCheckpointPos ) >= this->raceCheckpointSize )
@@ -454,9 +465,9 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 	{
 		if( this->ioFileNPC )
 		{
-			//uint32_t timeElapsed = GetElapsedTime( ) - this->lastNPCWritingInFile;
-			//fwrite( &timeElapsed, 4, 1, this->ioFileNPC );
-			//fwrite( syncData, sizeof( ON_FOOT_SYNC ), 1, this->ioFileNPC );
+			uint32_t timeElapsed = __NetGame->GetTime( ) - this->lastNPCWritingInFile;
+			fwrite( &timeElapsed, 4, 1, this->ioFileNPC );
+			fwrite( syncData, sizeof( ON_FOOT_SYNC ), 1, this->ioFileNPC );
 		}
 	}
 
@@ -541,17 +552,8 @@ int CPlayer::startNPCRecordingData( int recordType, char* recordname )
 
 			fwrite( &version, 1, 4, this->ioFileNPC );
 			fwrite( &recordType, 1, 4, this->ioFileNPC );
-			uint32_t dwReturn = ( uint32_t )__NetGame, CNetGame__GetElapsedTime = 0x498A90;
-			_asm
-			{
-				pushad
-				mov ecx, dwReturn
-				call CNetGame__GetElapsedTime
-				mov dwReturn, eax
-				popad
-			}
 
-			lastNPCWritingInFile = dwReturn;
+			lastNPCWritingInFile = __NetGame->GetTime( );
 
 		}
 
@@ -608,6 +610,16 @@ float CPlayer::getSquaredDistanceFrom3DPoint( float x, float y, float z )
 		( this->position.Y - y ) * ( this->position.Y - y ) +
 		( this->position.Z - z ) * ( this->position.Z - z )
 		);
+}
+
+float CPlayer::getDistanceFrom2DPoint( float x, float y )
+{
+	return sqrt( getSquaredDistanceFrom2DPoint( x, y ) );
+}
+
+float CPlayer::getSquaredDistanceFrom2DPoint( float x, float y )
+{
+	return ( this->position.X - x ) * ( this->position.X - x ) + ( this->position.Y - y ) * ( this->position.Y - y );
 }
 
 bool CPlayer::isPlayerStreamedIn( _PlayerID playerID )

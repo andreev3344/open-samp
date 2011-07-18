@@ -28,7 +28,7 @@ typedef struct Vector_t
 typedef uint16_t	_PlayerID;
 
 #include "raknet/BitStream.h"
-
+#include "raknet/GetTime.h"
 
 extern int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
 extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
@@ -37,7 +37,7 @@ extern int ( __thiscall* CNetGame__RPC_SendToUnknown )( uint32_t a_NetGame, uint
 #define MAX_PLAYERS			500
 #define MAX_VEHICLES		2000
 #define MAX_TEXT_LABELS		1024
-
+#define LIMIT_MAX_PICKUPS	2048
 
 #include "object/class_menu.h"
 #include "object/class_object.h"

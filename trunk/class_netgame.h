@@ -106,7 +106,7 @@ public:
 	DWORD				spawnsNumber;						// + 0x0071	113
 	tSPAWNS				spawns[ MAX_SPAWNS ];				// + 0x0075	117
 
-
+	uint32_t GetTime( );
 
 
 	uint32_t			addSpawn( tSPAWNS spawn );

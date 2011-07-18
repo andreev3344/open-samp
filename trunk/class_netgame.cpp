@@ -12,7 +12,10 @@ CNetGame::~CNetGame( )
 }
 
 
-
+uint32_t CNetGame::GetTime( )
+{
+	return RakNet::GetTime( );
+}
 uint32_t CNetGame::addSpawn( tSPAWNS spawn )
 {
 	if( this->spawnsNumber >= MAX_SPAWNS ) return MAX_SPAWNS; // Pourquoi ? demandez à Kye :p

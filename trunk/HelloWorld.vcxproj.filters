@@ -60,6 +60,9 @@
     <ClCompile Include="script\amx\func_amx_players.cpp">
       <Filter>script\amx</Filter>
     </ClCompile>
+    <ClCompile Include="raknet\GetTime.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="script\amx\func_amx_players.h">
       <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\GetTime.h">
+      <Filter>raknet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

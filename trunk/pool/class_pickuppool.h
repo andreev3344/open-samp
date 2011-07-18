@@ -1,7 +1,7 @@
 #ifndef __CLASS_PICKUPPOOL_H_
 #define __CLASS_PICKUPPOOL_H_
 
-#define LIMIT_MAX_PICKUPS		2048
+
 
 typedef struct Pickup_t
 {
