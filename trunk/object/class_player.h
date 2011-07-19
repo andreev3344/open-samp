@@ -140,12 +140,12 @@ public:
 	uint8_t		playerState;							// + 0x0281	- 641
 	tVector		checkpointPosition;						// + 0x0282 - 0x28A
 	float		checkpointSize;							// + 0x028E
-	BOOL		bIsInCheckpoint;							// + 0x0292
+	BOOL		bIsInCheckpoint;						// + 0x0292
 	tVector		raceCheckpointPos;						// + 0x0296 - 0x29E
 	tVector		nextraceCheckpointPos;					// + 0x02A2 - 2AA
 	uint8_t		raceCheckpointType;						// + 0x02AE
 	float		raceCheckpointSize;						// + 0x02AF
-	BOOL		bIsInRaceCheckpoint;						// + 0x02B3
+	BOOL		bIsInRaceCheckpoint;					// + 0x02B3
 
 	uint32_t	unknown02B7;							// + 0x02B7
 	bool		bisPlayerStreamedIn[MAX_PLAYERS];		// + 0x02BB
@@ -199,6 +199,8 @@ public:
 	void*		playerVarsClass;						// + 0x1AF4
 
 
+
+	void SendTime( );
 	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
 
 	int showForPlayer( _PlayerID playerID );
@@ -213,7 +215,7 @@ public:
 
 
 	
-//	bool isObjectStreamIn( uint16_t objectID ); // Pour le futur streamer.
+//	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
 	bool isPickupStreamedIn( uint16_t pickupID );
 	bool isText3DLabelStreamedIn( uint16_t text3dID );
 	bool isPlayerStreamedIn( _PlayerID playerID );
@@ -250,7 +252,7 @@ public:
 	void setCheckpoint( tVector position, float size );
 	void showCheckpoint( bool show );
 
-
+	void	setMyID( _PlayerID playerID );
 	uint16_t getCurrentVehicleID( );
 
 	tVector* getCameraPosition( );

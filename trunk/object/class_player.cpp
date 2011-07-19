@@ -9,6 +9,15 @@ CPlayer::CPlayer( )
 CPlayer::~CPlayer( )
 {
 }
+
+void CPlayer::SendTime( )
+{
+	uint32_t RPC_SendTime = 0x94;
+	RakNet::BitStream bStream;
+	bStream.Write( ( uint32_t ) __NetGame->GetTime( ) );
+	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SendTime, &bStream, this->myPlayerID, 2 );
+}
+
 void CPlayer::ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID )
 {
 	if( 0 > objectID || objectID >= MAX_ATTACHED_OBJECT ) return;
@@ -736,6 +745,22 @@ float CPlayer::getFacingAngle( )
 
 void CPlayer::setState( uint8_t state )
 {
+	if( state != this->playerState )
+	{
+		uint8_t lastState = this->playerState;
+		this->playerState = state;
+
+		//if( __NetGame->filterscriptsManager )
+		//	__NetGame->filterscriptsManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
+		//if( __NetGame->gamemodeManager )
+		//	__NetGame->gamemodeManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
+	}
+	
+}
+
+void CPlayer::setMyID( _PlayerID playerID )
+{
+	this->myPlayerID;
 }
 
 uint8_t CPlayer::getState( )

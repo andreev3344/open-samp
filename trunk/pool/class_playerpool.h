@@ -7,19 +7,26 @@ class CPlayerPool
 #pragma pack( 1 )
 public:
 
-	BOOL		isCreated[ MAX_PLAYERS ];				// + 0x0000 - 0000
-	CPlayer*	player[ MAX_PLAYERS ];					// + 0x07D0	- 2000
-	char		nickNames[ MAX_PLAYERS ][ 0x19 ];		// + 0x0FA0 - 4000
-	BOOL		isPlayerAdmin[ MAX_PLAYERS ];			// + 0x4074 - 16500
-	uint32_t	playersVirtualWorlds[MAX_PLAYERS];		// + 0x4844 - 18500
-	BOOL		isPlayerNPC[ MAX_PLAYERS ];				// + 0x5014	- 20500			// Ouais je sais IsPlayerNPC c'est un peu contradictoire comme nom, mais si vous avez mieux ... gardez le pour vous :p
-	uint8_t		unk[0xC];								// + 0x57EE - 22510
-	uint32_t	playersScore[ MAX_PLAYERS ];			// + 0x57F0 - 22512
-	uint32_t	playersMoney[ MAX_PLAYERS ];			// + 0x5FC0 - 24512
-	uint32_t	drunkLevel[ MAX_PLAYERS ];				// + 0x6790 - 26512
+	BOOL		isCreated[ MAX_PLAYERS ];							// + 0x0000 - 0000
+	CPlayer*	player[ MAX_PLAYERS ];								// + 0x07D0	- 2000
+	char		nickNames[ MAX_PLAYERS ][ MAX_PLAYER_NAME+1 ];		// + 0x0FA0 - 4000
+	BOOL		isPlayerAdmin[ MAX_PLAYERS ];						// + 0x4074 - 16500
+	uint32_t	playersVirtualWorlds[MAX_PLAYERS];					// + 0x4844 - 18500
+	BOOL		isNPC[ MAX_PLAYERS ];								// + 0x5014	- 20500			// Ouais je sais IsPlayerNPC c'est un peu contradictoire comme nom, mais si vous avez mieux ... gardez le pour vous :p
+	uint32_t	playersCount;										// + 0x57E4	- 22500
+	uint8_t		unk[0x8];											// + 0x57E8 - 22504
+	uint32_t	playersScore[ MAX_PLAYERS ];						// + 0x57F0 - 22512
+	uint32_t	playersMoney[ MAX_PLAYERS ];						// + 0x5FC0 - 24512
+	uint32_t	drunkLevel[ MAX_PLAYERS ];							// + 0x6790 - 26512
+	char		unknown6F60[ MAX_PLAYERS ][ 0x64 ];					// + 0x6F60 - 28512
+
+
+	int New( _PlayerID playerID, const char* nickname, char* unknown, uint32_t isNPC = 0 );
 
 	int HidePlayerForPlayer( _PlayerID playerID, _PlayerID forPlayerID );
 	int	ShowPlayerForPlayer( _PlayerID forPlayerID, _PlayerID playerID  );
+
+	bool isNicknameUsed( char* nick );
 
 	bool GetSlotState( _PlayerID playerID );
 	CPlayer* GetPlayer( _PlayerID playerID );

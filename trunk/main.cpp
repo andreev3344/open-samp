@@ -73,6 +73,36 @@ void HookFunctionCall ( uint32_t a_uint32_Address, uint32_t a_uint32_Function )
 	*( uint32_t* )( a_uint32_Address + 0x01 ) = a_uint32_Function - ( a_uint32_Address + 5 );
 }
 
+
+//void __cdecl RPC_ClientJoin( RPCParameters* params )
+//{
+//	logprintf( "Un client à rejoint le serveur, it's now the time to read some information ;)" );
+//
+//	RakNet::BitStream bStream( params->input, params->numberOfBitsOfData / 8 + 1, false );
+//
+//	uint32_t value32;
+//	uint16_t value16;
+//	uint8_t value8;
+//	char str[ 256 ] = "";
+//
+//	bStream.Read( ( uint32_t ) value32 ); // NetGame version
+//	logprintf( "1st value %d 0x%X", value32, value32 );
+//	bStream.Read( ( uint8_t ) value8 ); // mod version ? correspond to 1 for San Andreas et 2 or 0 for Myriad ?
+//	logprintf( "2nd value %d 0x%X", value8, value8 );
+//	bStream.Read( ( uint8_t ) value8 ); // length of the nickname
+//	logprintf( "3rd value %d 0x%X", value8, value8 );
+//	bStream.Read( str, value8 ); // nickname
+//	logprintf( "4th value %s", str );
+//	bStream.Read( value32 );		// a random value
+//	logprintf( "5th value %d 0x%X", value32, value32 );
+//	bStream.Read( value8 );			// 43 ?!
+//	logprintf( "6th value %d 0x%X", value8, value8 );
+//
+//	__NetGame->playerPool->New( 0, str, "" );
+//
+//}
+
+
 PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData ) 
 {
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
@@ -80,8 +110,13 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
 	GetNetGame = (getNetGame_t)ppData[0xE1];
 
 	logprintf( "WE GONNA KILL YOU" );
-
 	
+	//uint32_t l_uint32_OldProtect = 0;
+ //   VirtualProtect ( ( LPVOID )0x004A0526, 4, PAGE_READWRITE, &l_uint32_OldProtect );
+
+
+	///* Seulement pour tester quelques petits truc ;) */
+	//*( uint32_t* )0x4A0526 = ( uint32_t ) RPC_ClientJoin;
 
 	__PickupPool = new CPickupPool();
 	__GangZonePool = new CGangZonePool();
