@@ -140,12 +140,12 @@ public:
 	uint8_t		playerState;							// + 0x0281	- 641
 	tVector		checkpointPosition;						// + 0x0282 - 0x28A
 	float		checkpointSize;							// + 0x028E
-	BOOL		isInCheckpoint;							// + 0x0292
+	BOOL		bIsInCheckpoint;							// + 0x0292
 	tVector		raceCheckpointPos;						// + 0x0296 - 0x29E
 	tVector		nextraceCheckpointPos;					// + 0x02A2 - 2AA
 	uint8_t		raceCheckpointType;						// + 0x02AE
 	float		raceCheckpointSize;						// + 0x02AF
-	BOOL		isInRaceCheckpoint;						// + 0x02B3
+	BOOL		bIsInRaceCheckpoint;						// + 0x02B3
 
 	uint32_t	unknown02B7;							// + 0x02B7
 	bool		bisPlayerStreamedIn[MAX_PLAYERS];		// + 0x02BB
@@ -202,19 +202,26 @@ public:
 	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
 
 	int showForPlayer( _PlayerID playerID );
-
 	void streamInPlayer( _PlayerID playerID );
 	void streamOutPlayer( _PlayerID playerID );
 
+
 	void ProcessStreaming( );
 	void CheckKeysUpdate( uint16_t keys );
-
-	int GetWeaponSlot( uint8_t weapon );
-
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
 
 
+	
+//	bool isObjectStreamIn( uint16_t objectID ); // Pour le futur streamer.
+	bool isPickupStreamedIn( uint16_t pickupID );
+	bool isText3DLabelStreamedIn( uint16_t text3dID );
+	bool isPlayerStreamedIn( _PlayerID playerID );
+	bool isVehicleStreamedIn( uint16_t vehicleID );
+
+
+
+	int GetWeaponSlot( uint8_t weapon );
 	uint16_t getSkillLevel( int skill );
 	void setSkillLevel( int skill, uint16_t level );
 
@@ -235,12 +242,11 @@ public:
 	float getDistanceFrom2DPoint( float x, float y );
 	float getSquaredDistanceFrom2DPoint( float x, float y );
 
-	bool isPlayerStreamedIn( _PlayerID playerID );
-	bool isVehicleStreamedIn( uint16_t vehicleID );
-
+	bool isInRaceCheckpoint( );
 	void setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size );
 	void showRaceCheckpoint( bool show );
 
+	bool isInCheckpoint( );
 	void setCheckpoint( tVector position, float size );
 	void showCheckpoint( bool show );
 

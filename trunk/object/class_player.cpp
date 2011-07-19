@@ -35,7 +35,7 @@ int CPlayer::showForPlayer( _PlayerID playerID )
 
 
 
-	bStream.Write( ( uint16_t ) this->unknown001E );
+	bStream.Write( ( uint16_t ) this->myPlayerID ); // <-- une erreur de ...
 	bStream.Write( ( uint8_t ) this->customSpawn.Team );
 	bStream.Write( ( uint8_t ) this->customSpawn.Skin );
 	bStream.Write( ( tVector ) this->position );
@@ -89,7 +89,7 @@ void CPlayer::streamOutPlayer( _PlayerID playerID )
 
 		if( this->bisPlayerStreamedIn[ playerID ] != 0 )
 		{
-			// le call ici
+			__NetGame->playerPool->HidePlayerForPlayer( playerID, this->myPlayerID );
 			this->bisPlayerStreamedIn[ playerID ] = 0;
 			this->StreamedInPlayers--;
 
@@ -177,7 +177,7 @@ void CPlayer::ProcessStreaming( )
 
 	for( uint16_t text3dID = 0; text3dID < MAX_TEXT_LABELS; text3dID++ )
 	{
-		bool isStreamedIn = ( this->bisText3DLabelStreamedIn[ text3dID ] ? true : false );
+		bool isStreamedIn = isText3DLabelStreamedIn( text3dID );
 		if( text3dlabelsPool->isCreated[ text3dID ] == 0 )
 		{
 			if( isStreamedIn == true )
@@ -252,11 +252,11 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 			Hé ouais, on peut retaper du code sans avoir le code source comme certains Trolls le pense ....
 			C'est pas très clair mais ça le deviendra ...
 	*/
-
+	// this->unknown1A2B // Place to be ?
 	if( __NetGame->GetTime( ) - this->unknown1A27 >= 5000 || this->GetDistanceFrom3DPoint( this->unknown1A2B ) <= *(float*)0x4E6404 ) // 0x4E6404 = stream_distance
 	{
 		this->unknown1A23 = 0;
-		// this->sub_492400( );
+		ProcessStreaming( );
 	}
 
 	//if( this->bshowCheckpoint )
@@ -264,9 +264,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 
 	//	if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
 	//	{
-	//		if( this->isInCheckpoint != 0 )
+	//		if( isInCheckpoint( ) )
 	//		{
-	//			this->isInCheckpoint = 0;
+	//			this->bIsInCheckpoint = 0;
 	//			__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
 	//			if( __NetGame->gamemodeManager )
 	//				__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
@@ -274,9 +274,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 	//	}
 	//	else
 	//	{
-	//		if( this->isInCheckpoint == 0 )
+	//		if( isInCheckpoint( ) == false )
 	//		{
-	//			this->isInCheckpoint = 1;
+	//			this->bIsInCheckpoint = 1;
 	//			__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
 	//			if( __NetGame->gamemodeManager )
 	//				__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
@@ -287,9 +287,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 	//{
 	//	if( this->GetDistanceFrom3DPoint( this->raceCheckpointPos ) >= this->raceCheckpointSize )
 	//	{
-	//		if( this->isInRaceCheckpoint != 0 ) 
+	//		if( this->isInRaceCheckpoint( ) ) 
 	//		{
-	//			this->isInRaceCheckpoint = 0;
+	//			this->bIsInRaceCheckpoint = 0;
 	//			__NetGame->filterscriptsManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
 	//			if( __NetGame->gamemodeManager )
 	//				__NetGame->gamemodeManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
@@ -297,9 +297,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 	//	}
 	//	else
 	//	{
-	//		if( this->isInRaceCheckpoint == 0 )
+	//		if( this->isInRaceCheckpoint( ) == false )
 	//		{
-	//			this->isInRaceCheckpoint = 1;
+	//			this->bIsInRaceCheckpoint = 1;
 	//			__NetGame->filterscriptsManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
 	//			if( __NetGame->gamemodeManager )
 	//				__NetGame->gamemodeManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
@@ -503,7 +503,6 @@ void CPlayer::setSkillLevel( int skill, uint16_t level )
 
 }
 
-
 int CPlayer::stopNPCRecordingData( )
 {
 
@@ -527,21 +526,16 @@ int CPlayer::startNPCRecordingData( int recordType, char* recordname )
 	if( recordname != 0 )
 	{
 		uint32_t recordname_len = strlen( recordname );
-		
 		char record[256] = "";
-
 		for( uint32_t i = 0, a = 0; i < recordname_len && a < 256; i++ )
 		{
 			if( recordname[i] == 0xFF ) break;
-
 			if( recordname[i] != '.' && recordname[i] != '/' && recordname[i] != '\\' )
 			{
 				record[a] = recordname[i];
 				a++;
 			}
-
 		}
-
 		char path[ 512 ] = "";
 		sprintf( path, "scriptfiles/%s.rec", record );
 
@@ -549,18 +543,12 @@ int CPlayer::startNPCRecordingData( int recordType, char* recordname )
 		if( this->ioFileNPC )
 		{
 			uint32_t version = 0x3E8;
-
 			fwrite( &version, 1, 4, this->ioFileNPC );
 			fwrite( &recordType, 1, 4, this->ioFileNPC );
-
 			lastNPCWritingInFile = __NetGame->GetTime( );
-
 		}
-
 		return 1;
-
 	}
-
 	return 0;
 }
 
@@ -635,6 +623,22 @@ bool CPlayer::isVehicleStreamedIn( uint16_t vehicleID )
 	return this->bisVehicleStreamedIn[ vehicleID ];
 }
 
+bool CPlayer::isPickupStreamedIn( uint16_t pickupID )
+{
+	if( 0 > pickupID || pickupID >= LIMIT_MAX_PICKUPS ) return false;
+	return this->bisPickupStreamedIn[ pickupID ];
+}
+bool CPlayer::isText3DLabelStreamedIn( uint16_t text3dID )
+{
+	if( 0 > text3dID  || text3dID  >= MAX_TEXT_LABELS ) return false;
+	return this->bisText3DLabelStreamedIn[ text3dID ];
+}
+
+bool CPlayer::isInRaceCheckpoint( )
+{
+	return ( this->bIsInRaceCheckpoint > 0 ? true : false );
+}
+
 void CPlayer::setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size )
 {
 	raceCheckpointPos = position;
@@ -649,7 +653,7 @@ void CPlayer::setRaceCheckpoint( uint8_t type, tVector position, tVector next_po
 void CPlayer::showRaceCheckpoint( bool show )
 {
 	bshowRaceCheckpoint = (BOOL)(show ? 1 : 0 );
-	isInRaceCheckpoint = 0;
+	bIsInRaceCheckpoint = 0;
 
 	uint32_t RPC_ShowOrHideThatIsTheQuestion = 0x00;
 	RakNet::BitStream bStream;
@@ -673,6 +677,11 @@ void CPlayer::showRaceCheckpoint( bool show )
 	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowOrHideThatIsTheQuestion, &bStream, this->myPlayerID, 2 );
 }
 
+bool CPlayer::isInCheckpoint( )
+{
+	return ( this->bIsInCheckpoint > 0 ? true : false );
+}
+
 void CPlayer::setCheckpoint( tVector position, float size )
 {
 	checkpointPosition = position;
@@ -683,7 +692,7 @@ void CPlayer::setCheckpoint( tVector position, float size )
 void CPlayer::showCheckpoint( bool show )
 {
 	this->bshowCheckpoint = (BOOL)( show ? 1 : 0 );
-	this->isInCheckpoint = 0;
+	this->bIsInCheckpoint = 0;
 
 	uint32_t RPC_ShowOrHideThatIsTheQuestion = 0x00;
 	RakNet::BitStream bStream;
