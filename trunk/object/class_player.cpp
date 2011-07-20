@@ -147,9 +147,9 @@ void CPlayer::ProcessStreaming( )
 		if( playerID == this->myPlayerID ) continue;
 		CPlayer* player = playerPool->GetPlayer( playerID );
 
-		if( player && player->getState( ) != 0 && currentVirtualWorld == playerPool->playersVirtualWorlds[ playerID ] )
+		if( player && player->isActive( ) && currentVirtualWorld == playerPool->playersVirtualWorlds[ playerID ] )
 		{
-			if( player->getState( ) == PLAYER_STATE_PASSENGER )
+			if( player->isPassenger( ) )
 			{
 				//CVehicle* vehicle = 0;
 				//if( ( vehicle = vehiclePool->GetVehicle( player->currentVehicleID ) ) )
@@ -767,6 +767,51 @@ uint8_t CPlayer::getState( )
 {
 	return this->playerState;
 }
+
+
+bool CPlayer::isActive( )
+{
+	if( getState( ) != PLAYER_STATE_NONE ) return true;
+	return false;
+}
+
+
+bool CPlayer::isDriving( )
+{
+	if( getState( ) == PLAYER_STATE_DRIVER ) return true;
+	return false;
+}
+
+bool CPlayer::isSpectating( )
+{
+	if( getState( ) == PLAYER_STATE_SPECTACTING ) return true;
+	return false;
+}
+
+bool CPlayer::isOnFoot( )
+{
+	if( getState( ) == PLAYER_STATE_ONFOOT ) return true;
+	return false;
+}
+
+bool CPlayer::isPassenger( )
+{
+	if( getState( ) == PLAYER_STATE_PASSENGER ) return true;
+	return false;
+}
+
+bool CPlayer::isWasted( )
+{
+	if( getState( ) == PLAYER_STATE_WASTED ) return true;
+	return false;
+}
+
+bool CPlayer::isSpawned( )
+{
+	if( getState( ) == PLAYER_STATE_SPAWNED ) return true;
+	return false;
+}
+
 
 float CPlayer::getHealth( )
 {

@@ -213,7 +213,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 			if( ( player = __NetGame->playerPool->GetPlayer( i ) ) > 0 )
 			{
 
-				if( player->getState( ) != PLAYER_STATE_SPECTACTING )
+				if( player->isSpectating( ) == false )
 				{
 
 					if( player->GetDistanceFrom3DPoint( x, y, z ) < drawDistance ) 

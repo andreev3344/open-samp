@@ -9,6 +9,56 @@ CPlayerPool::CPlayerPool( )
 CPlayerPool::~CPlayerPool( )
 {
 }
+
+int CPlayerPool::Delete( _PlayerID playerID, uint8_t reason )
+{
+	if( GetSlotState( playerID ) )
+	{
+		//if( __NetGame->filterscriptsManager ) 
+		//	__NetGame->filterscriptsManager->OnPlayerDisconnect( playerID, reason );
+		//if( __NetGame->gamemodeManager ) 
+		//	__NetGame->gamemodeManager->OnPlayerDisconnect( playerID, reason );
+
+		if( GetPlayer( playerID ) )
+		{
+			delete this->player[ playerID ];
+			this->player[ playerID ] = 0;
+		}
+
+		this->isCreated[ playerID ]			= 0;
+		this->isPlayerAdmin[ playerID ]		= 0;
+
+		uint32_t RPC_PlayerLeave = 0x63;
+		RakNet::BitStream bStream;
+		bStream.Write( ( _PlayerID ) playerID );
+		bStream.Write( ( uint8_t ) reason );
+
+		CNetGame__RPC_SendToEveryPlayer( ( uint32_t )__NetGame, &RPC_PlayerLeave, &bStream, playerID, 2 );
+
+		if( __NetGame->objectPool )
+		{
+			for( uint16_t objectID = 0; objectID < LIMIT_MAX_OBJECT; objectID ++ )
+			{
+				__NetGame->objectPool->Delete( playerID, objectID ); // Remove Player Objects
+			}
+		}
+
+		if( isNPC( playerID ) )
+		{
+			logprintf( "[npc:part] %s has left the server (%u:%u)", getPlayerNick( playerID ), playerID, reason );
+		}
+		else
+		{
+			logprintf( "[part] %s has left the server (%u:%u)", getPlayerNick( playerID ), playerID, reason );
+		}
+		this->bIsNPC[ playerID ] = 0;
+	}
+
+	this->playersCount--;
+
+	// this->sub_47C800( );
+}
+
 int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, uint32_t isNPC )
 {
 	if( playerID >= MAX_PLAYERS ) return 0;
@@ -37,7 +87,7 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, u
 	this->playersVirtualWorlds[ playerID ]	= 0;
 	this->drunkLevel[ playerID ]			= 0;
 
-	this->isNPC[ playerID ] = ( BOOL )( isNPC == 0 ? 0 : 1 );
+	this->bIsNPC[ playerID ] = ( BOOL )( isNPC == 0 ? 0 : 1 );
 
 	RakNet::BitStream bStream;
 	bStream.Write( ( uint16_t )playerID );
@@ -51,7 +101,7 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, u
 
 	//in_addr addr;
 	//addr.S_un.S_addr = __NetGame->rakServerInterface->GetPlayerIDFromIndex( playerID ).binaryAddress;
-	if( this->isNPC[ playerID ] )
+	if( this->bIsNPC[ playerID ] )
 	{
 		logprintf( "[npc:join] %s has joined the server (%u:%s)", nickname, playerID, "There is no ip address here !"/*inet_ntoa( addr )*/ );
 	}
@@ -70,6 +120,24 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, u
 	this->playersCount++;
 
 	//this->sub_47C800( );
+}
+
+bool CPlayerPool::isNPC( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return ( bool )( this->bIsNPC[ playerID ] != 0 ? true : false );
+	}
+	return false;
+}
+
+char* CPlayerPool::getPlayerNick( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return ( char* )this->nickNames[ playerID ];
+	}
+	return 0;
 }
 
 bool CPlayerPool::isNicknameUsed( char* nick )

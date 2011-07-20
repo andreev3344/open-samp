@@ -264,7 +264,13 @@ public:
 	void setState( uint8_t state );
 	uint8_t getState( );
 
-	
+	bool isActive( );
+	bool isDriving( );
+	bool isSpectating( );
+	bool isOnFoot( );
+	bool isPassenger( );
+	bool isWasted( );
+	bool isSpawned( );
 
 	float getHealth( );
 

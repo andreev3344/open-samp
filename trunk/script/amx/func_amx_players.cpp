@@ -51,7 +51,7 @@ cell AMX_NATIVE_CALL funcGetPlayerSurfingVehicleID ( AMX* a_AmxInterface, cell* 
 	if( player == 0 ) return 0xFFFF;
 
 
-	if( player->getState( ) == PLAYER_STATE_ONFOOT )
+	if( player->isOnFoot( ) )
 	{
 		return player->onFootSyncData.surfingVehicleID;
 	}
