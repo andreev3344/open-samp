@@ -16,9 +16,9 @@ bool CVehiclePool::GetSlotState( _VehicleID vehicleID )
 	return (bool)( this->isCreated[ vehicleID ] ? true : false );
 }
 
-CVehicle* CVehiclePool::GetVehicle( _VehicleID vehicleID )
+/*CVehicle**/void* CVehiclePool::GetVehicle( _VehicleID vehicleID )
 {
-	if( GetSlotState( vehicleID ) == false ) return (CVehicle*)0;
+	if( GetSlotState( vehicleID ) == false ) return (/*CVehicle**/void*)0;
 
 
 	return this->vehicles[ vehicleID ];

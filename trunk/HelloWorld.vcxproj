@@ -106,6 +106,7 @@
     <ClCompile Include="pool\class_playerpool.cpp" />
     <ClCompile Include="pool\class_text3dlabels.cpp" />
     <ClCompile Include="pool\class_textdrawpool.cpp" />
+    <ClCompile Include="pool\class_vehiclepool.cpp" />
     <ClCompile Include="raknet\BitStream.cpp" />
     <ClCompile Include="raknet\GetTime.cpp" />
     <ClCompile Include="script\amx\func_amx_gangzone.cpp" />
@@ -113,6 +114,8 @@
     <ClCompile Include="script\amx\func_amx_object.cpp" />
     <ClCompile Include="script\amx\func_amx_players.cpp" />
     <ClCompile Include="script\amx\func_amx_textdraw.cpp" />
+    <ClCompile Include="script\class_fsmanager.cpp" />
+    <ClCompile Include="script\class_gmmanager.cpp" />
     <ClCompile Include="script\func_amx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +139,7 @@
     <ClInclude Include="pool\class_playerpool.h" />
     <ClInclude Include="pool\class_text3dlabels.h" />
     <ClInclude Include="pool\class_textdrawpool.h" />
+    <ClInclude Include="pool\class_vehiclepool.h" />
     <ClInclude Include="raknet\BitStream.h" />
     <ClInclude Include="raknet\Export.h" />
     <ClInclude Include="raknet\GetTime.h" />
@@ -145,6 +149,8 @@
     <ClInclude Include="script\amx\func_amx_object.h" />
     <ClInclude Include="script\amx\func_amx_players.h" />
     <ClInclude Include="script\amx\func_amx_textdraw.h" />
+    <ClInclude Include="script\class_fsmanager.h" />
+    <ClInclude Include="script\class_gmmanager.h" />
     <ClInclude Include="script\func_amx.h" />
   </ItemGroup>
   <ItemGroup>

@@ -63,6 +63,15 @@
     <ClCompile Include="raknet\GetTime.cpp">
       <Filter>raknet</Filter>
     </ClCompile>
+    <ClCompile Include="script\class_fsmanager.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_gmmanager.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_vehiclepool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -164,6 +173,15 @@
     </ClInclude>
     <ClInclude Include="raknet\GetTime.h">
       <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_fsmanager.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_gmmanager.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_vehiclepool.h">
+      <Filter>pool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -71,7 +71,7 @@ public:
 	CPickupPool*		pickupPool;							// + 0x0010 16
 	CObjectPool*		objectPool;							// + 0x0014 20
 	CGamemodeManager*	gamemodeManager;					// + 0x0018 24
-	CFilterscriptsManager* filterscriptsManager;				// + 0x001C 28
+	CFilterscriptsManager* filterscriptsManager;			// + 0x001C 28
 	CMenuPool*			menuPool;							// + 0x0020 32
 	CTextDrawPool*		textDrawPool;						// + 0x0024 36
 	CGangZonePool*		gangZonePool;						// + 0x0028 40

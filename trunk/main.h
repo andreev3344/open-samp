@@ -62,7 +62,7 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayerVehicle )( uint32_t a_NetGame
 #include "object/class_menu.h"
 #include "object/class_object.h"
 #include "object/class_player.h"
-#include "object/class_vehicle.h"
+//#include "object/class_vehicle.h"
 
 
 #include "pool/class_pickuppool.h"

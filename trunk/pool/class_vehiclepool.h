@@ -7,12 +7,13 @@ class CVehiclePool
 public:
 
 	BOOL		isCreated[MAX_VEHICLES];
-	CVehicle*	vehicles[MAX_VEHICLES];
+	//CVehicle*	vehicles[MAX_VEHICLES];
+	void*		vehicles[MAX_VEHICLES];
 	uint32_t	vehiclesVirtualWorlds[MAX_VEHICLES];
 	uint8_t		modelsUsed[212];
 
 	bool GetSlotState( _VehicleID playerID );
-	CVehicle* GetVehicle( _VehicleID playerID );
+	/*CVehicle**/void* GetVehicle( _VehicleID playerID );
 
 	CVehiclePool( );
 	~CVehiclePool( );

@@ -80,10 +80,10 @@ void CPlayer::streamInPlayer( _PlayerID playerID )
 			this->bisPlayerStreamedIn[ playerID ] ++;
 			this->StreamedInPlayers++;
 
-			//if( __NetGame->filterscriptsManager )
-			//	__NetGame->filterscriptsManager->OnPlayerStreamedIn( playerID, this->myPlayerID );
-			//if( __NetGame->gamemodeManager )
-			//	__NetGame->gamemodeManager->OnPlayerStreamedIn( playerID, this->myPlayerID );
+			if( __NetGame->filterscriptsManager )
+				__NetGame->filterscriptsManager->OnPlayerStreamIn( playerID, this->myPlayerID );
+			if( __NetGame->gamemodeManager )
+				__NetGame->gamemodeManager->OnPlayerStreamIn( playerID, this->myPlayerID );
 		}
 	
 
@@ -102,10 +102,10 @@ void CPlayer::streamOutPlayer( _PlayerID playerID )
 			this->bisPlayerStreamedIn[ playerID ] = 0;
 			this->StreamedInPlayers--;
 
-			//if( __NetGame->filterscriptsManager )
-			//	__NetGame->filterscriptsManager->OnPlayerStreamOut( playerID, this->myPlayerID );
-			//if( __NetGame->gamemodeManager )
-			//	__NetGame->gamemodeManager->OnPlayerStreamOut( playerID, this->myPlayerID );
+			if( __NetGame->filterscriptsManager )
+				__NetGame->filterscriptsManager->OnPlayerStreamOut( playerID, this->myPlayerID );
+			if( __NetGame->gamemodeManager )
+				__NetGame->gamemodeManager->OnPlayerStreamOut( playerID, this->myPlayerID );
 
 
 		}
@@ -268,53 +268,53 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 		ProcessStreaming( );
 	}
 
-	//if( this->bshowCheckpoint )
-	//{
+	if( this->bshowCheckpoint )
+	{
 
-	//	if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
-	//	{
-	//		if( isInCheckpoint( ) )
-	//		{
-	//			this->bIsInCheckpoint = 0;
-	//			__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
-	//			if( __NetGame->gamemodeManager )
-	//				__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if( isInCheckpoint( ) == false )
-	//		{
-	//			this->bIsInCheckpoint = 1;
-	//			__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
-	//			if( __NetGame->gamemodeManager )
-	//				__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
-	//		}
-	//	}
-	//}
-	//if( this->bshowCheckpoint )
-	//{
-	//	if( this->GetDistanceFrom3DPoint( this->raceCheckpointPos ) >= this->raceCheckpointSize )
-	//	{
-	//		if( this->isInRaceCheckpoint( ) ) 
-	//		{
-	//			this->bIsInRaceCheckpoint = 0;
-	//			__NetGame->filterscriptsManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
-	//			if( __NetGame->gamemodeManager )
-	//				__NetGame->gamemodeManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if( this->isInRaceCheckpoint( ) == false )
-	//		{
-	//			this->bIsInRaceCheckpoint = 1;
-	//			__NetGame->filterscriptsManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
-	//			if( __NetGame->gamemodeManager )
-	//				__NetGame->gamemodeManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
-	//		}
-	//	}
-	//}
+		if( this->GetDistanceFrom3DPoint( checkpointPosition ) >= this->checkpointSize )
+		{
+			if( isInCheckpoint( ) )
+			{
+				this->bIsInCheckpoint = 0;
+				__NetGame->filterscriptsManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
+				if( __NetGame->gamemodeManager )
+					__NetGame->gamemodeManager->OnPlayerLeaveCheckpoint( this->myPlayerID );
+			}
+		}
+		else
+		{
+			if( isInCheckpoint( ) == false )
+			{
+				this->bIsInCheckpoint = 1;
+				__NetGame->filterscriptsManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+				if( __NetGame->gamemodeManager )
+					__NetGame->gamemodeManager->OnPlayerEnterCheckpoint( this->myPlayerID );
+			}
+		}
+	}
+	if( this->bshowCheckpoint )
+	{
+		if( this->GetDistanceFrom3DPoint( this->raceCheckpointPos ) >= this->raceCheckpointSize )
+		{
+			if( this->isInRaceCheckpoint( ) ) 
+			{
+				this->bIsInRaceCheckpoint = 0;
+				__NetGame->filterscriptsManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
+				if( __NetGame->gamemodeManager )
+					__NetGame->gamemodeManager->OnPlayerLeaveRaceCheckpoint( this->myPlayerID );
+			}
+		}
+		else
+		{
+			if( this->isInRaceCheckpoint( ) == false )
+			{
+				this->bIsInRaceCheckpoint = 1;
+				__NetGame->filterscriptsManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
+				if( __NetGame->gamemodeManager )
+					__NetGame->gamemodeManager->OnPlayerEnterRaceCheckpoint( this->myPlayerID );
+			}
+		}
+	}
 
 }
 
@@ -324,9 +324,9 @@ void CPlayer::CheckKeysUpdate( uint16_t keys )
 	{
 		
 		if( __NetGame->gamemodeManager )
-//			__NetGame->gamemodeManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
+			__NetGame->gamemodeManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
 		if( __NetGame->filterscriptsManager )
-//			__NetGame->filterscriptsManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
+			__NetGame->filterscriptsManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
 
 		this->lastKeysState = keys;
 	}
@@ -477,6 +477,47 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 			uint32_t timeElapsed = __NetGame->GetTime( ) - this->lastNPCWritingInFile;
 			fwrite( &timeElapsed, 4, 1, this->ioFileNPC );
 			fwrite( syncData, sizeof( ON_FOOT_SYNC ), 1, this->ioFileNPC );
+		}
+	}
+
+
+}
+
+
+
+void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
+{
+
+	
+	if( __NetGame->vehiclePool )
+	{
+		if( syncData->vehicleID < MAX_VEHICLES && isVehicleStreamedIn( syncData->vehicleID ) )
+		{
+			this->currentVehicleID		= syncData->vehicleID;
+			this->currentSeatinVehicle	= 0;
+			memcpy( &onVehicleSyncData, syncData, 0x3C );
+
+			UpdatePosition( syncData->position.X, syncData->position.Y, syncData->position.Z, false );
+
+			int slot = GetWeaponSlot( syncData->playerWeapon );
+			if( slot == -1 )
+			{
+				this->onFootSyncData.weapon = 0;
+			}
+			else
+			{
+				this->weaponInSlot[ slot ] = this->onFootSyncData.weapon;
+				this->currentWeapon = this->onFootSyncData.weapon;
+			}
+		
+			this->SyncingDataType = 2;
+			
+			if( this->currentVehicleID < MAX_VEHICLES )
+			{
+				/*CVehicle**/void* vehicle = __NetGame->vehiclePool->GetVehicle( this->currentVehicleID );
+
+			}
+
 		}
 	}
 
@@ -750,10 +791,10 @@ void CPlayer::setState( uint8_t state )
 		uint8_t lastState = this->playerState;
 		this->playerState = state;
 
-		//if( __NetGame->filterscriptsManager )
-		//	__NetGame->filterscriptsManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
-		//if( __NetGame->gamemodeManager )
-		//	__NetGame->gamemodeManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
+		if( __NetGame->filterscriptsManager )
+			__NetGame->filterscriptsManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
+		if( __NetGame->gamemodeManager )
+			__NetGame->gamemodeManager->OnPlayerStateChange( this->myPlayerID, state, lastState );
 	}
 	
 }

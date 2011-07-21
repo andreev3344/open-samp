@@ -68,7 +68,7 @@ typedef struct ON_FOOT_SYNC_t // size 0x44
 
 
 
-typedef struct ON_VEHICLE_SYNC_t // size 0x3F
+typedef struct IN_VEHICLE_SYNC_t // size 0x3F
 {
 #pragma pack( 1 )
 	uint16_t	vehicleID;								// + 0x0000
@@ -212,7 +212,7 @@ public:
 	void CheckKeysUpdate( uint16_t keys );
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
-
+	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
 
 	
 //	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
