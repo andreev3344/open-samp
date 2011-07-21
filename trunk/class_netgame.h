@@ -66,12 +66,12 @@ class CNetGame // size 0x0365D
 public:
 	void*				rakServerInterface;					// + 0x0000	0
 	CPlayerPool*		playerPool;							// + 0x0004 4
-	void*				vehiclePool;						// + 0x0008 8
+	CVehiclePool*		vehiclePool;						// + 0x0008 8
 	CText3DLabels*		text3DLabelsPool;					// + 0x000C 12
 	CPickupPool*		pickupPool;							// + 0x0010 16
 	CObjectPool*		objectPool;							// + 0x0014 20
-	void*				gamemodeManager;					// + 0x0018 24
-	void*				filterscriptsManager;				// + 0x001C 28
+	CGamemodeManager*	gamemodeManager;					// + 0x0018 24
+	CFilterscriptsManager* filterscriptsManager;				// + 0x001C 28
 	CMenuPool*			menuPool;							// + 0x0020 32
 	CTextDrawPool*		textDrawPool;						// + 0x0024 36
 	CGangZonePool*		gangZonePool;						// + 0x0028 40

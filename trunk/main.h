@@ -22,10 +22,21 @@ typedef struct Vector_t
 	float X, Y, Z;
 } tVector;
 
-
+typedef struct _MATRIX4X4
+{
+	tVector  right;
+	DWORD   flags;
+	tVector  up;
+	float   pad_u;
+	tVector  at;
+	float   pad_a;
+	tVector  pos;
+	float   pad_p;
+} MATRIX4X4, *PMATRIX4X4;
 
 
 typedef uint16_t	_PlayerID;
+typedef uint16_t	_VehicleID;
 
 #include "raknet/BitStream.h"
 #include "raknet/GetTime.h"
@@ -33,6 +44,8 @@ typedef uint16_t	_PlayerID;
 extern int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
 extern int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
 extern int ( __thiscall* CNetGame__RPC_SendToUnknown )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown );
+extern int ( __thiscall* CNetGame__RPC_SendToPlayerVehicle )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint16_t a_Exclude, uint32_t a_Unknown );
+
 
 #define MAX_PLAYER_NAME		0x18
 #define MAX_PLAYERS			500
@@ -40,9 +53,16 @@ extern int ( __thiscall* CNetGame__RPC_SendToUnknown )( uint32_t a_NetGame, uint
 #define MAX_TEXT_LABELS		1024
 #define LIMIT_MAX_PICKUPS	2048
 
+
+#include "script/class_gmmanager.h"
+#include "script/class_fsmanager.h"
+
+
+
 #include "object/class_menu.h"
 #include "object/class_object.h"
 #include "object/class_player.h"
+#include "object/class_vehicle.h"
 
 
 #include "pool/class_pickuppool.h"
@@ -52,6 +72,7 @@ extern int ( __thiscall* CNetGame__RPC_SendToUnknown )( uint32_t a_NetGame, uint
 #include "pool/class_objectpool.h"
 #include "pool/class_menupool.h"
 #include "pool/class_playerpool.h"
+#include "pool/class_vehiclepool.h"
 
 #include "class_netgame.h"
 

@@ -27,6 +27,7 @@ getNetGame_t GetNetGame;
 int ( __thiscall* CNetGame__RPC_SendToEveryPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499020;
 int ( __thiscall* CNetGame__RPC_SendToPlayer )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x00499240;
 int ( __thiscall* CNetGame__RPC_SendToUnknown )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint32_t ) )0x004990D0;
+int ( __thiscall* CNetGame__RPC_SendToPlayerVehicle )( uint32_t a_NetGame, uint32_t* a_Rpc, RakNet::BitStream* a_BitStream, uint16_t a_Broadcast, uint16_t a_Exclude, uint32_t a_Unknown ) = ( int ( __thiscall* )( uint32_t, uint32_t*, RakNet::BitStream*, uint16_t, uint16_t, uint32_t ) )0x00499180;
 
 void **ppPluginData;
 extern void *pAMXFunctions;
@@ -93,10 +94,11 @@ void HookFunctionCall ( uint32_t a_uint32_Address, uint32_t a_uint32_Function )
 //	logprintf( "3rd value %d 0x%X", value8, value8 );
 //	bStream.Read( str, value8 ); // nickname
 //	logprintf( "4th value %s", str );
-//	bStream.Read( value32 );		// a random value
+//	bStream.Read( value32 );		// server ticket
 //	logprintf( "5th value %d 0x%X", value32, value32 );
-//	bStream.Read( value8 );			// 43 ?!
+//	bStream.Read( value8 );			// serial len
 //	logprintf( "6th value %d 0x%X", value8, value8 );
+//									// serial
 //
 //	__NetGame->playerPool->New( 0, str, "" );
 //
