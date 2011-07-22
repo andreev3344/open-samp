@@ -121,7 +121,7 @@ uint32_t CGamemodeManager::OnPlayerText(cell playerid, unsigned char * szText)
 	}
 
 	if (ret && __NetGame->playerPool->GetSlotState((_PlayerID)playerid)) {
-		//__NetGame->playerPool->GetPlayer((_PlayerID)playerid)->Say(szText, strlen((char*)szText));
+		__NetGame->playerPool->GetPlayer((_PlayerID)playerid)->Say((char*)szText, strlen((char*)szText));
 	}
 
 	return (uint32_t)ret;
@@ -149,20 +149,20 @@ uint32_t CGamemodeManager::OnPlayerCommandText(cell playerid, unsigned char * sz
 	return (uint32_t)ret;
 }
 
-uint32_t CGamemodeManager::OnPlayerInfoChange(cell playerid)
-{
-	if (!gmIsInit) return 0;
-
-	int idx;
-	cell ret = 0;
-
-	if (!amx_FindPublic(&gmAMX, "OnPlayerInfoChange", &idx))
-	{
-		amx_Push(&gmAMX, playerid);
-		amx_Exec(&gmAMX, &ret, idx);
-	}
-	return (uint32_t)ret;
-}
+//uint32_t CGamemodeManager::OnPlayerInfoChange(cell playerid)
+//{
+//	if (!gmIsInit) return 0;
+//
+//	int idx;
+//	cell ret = 0;
+//
+//	if (!amx_FindPublic(&gmAMX, "OnPlayerInfoChange", &idx))
+//	{
+//		amx_Push(&gmAMX, playerid);
+//		amx_Exec(&gmAMX, &ret, idx);
+//	}
+//	return (uint32_t)ret;
+//}
 
 uint32_t CGamemodeManager::OnPlayerRequestClass(cell playerid, cell classid)
 {

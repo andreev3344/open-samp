@@ -222,25 +222,25 @@ uint32_t CFilterscriptsManager::OnPlayerCommandText(cell playerid, unsigned char
 	}
 	return (uint32_t)ret;
 }
-
-uint32_t CFilterscriptsManager::OnPlayerInfoChange(cell playerid)
-{
-	int idx;
-	cell ret = 0;
-
-	for (uint32_t i=0; i < MAX_FS; i++)
-	{
-		if (fsAMX[i])
-		{
-			if (!amx_FindPublic(fsAMX[i], "OnPlayerInfoChange", &idx))
-			{
-				amx_Push(fsAMX[i], playerid);
-				amx_Exec(fsAMX[i], &ret, idx);
-			}
-		}
-	}
-	return (uint32_t)ret;
-}
+//
+//uint32_t CFilterscriptsManager::OnPlayerInfoChange(cell playerid)
+//{
+//	int idx;
+//	cell ret = 0;
+//
+//	for (uint32_t i=0; i < MAX_FS; i++)
+//	{
+//		if (fsAMX[i])
+//		{
+//			if (!amx_FindPublic(fsAMX[i], "OnPlayerInfoChange", &idx))
+//			{
+//				amx_Push(fsAMX[i], playerid);
+//				amx_Exec(fsAMX[i], &ret, idx);
+//			}
+//		}
+//	}
+//	return (uint32_t)ret;
+//}
 
 uint32_t CFilterscriptsManager::OnPlayerRequestClass(cell playerid, cell classid)
 {

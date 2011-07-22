@@ -21,7 +21,7 @@ public:
 	uint32_t OnVehicleDeath(cell vehicleid, cell killerid);
 	uint32_t OnPlayerText(cell playerid, unsigned char * szText);
 	uint32_t OnPlayerCommandText(cell playerid, unsigned char * szCommandText);
-	uint32_t OnPlayerInfoChange(cell playerid);
+	//uint32_t OnPlayerInfoChange(cell playerid);
 	uint32_t OnPlayerRequestClass(cell playerid, cell classid);
 	uint32_t OnPlayerRequestSpawn(cell playerid);
 	uint32_t OnPlayerEnterVehicle(cell playerid, cell vehicleid, cell ispassenger);

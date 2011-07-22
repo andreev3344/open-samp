@@ -93,16 +93,16 @@ public:
 	DWORD				deathDropAmount;					// + 0x0055	85
 	DWORD				allowAdminTeleport;					// + 0x0059	89
 	bool				enableZoneName;						// + 0x005D	93
-	bool				blimitGlobalChatRadius;				// + 0x005E	94
-	bool				usePlayerPedAnims;					// + 0x005F	95
-	float				dlimitGlobalChatRadius;				// + 0x0060	96
-	float				nameTagDrawDistance;				// + 0x0064	100
-	bool				disableInteriorEnterExit;			// + 0x0068	104
-	bool				disableNameTagLineOfSight;			// + 0x0069	105
-	bool				useManualVehicleEngineAndLight;		// + 0x006A	106
-	bool				bLimitPlayerMarkerRadius;			// + 0x006B	107
-	float				dlimitPlayerMarkerRadius;			// + 0x006C	108
-	BYTE				unknown003;							// + 0x0070	112
+	BYTE				fuckingUnknownBYTE;					// + 0x005E 94
+	bool				blimitGlobalChatRadius;				// + 0x005F	95
+	bool				usePlayerPedAnims;					// + 0x0060	96
+	float				dlimitGlobalChatRadius;				// + 0x0061	97
+	float				nameTagDrawDistance;				// + 0x0065	101
+	bool				disableInteriorEnterExit;			// + 0x0069	105
+	bool				disableNameTagLineOfSight;			// + 0x006A	106
+	bool				useManualVehicleEngineAndLight;		// + 0x006B	107
+	bool				bLimitPlayerMarkerRadius;			// + 0x006C	108
+	float				dlimitPlayerMarkerRadius;			// + 0x006D	109
 	DWORD				spawnsNumber;						// + 0x0071	113
 	tSPAWNS				spawns[ MAX_SPAWNS ];				// + 0x0075	117
 

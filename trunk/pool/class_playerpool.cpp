@@ -10,14 +10,20 @@ CPlayerPool::~CPlayerPool( )
 {
 }
 
+float CPlayerPool::GetDistanceBetweenPlayers( _PlayerID player_one, _PlayerID player_two )
+{
+	if( GetSlotState( player_one ) == false || GetSlotState( player_two ) ) return 0.0f;
+	return GetPlayer( player_one )->GetDistanceFrom3DPoint( *GetPlayer( player_two )->getPosition( ) );
+}
+
 int CPlayerPool::Delete( _PlayerID playerID, uint8_t reason )
 {
 	if( GetSlotState( playerID ) )
 	{
-		//if( __NetGame->filterscriptsManager ) 
-		//	__NetGame->filterscriptsManager->OnPlayerDisconnect( playerID, reason );
-		//if( __NetGame->gamemodeManager ) 
-		//	__NetGame->gamemodeManager->OnPlayerDisconnect( playerID, reason );
+		if( __NetGame->filterscriptsManager ) 
+			__NetGame->filterscriptsManager->OnPlayerDisconnect( playerID, reason );
+		if( __NetGame->gamemodeManager ) 
+			__NetGame->gamemodeManager->OnPlayerDisconnect( playerID, reason );
 
 		if( GetPlayer( playerID ) )
 		{
@@ -59,7 +65,7 @@ int CPlayerPool::Delete( _PlayerID playerID, uint8_t reason )
 	// this->sub_47C800( );
 }
 
-int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, uint32_t isNPC )
+int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* serial, uint32_t isNPC )
 {
 	if( playerID >= MAX_PLAYERS ) return 0;
 	if( strlen( nickname ) > MAX_PLAYER_NAME ) return 0; // au pire je peux aussi couper le pseudo au 0x18ème caractère.
@@ -68,12 +74,12 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, u
 
 	this->player[ playerID ] = new CPlayer(  );
 	strcpy( this->nickNames[ playerID ], nickname );
-	memset( ( void* )&this->unknown6F60[ playerID ], 0x00, 0x64 );
+	memset( ( void* )&this->playersSerial[ playerID ], 0x00, 0x64 );
 
-	if( unknown != 0 )
+	if( serial != 0 )
 	{
-		if( strlen( unknown )  >= 0x64 ) return 0; // ?!
-		strcpy( this->unknown6F60[ playerID ], unknown ); // ?!
+		if( strlen( serial )  >= 0x64 ) return 0; // ?!
+		strcpy( this->playersSerial[ playerID ], serial ); // ?!
 	}
 	CPlayer* player = this->player[ playerID ];
 	
@@ -112,10 +118,10 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* unknown, u
 
 	player->SendTime( );
 
-	//if( __NetGame->filterscriptsManager )
-	//	__NetGame->filterscriptsManager->OnPlayerConnect( PlayerID );
-	//if( __NetGame->gamemodeManager )
-	//	__NetGame->gamemodeManager->OnPlayerConnect( PlayerID );
+	if( __NetGame->filterscriptsManager )
+		__NetGame->filterscriptsManager->OnPlayerConnect( playerID );
+	if( __NetGame->gamemodeManager )
+		__NetGame->gamemodeManager->OnPlayerConnect( playerID );
 
 	this->playersCount++;
 

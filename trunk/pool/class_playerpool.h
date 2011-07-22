@@ -18,10 +18,13 @@ public:
 	uint32_t	playersScore[ MAX_PLAYERS ];						// + 0x57F0 - 22512
 	uint32_t	playersMoney[ MAX_PLAYERS ];						// + 0x5FC0 - 24512
 	uint32_t	drunkLevel[ MAX_PLAYERS ];							// + 0x6790 - 26512
-	char		unknown6F60[ MAX_PLAYERS ][ 0x64 ];					// + 0x6F60 - 28512
+	char		playersSerial[ MAX_PLAYERS ][ 0x64 ];				// + 0x6F60 - 28512
 
 
-	int New( _PlayerID playerID, const char* nickname, char* unknown, uint32_t isNPC = 0 );
+
+	float GetDistanceBetweenPlayers( _PlayerID player_one, _PlayerID player_two );
+
+	int New( _PlayerID playerID, const char* nickname, char* serial, uint32_t isNPC = 0 );
 	int Delete( _PlayerID playerID, uint8_t reason );
 
 

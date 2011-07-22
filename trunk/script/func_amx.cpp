@@ -922,7 +922,7 @@ cell AMX_NATIVE_CALL funcResetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params 
 cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params )
 {
 
-	logprintf ( "[Call]-> funcGetPlayerState()" );
+	//logprintf ( "[Call]-> funcGetPlayerState()" );
 	return _funcGetPlayerState ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcResetPlayerWeapons ( AMX* a_AmxInterface, cell* a_Params )

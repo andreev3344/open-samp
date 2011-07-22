@@ -40,6 +40,40 @@ CMenuPool*	__MenuPool	= NULL;
 
 CNetGame* __NetGame = NULL;
 
+void QuaternionToMatrix( float &quaterW, float &quaterX, float &quaterY, float &quaterZ, tVector* right, tVector* up, tVector* at )
+{
+	float SquarredQuaterW = 0.0f, SquarredQuaterX = 0.0f, SquarredQuaterY = 0.0f, SquarredQuaterZ = 0.0f;
+
+	SquarredQuaterW = quaterW * quaterW;
+	SquarredQuaterX = quaterX * quaterX;
+	SquarredQuaterY = quaterY * quaterY;
+	SquarredQuaterZ = quaterZ * quaterZ;
+	right->X	= SquarredQuaterX - SquarredQuaterY - SquarredQuaterZ + SquarredQuaterW;
+	up->Y		= SquarredQuaterY - SquarredQuaterX - SquarredQuaterZ + SquarredQuaterW;
+	at->Z		= SquarredQuaterZ - (SquarredQuaterY + SquarredQuaterX) + SquarredQuaterW;
+
+	float multXY = quaterX * quaterY;
+	float multWZ = quaterW * quaterZ;
+	up->X		= multWZ + multXY + multWZ + multXY;
+	right->Y	= multXY - multWZ + multXY - multWZ;
+
+	float multXZ = quaterX * quaterZ;
+	float multWY = quaterW * quaterY;
+	at->X		= multXZ - multWY + multXZ - multWY;
+	right->Z	= multWY + multXZ + multWY + multXZ;
+
+	float multYZ = quaterY * quaterZ;
+	float multWX = quaterW * quaterX;
+	at->Y = multWX + multYZ + multWX + multYZ;
+	up->Z = multYZ - multWX + multYZ - multWX;
+}
+
+void QuaternionToMatrix( tQuaternionVector* quaternion, MATRIX4X4* matrix )
+{
+	QuaternionToMatrix( quaternion->W, quaternion->X, quaternion->Y, quaternion->Z,
+		&matrix->right, &matrix->up, &matrix->at );
+}
+
 //----------------------------------------------------------
 // The Support() function indicates what possibilities this
 // plugin has. The SUPPORTS_VERSION flag is required to check
@@ -77,7 +111,7 @@ void HookFunctionCall ( uint32_t a_uint32_Address, uint32_t a_uint32_Function )
 
 //void __cdecl RPC_ClientJoin( RPCParameters* params )
 //{
-//	logprintf( "Un client à rejoint le serveur, it's now the time to read some information ;)" );
+//	logprintf( "Un client à rejoint le serveur, it's now the time to read some informations ;)" );
 //
 //	RakNet::BitStream bStream( params->input, params->numberOfBitsOfData / 8 + 1, false );
 //
@@ -98,7 +132,9 @@ void HookFunctionCall ( uint32_t a_uint32_Address, uint32_t a_uint32_Function )
 //	logprintf( "5th value %d 0x%X", value32, value32 );
 //	bStream.Read( value8 );			// serial len
 //	logprintf( "6th value %d 0x%X", value8, value8 );
-//									// serial
+//	bStream.Read( str, value8 );	// serial
+//	logprintf( "7th value %s\n", str );
+//	
 //
 //	__NetGame->playerPool->New( 0, str, "" );
 //
@@ -117,7 +153,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
  //   VirtualProtect ( ( LPVOID )0x004A0526, 4, PAGE_READWRITE, &l_uint32_OldProtect );
 
 
-	///* Seulement pour tester quelques petits truc ;) */
+	/* Seulement pour tester quelques petits truc ;) */
 	//*( uint32_t* )0x4A0526 = ( uint32_t ) RPC_ClientJoin;
 
 	__PickupPool = new CPickupPool();

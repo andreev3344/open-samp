@@ -9,6 +9,41 @@ CPlayer::CPlayer( )
 CPlayer::~CPlayer( )
 {
 }
+void CPlayer::Say( char* text, uint8_t len )
+{
+	RakNet::BitStream bStream;
+	bStream.Write( ( _PlayerID ) this->myPlayerID );
+	bStream.Write( ( uint8_t ) len );
+	bStream.Write( ( char*) text, len );
+
+	uint32_t RPC_AddPlayerMessage = 0x7D;
+
+	if( __NetGame->blimitGlobalChatRadius )
+	{
+	
+		for( _PlayerID playerID = 0; playerID < MAX_PLAYERS; playerID ++ )
+		{
+			if( this->myPlayerID == playerID ) continue;
+
+			if( __NetGame->playerPool->GetSlotState( playerID ) )
+			{
+				float distance = __NetGame->playerPool->GetDistanceBetweenPlayers( this->myPlayerID, playerID );
+				if( distance <= __NetGame->dlimitGlobalChatRadius )
+				{
+					CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AddPlayerMessage, &bStream, playerID, 3 );
+				}
+			}
+		}
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AddPlayerMessage, &bStream, this->myPlayerID, 3 );
+	
+	}
+	else
+	{
+		CNetGame__RPC_SendToEveryPlayer( ( uint32_t )__NetGame, &RPC_AddPlayerMessage, &bStream, -1, 3 );
+	}
+
+
+}
 
 void CPlayer::SendTime( )
 {
@@ -26,7 +61,7 @@ void CPlayer::ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t ob
 	{
 		uint32_t RPC_ShowAttachedObject = 0x5B;
 		RakNet::BitStream bStream;
-		bStream.Write( ( uint16_t ) this->unknown001E );
+		bStream.Write( ( uint16_t ) this->myPlayerID );
 		bStream.Write( ( uint32_t ) objectID );
 		//bStream.sub_465330( );
 		bStream.Write( ( char* ) &attachedObject[ objectID ], sizeof( tAttachedObject ) );
@@ -322,12 +357,10 @@ void CPlayer::CheckKeysUpdate( uint16_t keys )
 {
 	if( this->lastKeysState != keys )
 	{
-		
-		if( __NetGame->gamemodeManager )
-			__NetGame->gamemodeManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
 		if( __NetGame->filterscriptsManager )
 			__NetGame->filterscriptsManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
-
+		if( __NetGame->gamemodeManager )
+			__NetGame->gamemodeManager->OnPlayerKeyStateChange( this->myPlayerID, keys, this->lastKeysState );
 		this->lastKeysState = keys;
 	}
 
@@ -425,15 +458,22 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 
 	UpdatePosition( this->onFootSyncData.position.X, this->onFootSyncData.position.Y, this->onFootSyncData.position.Z, false );
 
-	this->unknown0014 = this->onFootSyncData.zAngle;
-	this->unknown0018 = *( uint32_t* ) &this->onFootSyncData.unknown0016[0]; // <-- What is that ?
-	this->unknown001C = *( uint32_t* ) &this->onFootSyncData.unknown0016[4]; // and that ?
-	this->unknown0020 = *( uint32_t* ) &this->onFootSyncData.unknown0016[8]; // that too ?
+	this->quaterRotation = syncData->quaterRotation;
 
 	this->SyncingDataType = 1;
 
-	// sub_495630( this->unknown0014, &bufOut ); // la flème de m'y pencher :D
-	
+	MATRIX4X4 matrixRotation;
+	memset( &matrixRotation, 0x00, sizeof( MATRIX4X4 ) );
+	// sub_495630( &this->quaterRotation, &bufOut ); // la flème de m'y pencher :D
+	QuaternionToMatrix( &this->quaterRotation, &matrixRotation );
+
+	this->facingAngle = atan2( matrixRotation.at.X, -matrixRotation.at.Y ) * 57.2957763671875f; // pas sûr de cette merde
+
+	if( this->facingAngle >= 360.0f ) this->facingAngle -= 360.0f;
+	else if( this->facingAngle < 0.0f ) this->facingAngle += 360.0f;
+
+
+
 	this->health = ( float ) this->onFootSyncData.health;
 	this->armour = ( float ) this->onFootSyncData.armour;
 
@@ -447,7 +487,6 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 		this->weaponInSlot[ slot ] = this->onFootSyncData.weapon;
 		this->currentWeapon = this->onFootSyncData.weapon;
 	}
-
 	this->velocity = this->onFootSyncData.velocity;
 
 	this->setState( PLAYER_STATE_ONFOOT );

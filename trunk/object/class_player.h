@@ -45,25 +45,19 @@ typedef struct AttachedObject_t // size 0x2C
 typedef struct ON_FOOT_SYNC_t // size 0x44
 {
 #pragma pack( 1 )
-	uint16_t	leftRightKeysOnfoot;					// + 0x0000
-	uint16_t	updownKeysOnfoot;						// + 0x0002
-	uint16_t	keysOnfoot;								// + 0x0004
-	tVector		position;								// + 0x0006 -> 0x000E
-	float		zAngle;									// + 0x0012
-
-	uint8_t		unknown0016[0x0C];						// + 0x0016
-
-	uint8_t		health;									// + 0x0022
-	uint8_t		armour;									// + 0x0023
-	uint8_t		weapon;									// + 0x0024
-	uint8_t		specialAction;							// + 0x0025
-	tVector		velocity;								// + 0x0026
-
-	tVector		surfingOffsets;							// + 0x0032
-	uint16_t	surfingVehicleID;						// + 0x003E	
-	uint16_t	animationIndex;							// + 0x0040
-
-	uint16_t	unknown0042;
+	uint16_t			leftRightKeysOnfoot;					// + 0x0000
+	uint16_t			updownKeysOnfoot;						// + 0x0002
+	uint16_t			keysOnfoot;								// + 0x0004
+	tVector				position;								// + 0x0006 -> 0x000E
+	tQuaternionVector	quaterRotation;							// + 0x0012 -> 0x001E
+	uint8_t				health;									// + 0x0022
+	uint8_t				armour;									// + 0x0023
+	uint8_t				weapon;									// + 0x0024
+	uint8_t				specialAction;							// + 0x0025
+	tVector				velocity;								// + 0x0026
+	tVector				surfingOffsets;							// + 0x0032
+	uint16_t			surfingVehicleID;						// + 0x003E	
+	uint32_t			animationIndex;							// + 0x0040
 } ON_FOOT_SYNC;
 
 
@@ -72,11 +66,10 @@ typedef struct IN_VEHICLE_SYNC_t // size 0x3F
 {
 #pragma pack( 1 )
 	uint16_t	vehicleID;								// + 0x0000
-	uint8_t		unknown0000[4];							// + 0x0002
-	uint16_t	leftRightKeysOnVehicle;					// + 0x0006
-	uint16_t	updownKeysOnVehicle;					// + 0x0008
-	uint16_t	keysOnVehicle;							// + 0x000A
-	uint8_t		unknown001[0xC];						// + 0x000C
+	uint16_t	leftRightKeysOnVehicle;					// + 0x0002
+	uint16_t	updownKeysOnVehicle;					// + 0x0004
+	uint16_t	keysOnVehicle;							// + 0x0006
+	tQuaternionVector rotation;							// + 0x0008
 	tVector		position;								// + 0x0018
 	tVector		velocity;								// + 0x0024
 	float		health;									// + 0x0030
@@ -97,11 +90,7 @@ public:
 	tVector		position;								// + 0x000	- 0x08
 	float		health;									// + 0x000C - 12
 	float		armour;									// + 0x0010	- 16
-	float		unknown0014;							// + 0x0014	- 20 <-- FacingAngle aussi ? :o
-	uint32_t	unknown0018;							// + 0x0018	- 24
-	uint16_t	unknown001C;							// + 0x001C	- 28
-	int16_t		unknown001E;							// + 0x001E	- 30
-	uint32_t	unknown0020;							// + 0x0020 - 32
+	tQuaternionVector	quaterRotation;					// + 0x0014 -> 0x0024
 	float		facingAngle;							// + 0x0024 - 36
 	BOOL		allowedToTeleport;						// + 0x0028 - 40
 	tVector		velocity;								// + 0x002C - 44
@@ -121,6 +110,9 @@ public:
 
 	uint8_t		weaponState;							// + 0x00FA - 250
 
+/*
+		structure pour la synchro en spectating sûrement vu que la plupart du temps elles commencent par ces variables de touche :p
+*/
 	uint16_t	leftRightKeysOnSpectating;				// + 0x00FC
 	uint16_t	updownKeysOnSpectating;					// + 0x00FE
 	uint16_t	keysOnSpectating;						// + 0x0100
@@ -198,7 +190,7 @@ public:
 
 	void*		playerVarsClass;						// + 0x1AF4
 
-
+	void Say( char* text, uint8_t len );
 
 	void SendTime( );
 	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
