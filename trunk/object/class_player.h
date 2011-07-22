@@ -56,7 +56,7 @@ typedef struct ON_FOOT_SYNC_t // size 0x44
 	uint8_t				specialAction;							// + 0x0025
 	tVector				velocity;								// + 0x0026
 	tVector				surfingOffsets;							// + 0x0032
-	uint16_t			surfingVehicleID;						// + 0x003E	
+	_VehicleID			surfingVehicleID;						// + 0x003E	
 	uint32_t			animationIndex;							// + 0x0040
 } ON_FOOT_SYNC;
 
@@ -76,8 +76,14 @@ typedef struct IN_VEHICLE_SYNC_t // size 0x3F
 	uint8_t		playerHealth;							// + 0x0034
 	uint8_t		playerArmor;							// + 0x0035
 	uint8_t		playerWeapon;							// + 0x0036
-	uint8_t		unknown003[0x08];			
-
+	uint8_t		sirenType;								// + 0x0037
+	uint8_t		gearState;								// + 0x0038
+	_VehicleID	trailerID;								// + 0x0039
+	union
+	{
+		uint16_t	hydraReactorAngle[2];					// + 0x003B
+		float		trainSpeed;								// + 0x003B
+	};
 } IN_VEHICLE_SYNC;
 
 
@@ -100,7 +106,7 @@ public:
 
 	ON_FOOT_SYNC onFootSyncData;						// + 0x0042
 	IN_VEHICLE_SYNC onVehicleSyncData;					// + 0x0086
-
+	/*	PASSENGER_SYNC	*/
 	uint8_t		unknown00C5[0xDE-0xC5];					// + 0x00C5
 
 	tVector		cameraFrontVector;						// + 0x00DE	- 0xE6
@@ -168,7 +174,7 @@ public:
 	uint8_t		wantedLevel;							// + 0x1A83 - 6787
 	uint8_t		fightingStyle;							// + 0x1A84	- 6788
 	uint8_t		currentSeatinVehicle;					// + 0x1A85
-	uint16_t	currentVehicleID;						// + 0x1A86	- 6790
+	_VehicleID	currentVehicleID;						// + 0x1A86	- 6790
 	uint32_t	nickNameColor;							// + 0x1A88
 	BOOL		bshowCheckpoint;						// + 0x1A8C
 	BOOL		bshowRaceCheckpoint;					// + 0x1A90

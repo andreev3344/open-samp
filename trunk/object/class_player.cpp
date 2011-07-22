@@ -536,7 +536,16 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 			this->currentSeatinVehicle	= 0;
 			memcpy( &onVehicleSyncData, syncData, 0x3C );
 
+
+			// this->unknown00C2 = syncData->hydraReactorAngle[0];
+			// this->unknown00C4 = syncData->hydraReactorAngle[1];
+
+
 			UpdatePosition( syncData->position.X, syncData->position.Y, syncData->position.Z, false );
+
+			this->armour = ( float )syncData->playerArmor;
+			this->health = ( float )syncData->playerHealth;
+
 
 			int slot = GetWeaponSlot( syncData->playerWeapon );
 			if( slot == -1 )
@@ -554,12 +563,52 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 			if( this->currentVehicleID < MAX_VEHICLES )
 			{
 				/*CVehicle**/void* vehicle = __NetGame->vehiclePool->GetVehicle( this->currentVehicleID );
+				MATRIX4X4 matrixRotation;
+				memset( &matrixRotation, 0x00, sizeof( MATRIX4X4 ) );
+				QuaternionToMatrix( &syncData->rotation, &matrixRotation );
+
+				// vehicle->Update( this->myPlayerID, &matrixRotation, syncData->health, syncData->trailerID, true );
+				// vehicle->SetVelocity( syncData->velocity );
+
+
+				//if( vehicle->IsATrainLoco( ) )
+				//{
+				//	for( _VehicleID locoID = 1; locoID < 4; locoID ++ )
+				//	{
+				//		_VehicleID id = locoID + this->currentVehicleID;
+				//		CVehicle* loco = __NetGame->vehiclePool->GetVehicle( id );
+				//		if( loco )
+				//		{
+				//			if( loco->IsATrainPart( ) )
+				//			{
+				//				loco->Update( 0xFFFF, &matrixRotation, syncData->health, syncData->trailerID, true );
+				//			}
+				//		}
+				//	}
+
+				//}
+
 
 			}
 
 		}
 	}
 
+	CheckKeysUpdate( this->onVehicleSyncData.keysOnVehicle );
+
+	if( this->NPCRecordingType == 1 )
+	{
+		if( this->currentVehicleID )
+		{
+			uint32_t time = __NetGame->GetTime( ) - this->lastNPCWritingInFile;
+			fwrite( &time, 4, 1, this->ioFileNPC );
+			fwrite( syncData, sizeof( IN_VEHICLE_SYNC ), 1, this->ioFileNPC );
+		}
+	}
+	else
+	{
+		this->SyncingDataType = 0;
+	}
 
 }
 
