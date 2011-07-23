@@ -4,11 +4,117 @@
 
 CPlayer::CPlayer( )
 {
+	setMyID( -1 );
+	this->playerText3DLabels	= 0;
+	this->playerVarsClass		= 0;
+
+	Init( );
+
 }
 
 CPlayer::~CPlayer( )
 {
 }
+
+void CPlayer::Init( )
+{
+
+	this->SyncingDataType		= SYNCING_TYPE_NONE;
+	this->currentVehicleID		= -1;
+	this->unknown0275			= 0;
+	this->unknown0279			= 0;
+	this->playerState			= PLAYER_STATE_NONE;
+	this->nickNameColor			= 0;
+	this->lastKeysState			= 0;
+	
+	this->position.X =
+		this->position.Y =
+		this->position.Z		= 0.0f;
+
+	this->quaterRotation.W =
+		this->quaterRotation.X =
+		this->quaterRotation.Y = 
+		this->quaterRotation.Z	= 0.0f;
+
+	this->facingAngle			= 0.0f;
+	this->health				= 0.0f;
+	this->armour				= 0.0f;
+	this->gameTime				= 0.0f;
+	this->time					= 0;
+	this->wantedLevel			= 0;
+	this->allowedToTeleport		= FALSE;
+	this->fightingStyle			= 4;
+	this->bshowCheckpoint		= FALSE;
+	this->bshowRaceCheckpoint	= FALSE;
+	this->currentInterior		= 0;
+	this->spectateType			= SPECTATE_TYPE_NONE;
+	this->spectateID			= -1;
+
+	this->unknown1A23			= 0;
+	this->unknown1A27			= 0;
+	this->unknown02B7			= 0;
+
+	this->lastStreaming			= __NetGame->GetTime( );
+
+	for( uint8_t i = 0; i < 13; i++ )
+	{
+		this->weaponInSlot[ i ] = 0;
+		this->ammoInSlot[ i ]	= 0;
+	}
+
+	int slot = GetWeaponSlot( 0 );
+	if ( slot == -1 )
+	{
+		this->onFootSyncData.weapon = 0;
+	}
+	else
+	{
+		this->weaponInSlot[ slot ]	= 0;
+		this->currentWeapon			= 0;
+	}
+
+	for( uint8_t i = 0; i < 11; i++ ) this->skillsLevel[ i ] = 999;
+
+	memset( ( void* )bisPlayerStreamedIn, 0x00, sizeof( bool ) * MAX_PLAYERS );
+	memset( ( void* )bisVehicleStreamedIn, 0x00, sizeof( bool ) * MAX_VEHICLES );
+	memset( ( void* )unknown0C7F, 0x00, sizeof( uint8_t ) * 400 );
+	memset( ( void* )bisText3DLabelStreamedIn, 0x00, sizeof( bool ) * MAX_TEXT_LABELS );
+	memset( ( void* )bisPickupStreamedIn, 0x00, sizeof( bool ) * LIMIT_MAX_PICKUPS );
+
+	this->StreamedInPlayers			= 0;
+	this->unknown1A13				= 0;
+	this->unknown1A17				= 0;
+	this->StreamedInText3DLabelsNumber = 0;
+	this->hasCustomSpawn			= FALSE;
+	memset( &customSpawn, 0x00, sizeof( tSPAWNS ) );
+
+	this->time						= 0;
+	this->gameTime					= 720.0f;
+	this->NPCRecordingType			= 0;
+	this->ioFileNPC					= 0;
+	this->unknown1A4D				= __NetGame->GetTime( );
+
+	if( playerVarsClass )
+	{
+		delete playerVarsClass;
+		playerVarsClass = 0;
+	}
+
+	playerVarsClass = new uint8_t[ 0xCB24 ]; // <-- new CPlayerVars
+
+	this->velocity.X =
+		this->velocity.Y =
+		this->velocity.Z			= 0.0f;
+
+
+	for( uint8_t i = 0; i < MAX_ATTACHED_OBJECT; i++ )
+	{
+		this->attachedObjectSlot[ i ] = 0;
+		memset( &this->attachedObject[ i ], 0x00, sizeof( tAttachedObject ) );
+	}
+
+}
+
 void CPlayer::Say( char* text, uint8_t len )
 {
 	RakNet::BitStream bStream;
@@ -664,6 +770,8 @@ void CPlayer::ProcessSpectatingSyncData( SPECTATING_SYNC* syncData )
 	CheckKeysUpdate( syncData->keysOnSpectating );
 	setState( PLAYER_STATE_SPECTATING );
 }
+
+
 
 uint16_t CPlayer::getSkillLevel( int skill )
 {

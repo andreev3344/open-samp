@@ -16,7 +16,7 @@
 #define SYNCING_TYPE_DRIVER			2
 #define SYNCING_TYPE_PASSENGER		3
 
-
+#define SPECTATE_TYPE_NONE			0
 
 #define RECORD_TYPE_INVEHICLE		1
 #define RECORD_TYPE_ONFOOT			2
@@ -301,6 +301,7 @@ public:
 
 	float getHealth( );
 
+	void Init( );
 
 	CPlayer( );
 	~CPlayer( );
