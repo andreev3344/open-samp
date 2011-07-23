@@ -612,6 +612,51 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 
 }
 
+
+void CPlayer::ProcessPassengerSyncData( PASSENGER_SYNC* syncData )
+{
+	CVehiclePool* vehiclePool = __NetGame->vehiclePool;
+
+	this->currentVehicleID = syncData->vehicleID;
+
+	if( vehiclePool )
+	{
+		if( syncData->vehicleID < MAX_VEHICLES )
+		{
+			if( vehiclePool->GetSlotState( syncData->vehicleID ) )
+			{
+				memcpy( &this->passengerSyncData, syncData, sizeof( PASSENGER_SYNC ) );
+
+				//CVehicle* vehicle = vehiclePool->GetVehicle( syncData->vehicleID );
+				//if( vehicle )
+				//	UpdatePosition( vehicle->GetPosition().X, vehicle->GetPosition().Y, vehicle->GetPosition().Z, false );
+
+				this->health = ( float )syncData->playerHealth;
+				this->armour = ( float )syncData->playerArmour;
+
+				int slot = GetWeaponSlot( this->onVehicleSyncData.playerWeapon );
+				if( slot == -1 )
+				{
+					this->onFootSyncData.weapon = 0;
+				}
+				else
+				{
+					this->weaponInSlot[ slot ] = this->onFootSyncData.weapon;
+					this->currentWeapon = this->onFootSyncData.weapon;
+				}
+
+				this->SyncingDataType = 3;
+				this->currentSeatinVehicle = syncData->seatID & 0x7F;
+				CheckKeysUpdate( syncData->passengersKeys );
+				setState( 3 );
+
+			}
+		}
+	}
+
+
+}
+
 uint16_t CPlayer::getSkillLevel( int skill )
 {
 	if( 0 > skill || skill >= 11 ) return 0;

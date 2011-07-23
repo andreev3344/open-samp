@@ -87,6 +87,20 @@ typedef struct IN_VEHICLE_SYNC_t // size 0x3F
 } IN_VEHICLE_SYNC;
 
 
+typedef struct PASSENGER_SYNC_t // size 0x18
+{
+#pragma pack( 1 )
+	_VehicleID	vehicleID;				// + 0x0000
+	uint8_t		seatID;					// + 0x0002
+	uint8_t		playerWeapon;			// + 0x0003
+	uint8_t		playerHealth;			// + 0x0004
+	uint8_t		playerArmour;			// + 0x0005
+	uint16_t	leftRightKeysPassenger;	// + 0x0006
+	uint16_t	updownKeysPassenger;	// + 0x0008
+	uint16_t	passengersKeys;			// + 0x000A
+	tVector		position;				// + 0x000C
+} PASSENGER_SYNC;
+
 
 class CPlayer // size 0x1AF8
 {
@@ -106,9 +120,9 @@ public:
 
 	ON_FOOT_SYNC onFootSyncData;						// + 0x0042
 	IN_VEHICLE_SYNC onVehicleSyncData;					// + 0x0086
-	/*	PASSENGER_SYNC	*/
-	uint8_t		unknown00C5[0xDE-0xC5];					// + 0x00C5
+	PASSENGER_SYNC	passengerSyncData;					// + 0x00C5
 
+	uint8_t		unknown00DD;							// + 0x00DD
 	tVector		cameraFrontVector;						// + 0x00DE	- 0xE6
 	tVector		cameraPosition;							// + 0x00EA - 0xF2
 
@@ -211,6 +225,7 @@ public:
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
 	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
+	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
 
 	
 //	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
