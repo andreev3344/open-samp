@@ -9,7 +9,13 @@
 #define PLAYER_STATE_PASSENGER		3
 #define PLAYER_STATE_WASTED			7
 #define PLAYER_STATE_SPAWNED		8
-#define PLAYER_STATE_SPECTACTING	9
+#define PLAYER_STATE_SPECTATING		9
+
+#define SYNCING_TYPE_NONE			0
+#define SYNCING_TYPE_ON_FOOT		1
+#define SYNCING_TYPE_DRIVER			2
+#define SYNCING_TYPE_PASSENGER		3
+
 
 
 #define RECORD_TYPE_INVEHICLE		1
@@ -101,6 +107,25 @@ typedef struct PASSENGER_SYNC_t // size 0x18
 	tVector		position;				// + 0x000C
 } PASSENGER_SYNC;
 
+typedef struct AIM_SYNC_t // size 0x1A
+{
+#pragma pack( 1 )
+
+	uint8_t		unknown0000;			// + 0x0000
+	tVector		cameraFrontVector;		// + 0x0001
+	tVector		cameraPosition;			// + 0x000D
+	uint8_t		unknown00F6[4];			// + 0x0019
+	uint8_t		weaponState;			// + 0x001D
+	uint8_t		unknown001E;			// + 0x0001E
+} AIM_SYNC;
+
+typedef struct SPECTATING_SYNC_t		// size 0x12
+{
+	uint16_t	leftRightKeysOnSpectating;				// + 0x0000
+	uint16_t	updownKeysOnSpectating;					// + 0x0002
+	uint16_t	keysOnSpectating;						// + 0x0004
+	tVector		position;								// + 0x0006
+} SPECTATING_SYNC;
 
 class CPlayer // size 0x1AF8
 {
@@ -118,26 +143,13 @@ public:
 	uint16_t	myPlayerID;								// + 0x003C - 60
 	uint32_t	SyncingDataType;						// + 0x003E - 62
 
-	ON_FOOT_SYNC onFootSyncData;						// + 0x0042
+	ON_FOOT_SYNC	onFootSyncData;						// + 0x0042
 	IN_VEHICLE_SYNC onVehicleSyncData;					// + 0x0086
 	PASSENGER_SYNC	passengerSyncData;					// + 0x00C5
+	AIM_SYNC		aimSyncData;						// + 0x00DD
+	SPECTATING_SYNC spectatingSyncData;					// + 0x00FC
 
-	uint8_t		unknown00DD;							// + 0x00DD
-	tVector		cameraFrontVector;						// + 0x00DE	- 0xE6
-	tVector		cameraPosition;							// + 0x00EA - 0xF2
-
-	uint8_t		unknown00F6[0xFA-0xF6];					// + 0x00F6
-
-	uint8_t		weaponState;							// + 0x00FA - 250
-
-/*
-		structure pour la synchro en spectating sûrement vu que la plupart du temps elles commencent par ces variables de touche :p
-*/
-	uint16_t	leftRightKeysOnSpectating;				// + 0x00FC
-	uint16_t	updownKeysOnSpectating;					// + 0x00FE
-	uint16_t	keysOnSpectating;						// + 0x0100
-
-	uint8_t		unknown0102[0x183-0x102];				// + 0x0102
+	uint8_t		unknown010E[0x183-0x10E];				// + 0x010E
 
 //	uint8_t		unknown0183[5][44];						// + 0x0183 -> 0x025F
 	tAttachedObject	attachedObject[MAX_ATTACHED_OBJECT];// + 0x0183 -> 0x025F
@@ -226,6 +238,8 @@ public:
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
 	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
 	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
+//	void ProcessAimingSyncData( AIM_SYNC* syncData );
+	void ProcessSpectatingSyncData( SPECTATING_SYNC* syncData );
 
 	
 //	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.

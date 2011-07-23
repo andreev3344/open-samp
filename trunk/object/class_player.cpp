@@ -460,7 +460,7 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 
 	this->quaterRotation = syncData->quaterRotation;
 
-	this->SyncingDataType = 1;
+	this->SyncingDataType = SYNCING_TYPE_ON_FOOT;
 
 	MATRIX4X4 matrixRotation;
 	memset( &matrixRotation, 0x00, sizeof( MATRIX4X4 ) );
@@ -558,7 +558,7 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 				this->currentWeapon = this->onFootSyncData.weapon;
 			}
 		
-			this->SyncingDataType = 2;
+			this->SyncingDataType = SYNCING_TYPE_DRIVER;
 			
 			if( this->currentVehicleID < MAX_VEHICLES )
 			{
@@ -596,7 +596,7 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 
 	CheckKeysUpdate( this->onVehicleSyncData.keysOnVehicle );
 
-	if( this->NPCRecordingType == 1 )
+	if( this->NPCRecordingType == RECORD_TYPE_INVEHICLE )
 	{
 		if( this->currentVehicleID )
 		{
@@ -607,7 +607,7 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 	}
 	else
 	{
-		this->SyncingDataType = 0;
+		this->SyncingDataType = SYNCING_TYPE_NONE;
 	}
 
 }
@@ -645,16 +645,24 @@ void CPlayer::ProcessPassengerSyncData( PASSENGER_SYNC* syncData )
 					this->currentWeapon = this->onFootSyncData.weapon;
 				}
 
-				this->SyncingDataType = 3;
+				this->SyncingDataType = SYNCING_TYPE_PASSENGER;
 				this->currentSeatinVehicle = syncData->seatID & 0x7F;
 				CheckKeysUpdate( syncData->passengersKeys );
-				setState( 3 );
+				setState( PLAYER_STATE_PASSENGER );
 
 			}
 		}
 	}
+}
 
+void CPlayer::ProcessSpectatingSyncData( SPECTATING_SYNC* syncData )
+{
+	this->currentVehicleID = 0;
+	memcpy( &this->spectatingSyncData, syncData, sizeof( SPECTATING_SYNC ) );
 
+	UpdatePosition( syncData->position.X, syncData->position.Y, syncData->position.Z, false );
+	CheckKeysUpdate( syncData->keysOnSpectating );
+	setState( PLAYER_STATE_SPECTATING );
 }
 
 uint16_t CPlayer::getSkillLevel( int skill )
@@ -677,7 +685,7 @@ void CPlayer::setSkillLevel( int skill, uint16_t level )
 
 	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetSkillLevel, &bStream, this->myPlayerID, 2 );
 
-	if( this->playerState && this->playerState != PLAYER_STATE_SPECTACTING )
+	if( this->playerState && this->playerState != PLAYER_STATE_SPECTATING )
 	{
 		CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_SetSkillLevel, &bStream, this->myPlayerID, 2 );
 	}
@@ -904,12 +912,12 @@ uint16_t CPlayer::getCurrentVehicleID( )
 
 tVector* CPlayer::getCameraPosition( )
 {
-	return &this->cameraPosition;
+	return &this->aimSyncData.cameraPosition;
 }
 
 tVector* CPlayer::getCameraFrontVector( )
 {
-	return &this->cameraFrontVector;
+	return &this->aimSyncData.cameraFrontVector;
 }
 
 float CPlayer::getFacingAngle( )
@@ -958,7 +966,7 @@ bool CPlayer::isDriving( )
 
 bool CPlayer::isSpectating( )
 {
-	if( getState( ) == PLAYER_STATE_SPECTACTING ) return true;
+	if( getState( ) == PLAYER_STATE_SPECTATING ) return true;
 	return false;
 }
 
