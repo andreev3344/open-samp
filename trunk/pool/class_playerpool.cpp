@@ -4,6 +4,15 @@
 
 CPlayerPool::CPlayerPool( )
 {
+	for( uint8_t i = 0; i < MAX_PLAYERS; i++ )
+	{
+		this->isCreated[ i ]	= FALSE;
+		this->player[ i ]		= 0;
+	}
+	this->playersCount			= 0;
+	this->unknown57E8			= 0;
+	this->unkonwn57EC			= 0;
+	this->unknown57E8			= __NetGame->GetTime( );
 }
 
 CPlayerPool::~CPlayerPool( )

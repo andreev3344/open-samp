@@ -18,19 +18,19 @@ uint32_t CPickupPool::New ( uint32_t a_uint32_Model, uint32_t a_uint32_Type, flo
 
 	l_PickupIndex = 0;
 	v7 = (char *)__PickupPoolEx->m_uint8_Active;
-	while ( *((DWORD *)v7 - 1) )
+	while ( *((uint32_t *)v7 - 1) )
 	{
-		if ( !*(DWORD *)v7 )
+		if ( !*(uint32_t *)v7 )
 		{
 			++l_PickupIndex;
 			break;
 		}
-		if ( !*((DWORD *)v7 + 1) )
+		if ( !*((uint32_t *)v7 + 1) )
 		{
 			l_PickupIndex += 2;
 			break;
 		}
-		if ( !*((DWORD *)v7 + 2) )
+		if ( !*((uint32_t *)v7 + 2) )
 		{
 			l_PickupIndex += 3;
 			break;
@@ -170,7 +170,7 @@ void CPickupPool::InitForPlayer ( _PlayerID a_uint8_PlayerIndex )
 			pbsPickup->Write((PCHAR)&m_Pickups[x], sizeof (PICKUP));
 		
 			pNetGame->GetRakServer()->RPC(RPC_Pickup,pbsPickup,HIGH_PRIORITY,RELIABLE,
-				0,pNetGame->GetRakServer()->GetPlayerIDFromIndex(bytePlayerID),false,false);
+				0,pNetGame->GetRakServer()->GetPlayerIDFromIndex(uint8_tPlayerID),false,false);
 
 			pbsPickup->Reset();
 		}

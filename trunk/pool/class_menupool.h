@@ -16,8 +16,8 @@ public:
 
 
 
-	BYTE New( char* title, float x, float y, BYTE column, float col1width, float col2width );
-	int Destroy( BYTE menuID );
+	uint8_t New( char* title, float x, float y, uint8_t column, float col1width, float col2width );
+	int Destroy( uint8_t menuID );
 
 	void resetForPlayer( _PlayerID playerID );
 

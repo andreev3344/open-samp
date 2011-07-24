@@ -34,14 +34,14 @@ CText3DLabels::~CText3DLabels( )
 .text:0047ABE0 ; int __stdcall C3DTextLabels__Create3DTextLabel(char *text,int color,float x,float y,float z,float drawdistance,int virtualworld,char useLOS)
 .text:0047ABE0 C3DTextLabels__Create3DTextLabel proc near ; CODE XREF: sub_489280+9Fp
 .text:0047ABE0
-.text:0047ABE0 text            = dword ptr  0Ch
-.text:0047ABE0 color           = dword ptr  10h
-.text:0047ABE0 x               = dword ptr  14h
-.text:0047ABE0 y               = dword ptr  18h
-.text:0047ABE0 z               = dword ptr  1Ch
-.text:0047ABE0 drawdistance    = dword ptr  20h
-.text:0047ABE0 virtualworld    = dword ptr  24h
-.text:0047ABE0 useLOS          = byte ptr  28h
+.text:0047ABE0 text            = uint32_t ptr  0Ch
+.text:0047ABE0 color           = uint32_t ptr  10h
+.text:0047ABE0 x               = uint32_t ptr  14h
+.text:0047ABE0 y               = uint32_t ptr  18h
+.text:0047ABE0 z               = uint32_t ptr  1Ch
+.text:0047ABE0 drawdistance    = uint32_t ptr  20h
+.text:0047ABE0 virtualworld    = uint32_t ptr  24h
+.text:0047ABE0 useLOS          = uint8_t ptr  28h
 .text:0047ABE0
 .text:0047ABE0                 push    ebx
 .text:0047ABE1                 push    ebp
@@ -120,7 +120,7 @@ CText3DLabels::~CText3DLabels( )
 .text:0047AC83                 mov     [ecx+18h], dl
 .text:0047AC86                 mov     [ecx+1Dh], ax
 .text:0047AC8A                 mov     [ecx+1Fh], ax
-.text:0047AC8E                 mov     dword ptr [ebx+edi*4+8400h], 1 <-- this->isCreated[ edi ] = 1
+.text:0047AC8E                 mov     uint32_t ptr [ebx+edi*4+8400h], 1 <-- this->isCreated[ edi ] = 1
 .text:0047AC99                 mov     eax, CNetGame		
 .text:0047AC9E                 mov     edi, [eax+4]	<-- On fout PlayerPool dans edi
 .text:0047ACA1                 test    edi, edi 
@@ -131,7 +131,7 @@ CText3DLabels::~CText3DLabels( )
 .text:0047ACA7                 cmp     bx, 1F4h			<-- Ici on va faire une boucle pour tester tout les joueurs
 .text:0047ACAC                 jnb     short loc_47ACF9
 .text:0047ACAE                 movzx   eax, bx
-.text:0047ACB1                 cmp     dword ptr [edi+eax*4], 0
+.text:0047ACB1                 cmp     uint32_t ptr [edi+eax*4], 0
 .text:0047ACB5                 jz      short loc_47ACF9
 .text:0047ACB7                 mov     esi, [edi+eax*4+7D0h]
 .text:0047ACBE                 test    esi, esi
@@ -174,7 +174,7 @@ CText3DLabels::~CText3DLabels( )
 
 */
 
-int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y, float z, float drawDistance, DWORD virtualWorld, bool useLOS )
+int	CText3DLabels::Create3DTextLabel( char* text, uint32_t color, float x, float y, float z, float drawDistance, uint32_t virtualWorld, bool useLOS )
 {
 	int id = 0;
 	while( id < MAX_TEXT_LABELS )
@@ -201,7 +201,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, DWORD color, float x, float y,
 
 	
 
-	DWORD CPlayerPool = *(DWORD*)( __NetGame->playerPool );
+	uint32_t CPlayerPool = *(uint32_t*)( __NetGame->playerPool );
 
 
 	for( _PlayerID i = 0; i < MAX_PLAYERS; i++ )
@@ -246,10 +246,10 @@ void CText3DLabels::showForPlayer( uint16_t labelID, _PlayerID playerID )
 	bStream->Write( (float)this->TextLabels[ labelID ].posZ );
 	bStream->Write( (float)this->TextLabels[ labelID ].drawDistance );
 	bStream->Write( (bool)this->TextLabels[ labelID ].useLineOfSight );
-	bStream->Write( (WORD)this->TextLabels[ labelID ].attachedToPlayerID );
-	bStream->Write( (WORD)this->TextLabels[ labelID ].attachedToVehicleID );
+	bStream->Write( (uint16_t)this->TextLabels[ labelID ].attachedToPlayerID );
+	bStream->Write( (uint16_t)this->TextLabels[ labelID ].attachedToVehicleID );
 
-	DWORD RPC_ShowText3DLabels = 0x91;
+	uint32_t RPC_ShowText3DLabels = 0x91;
 
 /* besoin de plus d'info sur ça, je trouve un peu le code chelou
 
@@ -293,7 +293,7 @@ int CText3DLabels::Delete3DTextLabel( int labelID )
 	return 1;
 }
 
-int CText3DLabels::Update3DTextLabelText( int labelID, DWORD color, char* text )
+int CText3DLabels::Update3DTextLabelText( int labelID, uint32_t color, char* text )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
@@ -312,7 +312,7 @@ int CText3DLabels::Update3DTextLabelText( int labelID, DWORD color, char* text )
 	return 1;
 }
 
-int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, WORD vehicleID, float offsetX, float offsetY, float offsetZ )
+int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, uint16_t vehicleID, float offsetX, float offsetY, float offsetZ )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;

@@ -59,51 +59,51 @@ BitStream::BitStream()
 	copyData = true;
 }
 
-BitStream::BitStream( int initialBytesToAllocate )
+BitStream::BitStream( int initialuint8_tsToAllocate )
 {
 	numberOfBitsUsed = 0;
 	readOffset = 0;
-	if (initialBytesToAllocate <= BITSTREAM_STACK_ALLOCATION_SIZE)
+	if (initialuint8_tsToAllocate <= BITSTREAM_STACK_ALLOCATION_SIZE)
 	{
 		data = ( unsigned char* ) stackData;
 		numberOfBitsAllocated = BITSTREAM_STACK_ALLOCATION_SIZE * 8;
 	}
 	else
 	{
-		data = ( unsigned char* ) malloc( initialBytesToAllocate );
-		numberOfBitsAllocated = initialBytesToAllocate << 3;
+		data = ( unsigned char* ) malloc( initialuint8_tsToAllocate );
+		numberOfBitsAllocated = initialuint8_tsToAllocate << 3;
 	}
 #ifdef _DEBUG
 	assert( data );
 #endif
-	// memset(data, 0, initialBytesToAllocate);
+	// memset(data, 0, initialuint8_tsToAllocate);
 	copyData = true;
 }
 
-BitStream::BitStream( char* _data, unsigned int lengthInBytes, bool _copyData )
+BitStream::BitStream( char* _data, unsigned int lengthInuint8_ts, bool _copyData )
 {
-	numberOfBitsUsed = lengthInBytes << 3;
+	numberOfBitsUsed = lengthInuint8_ts << 3;
 	readOffset = 0;
 	copyData = _copyData;
-	numberOfBitsAllocated = lengthInBytes << 3;
+	numberOfBitsAllocated = lengthInuint8_ts << 3;
 	
 	if ( copyData )
 	{
-		if ( lengthInBytes > 0 )
+		if ( lengthInuint8_ts > 0 )
 		{
-			if (lengthInBytes < BITSTREAM_STACK_ALLOCATION_SIZE)
+			if (lengthInuint8_ts < BITSTREAM_STACK_ALLOCATION_SIZE)
 			{
 				data = ( unsigned char* ) stackData;
 				numberOfBitsAllocated = BITSTREAM_STACK_ALLOCATION_SIZE << 3;
 			}
 			else
 			{
-				data = ( unsigned char* ) malloc( lengthInBytes );
+				data = ( unsigned char* ) malloc( lengthInuint8_ts );
 			}
 #ifdef _DEBUG
 			assert( data );
 #endif
-			memcpy( data, _data, lengthInBytes );
+			memcpy( data, _data, lengthInuint8_ts );
 		}
 		else
 			data = 0;
@@ -135,7 +135,7 @@ void BitStream::Reset( void )
 	
 	if ( numberOfBitsUsed > 0 )
 	{
-		//  memset(data, 0, BITS_TO_BYTES(numberOfBitsUsed));
+		//  memset(data, 0, BITS_TO_uint8_tS(numberOfBitsUsed));
 	}
 	
 	// Don't free memory here for speed efficiency
@@ -147,22 +147,22 @@ void BitStream::Reset( void )
 	
 	//data=(unsigned char*)malloc(1);
 	// if (numberOfBitsAllocated>0)
-	//  memset(data, 0, BITS_TO_BYTES(numberOfBitsAllocated));
+	//  memset(data, 0, BITS_TO_uint8_tS(numberOfBitsAllocated));
 }
 
 // Write an array or casted stream
-void BitStream::Write( const char* input, const int numberOfBytes )
+void BitStream::Write( const char* input, const int numberOfuint8_ts )
 {
-	WriteBits( ( unsigned char* ) input, numberOfBytes * 8, true );
+	WriteBits( ( unsigned char* ) input, numberOfuint8_ts * 8, true );
 }
 void BitStream::Write( BitStream *bitStream )
 {
 	if (bitStream->GetReadOffset()==0)
 	{
-		// Fast byte based write
-		Write((const char*)bitStream->GetData(), bitStream->GetNumberOfBytesUsed());
+		// Fast uint8_t based write
+		Write((const char*)bitStream->GetData(), bitStream->GetNumberOfuint8_tsUsed());
 		// Subtract unused bits
-		numberOfBitsUsed-=bitStream->GetNumberOfBytesUsed()*8-bitStream->GetNumberOfBitsUsed();
+		numberOfBitsUsed-=bitStream->GetNumberOfuint8_tsUsed()*8-bitStream->GetNumberOfBitsUsed();
 		return;
 	}
 
@@ -178,9 +178,9 @@ void BitStream::Write( BitStream *bitStream )
 }
 
 // Read an array or casted stream
-bool BitStream::Read( char* output, const int numberOfBytes )
+bool BitStream::Read( char* output, const int numberOfuint8_ts )
 {
-	return ReadBits( ( unsigned char* ) output, numberOfBytes * 8 );
+	return ReadBits( ( unsigned char* ) output, numberOfuint8_ts * 8 );
 }
 
 // Sets the read pointer back to the beginning of your data.
@@ -200,7 +200,7 @@ void BitStream::Write0( void )
 {
 	AddBitsAndReallocate( 1 );
 	
-	// New bytes need to be zeroed
+	// New uint8_ts need to be zeroed
 	
 	if ( ( numberOfBitsUsed % 8 ) == 0 )
 		data[ numberOfBitsUsed >> 3 ] = 0;
@@ -232,62 +232,62 @@ bool BitStream::ReadBit( void )
 	return ( bool ) ( data[ readOffset >> 3 ] & ( 0x80 >> ( readOffset++ % 8 ) ) );
 }
 
-// Align the bitstream to the byte boundary and then write the specified number of bits.
+// Align the bitstream to the uint8_t boundary and then write the specified number of bits.
 // This is faster than WriteBits but wastes the bits to do the alignment and requires you to call
-// SetReadToByteAlignment at the corresponding read position
-void BitStream::WriteAlignedBytes( const unsigned char* input,
-	const int numberOfBytesToWrite )
+// SetReadTouint8_tAlignment at the corresponding read position
+void BitStream::WriteAligneduint8_ts( const unsigned char* input,
+	const int numberOfuint8_tsToWrite )
 {
 #ifdef _DEBUG
-	assert( numberOfBytesToWrite > 0 );
+	assert( numberOfuint8_tsToWrite > 0 );
 #endif
 	
-	AlignWriteToByteBoundary();
+	AlignWriteTouint8_tBoundary();
 	// Allocate enough memory to hold everything
-	AddBitsAndReallocate( numberOfBytesToWrite << 3 );
+	AddBitsAndReallocate( numberOfuint8_tsToWrite << 3 );
 	
 	// Write the data
-	memcpy( data + ( numberOfBitsUsed >> 3 ), input, numberOfBytesToWrite );
+	memcpy( data + ( numberOfBitsUsed >> 3 ), input, numberOfuint8_tsToWrite );
 	
-	numberOfBitsUsed += numberOfBytesToWrite << 3;
+	numberOfBitsUsed += numberOfuint8_tsToWrite << 3;
 }
 
 // Read bits, starting at the next aligned bits. Note that the modulus 8 starting offset of the
 // sequence must be the same as was used with WriteBits. This will be a problem with packet coalescence
-// unless you byte align the coalesced packets.
-bool BitStream::ReadAlignedBytes( unsigned char* output,
-	const int numberOfBytesToRead )
+// unless you uint8_t align the coalesced packets.
+bool BitStream::ReadAligneduint8_ts( unsigned char* output,
+	const int numberOfuint8_tsToRead )
 {
 #ifdef _DEBUG
-	assert( numberOfBytesToRead > 0 );
+	assert( numberOfuint8_tsToRead > 0 );
 #endif
 	
-	if ( numberOfBytesToRead <= 0 )
+	if ( numberOfuint8_tsToRead <= 0 )
 		return false;
 		
-	// Byte align
-	AlignReadToByteBoundary();
+	// uint8_t align
+	AlignReadTouint8_tBoundary();
 	
-	if ( readOffset + ( numberOfBytesToRead << 3 ) > numberOfBitsUsed )
+	if ( readOffset + ( numberOfuint8_tsToRead << 3 ) > numberOfBitsUsed )
 		return false;
 		
 	// Write the data
-	memcpy( output, data + ( readOffset >> 3 ), numberOfBytesToRead );
+	memcpy( output, data + ( readOffset >> 3 ), numberOfuint8_tsToRead );
 	
-	readOffset += numberOfBytesToRead << 3;
+	readOffset += numberOfuint8_tsToRead << 3;
 	
 	return true;
 }
 
-// Align the next write and/or read to a byte boundary.  This can be used to 'waste' bits to byte align for efficiency reasons
-void BitStream::AlignWriteToByteBoundary( void )
+// Align the next write and/or read to a uint8_t boundary.  This can be used to 'waste' bits to uint8_t align for efficiency reasons
+void BitStream::AlignWriteTouint8_tBoundary( void )
 {
 	if ( numberOfBitsUsed )
 		numberOfBitsUsed += 8 - ( ( numberOfBitsUsed - 1 ) % 8 + 1 );
 }
 
-// Align the next write and/or read to a byte boundary.  This can be used to 'waste' bits to byte align for efficiency reasons
-void BitStream::AlignReadToByteBoundary( void )
+// Align the next write and/or read to a uint8_t boundary.  This can be used to 'waste' bits to uint8_t align for efficiency reasons
+void BitStream::AlignReadTouint8_tBoundary( void )
 {
 	if ( readOffset )
 		readOffset += 8 - ( ( readOffset - 1 ) % 8 + 1 );
@@ -301,7 +301,7 @@ void BitStream::WriteBits( const unsigned char *input, int numberOfBitsToWrite, 
 	
 	AddBitsAndReallocate( numberOfBitsToWrite );
 	int offset = 0;
-	unsigned char dataByte;
+	unsigned char datauint8_t;
 	int numberOfBitsUsedMod8;
 	
 	numberOfBitsUsedMod8 = numberOfBitsUsed % 8;
@@ -310,22 +310,22 @@ void BitStream::WriteBits( const unsigned char *input, int numberOfBitsToWrite, 
 	while ( numberOfBitsToWrite > 0 )
 		//do
 	{
-		dataByte = *( input + offset );
+		datauint8_t = *( input + offset );
 		
-		if ( numberOfBitsToWrite < 8 && rightAlignedBits )   // rightAlignedBits means in the case of a partial byte, the bits are aligned from the right (bit 0) rather than the left (as in the normal internal representation)
-			dataByte <<= 8 - numberOfBitsToWrite;  // shift left to get the bits on the left, as in our internal representation
+		if ( numberOfBitsToWrite < 8 && rightAlignedBits )   // rightAlignedBits means in the case of a partial uint8_t, the bits are aligned from the right (bit 0) rather than the left (as in the normal internal representation)
+			datauint8_t <<= 8 - numberOfBitsToWrite;  // shift left to get the bits on the left, as in our internal representation
 			
-		// Writing to a new byte each time
+		// Writing to a new uint8_t each time
 		if ( numberOfBitsUsedMod8 == 0 )
-			* ( data + ( numberOfBitsUsed >> 3 ) ) = dataByte;
+			* ( data + ( numberOfBitsUsed >> 3 ) ) = datauint8_t;
 		else
 		{
 			// Copy over the new data.
-			*( data + ( numberOfBitsUsed >> 3 ) ) |= dataByte >> ( numberOfBitsUsedMod8 ); // First half
+			*( data + ( numberOfBitsUsed >> 3 ) ) |= datauint8_t >> ( numberOfBitsUsedMod8 ); // First half
 			
 			if ( 8 - ( numberOfBitsUsedMod8 ) < 8 && 8 - ( numberOfBitsUsedMod8 ) < numberOfBitsToWrite )   // If we didn't write it all out in the first half (8 - (numberOfBitsUsed%8) is the number we wrote in the first half)
 			{
-				*( data + ( numberOfBitsUsed >> 3 ) + 1 ) = (unsigned char) ( dataByte << ( 8 - ( numberOfBitsUsedMod8 ) ) ); // Second half (overlaps byte boundary)
+				*( data + ( numberOfBitsUsed >> 3 ) + 1 ) = (unsigned char) ( datauint8_t << ( 8 - ( numberOfBitsUsedMod8 ) ) ); // Second half (overlaps uint8_t boundary)
 			}
 		}
 		
@@ -353,7 +353,7 @@ void BitStream::SetData( const unsigned char* input, const int numberOfBits )
 		
 	AddBitsAndReallocate( numberOfBits );
 	
-	memcpy( data, input, BITS_TO_BYTES( numberOfBits ) );
+	memcpy( data, input, BITS_TO_uint8_tS( numberOfBits ) );
 	
 	numberOfBitsUsed = numberOfBits;
 }
@@ -362,25 +362,25 @@ void BitStream::SetData( const unsigned char* input, const int numberOfBits )
 void BitStream::WriteCompressed( const unsigned char* input,
 	const int size, const bool unsignedData )
 {
-	int currentByte = ( size >> 3 ) - 1; // PCs
+	int currentuint8_t = ( size >> 3 ) - 1; // PCs
 	
-	unsigned char byteMatch;
+	unsigned char uint8_tMatch;
 	
 	if ( unsignedData )
 	{
-		byteMatch = 0;
+		uint8_tMatch = 0;
 	}
 	
 	else
 	{
-		byteMatch = 0xFF;
+		uint8_tMatch = 0xFF;
 	}
 	
-	// Write upper bytes with a single 1
-	// From high byte to low byte, if high byte is a byteMatch then write a 1 bit. Otherwise write a 0 bit and then write the remaining bytes
-	while ( currentByte > 0 )
+	// Write upper uint8_ts with a single 1
+	// From high uint8_t to low uint8_t, if high uint8_t is a uint8_tMatch then write a 1 bit. Otherwise write a 0 bit and then write the remaining uint8_ts
+	while ( currentuint8_t > 0 )
 	{
-		if ( input[ currentByte ] == byteMatch )   // If high byte is byteMatch (0 of 0xff) then it would have the same value shifted
+		if ( input[ currentuint8_t ] == uint8_tMatch )   // If high uint8_t is uint8_tMatch (0 of 0xff) then it would have the same value shifted
 		{
 			bool b = true;
 			Write( b );
@@ -391,30 +391,30 @@ void BitStream::WriteCompressed( const unsigned char* input,
 			bool b = false;
 			Write( b );
 			
-			WriteBits( input, ( currentByte + 1 ) << 3, true );
-			//  currentByte--;
+			WriteBits( input, ( currentuint8_t + 1 ) << 3, true );
+			//  currentuint8_t--;
 			
 			
 			return ;
 		}
 		
-		currentByte--;
+		currentuint8_t--;
 	}
 	
-	// If the upper half of the last byte is a 0 (positive) or 16 (negative) then write a 1 and the remaining 4 bits.  Otherwise write a 0 and the 8 bites.
-	if ( ( unsignedData && ( ( *( input + currentByte ) ) & 0xF0 ) == 0x00 ) ||
-		( unsignedData == false && ( ( *( input + currentByte ) ) & 0xF0 ) == 0xF0 ) )
+	// If the upper half of the last uint8_t is a 0 (positive) or 16 (negative) then write a 1 and the remaining 4 bits.  Otherwise write a 0 and the 8 bites.
+	if ( ( unsignedData && ( ( *( input + currentuint8_t ) ) & 0xF0 ) == 0x00 ) ||
+		( unsignedData == false && ( ( *( input + currentuint8_t ) ) & 0xF0 ) == 0xF0 ) )
 	{
 		bool b = true;
 		Write( b );
-		WriteBits( input + currentByte, 4, true );
+		WriteBits( input + currentuint8_t, 4, true );
 	}
 	
 	else
 	{
 		bool b = false;
 		Write( b );
-		WriteBits( input + currentByte, 8, true );
+		WriteBits( input + currentuint8_t, 8, true );
 	}
 }
 
@@ -437,7 +437,7 @@ bool BitStream::ReadBits( unsigned char* output,
 	
 	int offset = 0;
 	
-	memset( output, 0, BITS_TO_BYTES( numberOfBitsToRead ) );
+	memset( output, 0, BITS_TO_uint8_tS( numberOfBitsToRead ) );
 	
 	readOffsetMod8 = readOffset % 8;
 	
@@ -447,12 +447,12 @@ bool BitStream::ReadBits( unsigned char* output,
 	{
 		*( output + offset ) |= *( data + ( readOffset >> 3 ) ) << ( readOffsetMod8 ); // First half
 		
-		if ( readOffsetMod8 > 0 && numberOfBitsToRead > 8 - ( readOffsetMod8 ) )   // If we have a second half, we didn't read enough bytes in the first half
-			*( output + offset ) |= *( data + ( readOffset >> 3 ) + 1 ) >> ( 8 - ( readOffsetMod8 ) ); // Second half (overlaps byte boundary)
+		if ( readOffsetMod8 > 0 && numberOfBitsToRead > 8 - ( readOffsetMod8 ) )   // If we have a second half, we didn't read enough uint8_ts in the first half
+			*( output + offset ) |= *( data + ( readOffset >> 3 ) + 1 ) >> ( 8 - ( readOffsetMod8 ) ); // Second half (overlaps uint8_t boundary)
 			
 		numberOfBitsToRead -= 8;
 		
-		if ( numberOfBitsToRead < 0 )   // Reading a partial byte for the last byte, shift right so the data is aligned on the right
+		if ( numberOfBitsToRead < 0 )   // Reading a partial uint8_t for the last uint8_t, shift right so the data is aligned on the right
 		{
 		
 			if ( alignBitsToRight )
@@ -476,28 +476,28 @@ bool BitStream::ReadBits( unsigned char* output,
 bool BitStream::ReadCompressed( unsigned char* output,
 	const int size, const bool unsignedData )
 {
-	int currentByte = ( size >> 3 ) - 1;
+	int currentuint8_t = ( size >> 3 ) - 1;
 	
 	
-	unsigned char byteMatch, halfByteMatch;
+	unsigned char uint8_tMatch, halfuint8_tMatch;
 	
 	if ( unsignedData )
 	{
-		byteMatch = 0;
-		halfByteMatch = 0;
+		uint8_tMatch = 0;
+		halfuint8_tMatch = 0;
 	}
 	
 	else
 	{
-		byteMatch = 0xFF;
-		halfByteMatch = 0xF0;
+		uint8_tMatch = 0xFF;
+		halfuint8_tMatch = 0xF0;
 	}
 	
-	// Upper bytes are specified with a single 1 if they match byteMatch
-	// From high byte to low byte, if high byte is a byteMatch then write a 1 bit. Otherwise write a 0 bit and then write the remaining bytes
-	while ( currentByte > 0 )
+	// Upper uint8_ts are specified with a single 1 if they match uint8_tMatch
+	// From high uint8_t to low uint8_t, if high uint8_t is a uint8_tMatch then write a 1 bit. Otherwise write a 0 bit and then write the remaining uint8_ts
+	while ( currentuint8_t > 0 )
 	{
-		// If we read a 1 then the data is byteMatch.
+		// If we read a 1 then the data is uint8_tMatch.
 		
 		bool b;
 		
@@ -506,22 +506,22 @@ bool BitStream::ReadCompressed( unsigned char* output,
 			
 		if ( b )   // Check that bit
 		{
-			output[ currentByte ] = byteMatch;
-			currentByte--;
+			output[ currentuint8_t ] = uint8_tMatch;
+			currentuint8_t--;
 		}
 		else
 		{
-			// Read the rest of the bytes
+			// Read the rest of the uint8_ts
 			
-			if ( ReadBits( output, ( currentByte + 1 ) << 3 ) == false )
+			if ( ReadBits( output, ( currentuint8_t + 1 ) << 3 ) == false )
 				return false;
 				
 			return true;
 		}
 	}
 	
-	// All but the first bytes are byteMatch.  If the upper half of the last byte is a 0 (positive) or 16 (negative) then what we read will be a 1 and the remaining 4 bits.
-	// Otherwise we read a 0 and the 8 bytes
+	// All but the first uint8_ts are uint8_tMatch.  If the upper half of the last uint8_t is a 0 (positive) or 16 (negative) then what we read will be a 1 and the remaining 4 bits.
+	// Otherwise we read a 0 and the 8 uint8_ts
 	//assert(readOffset+1 <=numberOfBitsUsed); // If this assert is hit the stream wasn't long enough to read from
 	if ( readOffset + 1 > numberOfBitsUsed )
 		return false;
@@ -534,14 +534,14 @@ bool BitStream::ReadCompressed( unsigned char* output,
 	if ( b )   // Check that bit
 	{
 	
-		if ( ReadBits( output + currentByte, 4 ) == false )
+		if ( ReadBits( output + currentuint8_t, 4 ) == false )
 			return false;
 			
-		output[ currentByte ] |= halfByteMatch; // We have to set the high 4 bits since these are set to 0 by ReadBits
+		output[ currentuint8_t ] |= halfuint8_tMatch; // We have to set the high 4 bits since these are set to 0 by ReadBits
 	}
 	else
 	{
-		if ( ReadBits( output + currentByte, 8 ) == false )
+		if ( ReadBits( output + currentuint8_t, 8 ) == false )
 			return false;
 	}
 	
@@ -556,7 +556,7 @@ void BitStream::AddBitsAndReallocate( const int numberOfBitsToWrite )
 
 	int newNumberOfBitsAllocated = numberOfBitsToWrite + numberOfBitsUsed;
 	
-	if ( numberOfBitsToWrite + numberOfBitsUsed > 0 && ( ( numberOfBitsAllocated - 1 ) >> 3 ) < ( ( newNumberOfBitsAllocated - 1 ) >> 3 ) )   // If we need to allocate 1 or more new bytes
+	if ( numberOfBitsToWrite + numberOfBitsUsed > 0 && ( ( numberOfBitsAllocated - 1 ) >> 3 ) < ( ( newNumberOfBitsAllocated - 1 ) >> 3 ) )   // If we need to allocate 1 or more new uint8_ts
 	{
 #ifdef _DEBUG
 		// If this assert hits then we need to specify true for the third parameter in the constructor
@@ -566,9 +566,9 @@ void BitStream::AddBitsAndReallocate( const int numberOfBitsToWrite )
 
 		// Less memory efficient but saves on news and deletes
 		newNumberOfBitsAllocated = ( numberOfBitsToWrite + numberOfBitsUsed ) * 2;
-//		int newByteOffset = BITS_TO_BYTES( numberOfBitsAllocated );
+//		int newuint8_tOffset = BITS_TO_uint8_tS( numberOfBitsAllocated );
 		// Use realloc and free so we are more efficient than delete and new for resizing
-		int amountToAllocate = BITS_TO_BYTES( newNumberOfBitsAllocated );
+		int amountToAllocate = BITS_TO_uint8_tS( newNumberOfBitsAllocated );
 		if (data==(unsigned char*)stackData)
 		{
 			 if (amountToAllocate > BITSTREAM_STACK_ALLOCATION_SIZE)
@@ -576,7 +576,7 @@ void BitStream::AddBitsAndReallocate( const int numberOfBitsToWrite )
 				 data = ( unsigned char* ) malloc( amountToAllocate );
 
 				 // need to copy the stack data over to our new memory area too
-				 memcpy ((void *)data, (void *)stackData, BITS_TO_BYTES( numberOfBitsAllocated )); 
+				 memcpy ((void *)data, (void *)stackData, BITS_TO_uint8_tS( numberOfBitsAllocated )); 
 			 }
 		}
 		else
@@ -587,7 +587,7 @@ void BitStream::AddBitsAndReallocate( const int numberOfBitsToWrite )
 #ifdef _DEBUG
 		assert( data ); // Make sure realloc succeeded
 #endif
-		//  memset(data+newByteOffset, 0,  ((newNumberOfBitsAllocated-1)>>3) - ((numberOfBitsAllocated-1)>>3)); // Set the new data block to 0
+		//  memset(data+newuint8_tOffset, 0,  ((newNumberOfBitsAllocated-1)>>3) - ((numberOfBitsAllocated-1)>>3)); // Set the new data block to 0
 	}
 	
 	if ( newNumberOfBitsAllocated > numberOfBitsAllocated )
@@ -608,7 +608,7 @@ void BitStream::PrintBits( void ) const
 		return ;
 	}
 	
-	for ( int counter = 0; counter < BITS_TO_BYTES( numberOfBitsUsed ); counter++ )
+	for ( int counter = 0; counter < BITS_TO_uint8_tS( numberOfBitsUsed ); counter++ )
 	{
 		int stop;
 		
@@ -640,8 +640,8 @@ int BitStream::CopyData( unsigned char** _data ) const
 	assert( numberOfBitsUsed > 0 );
 #endif
 	
-	*_data = new unsigned char [ BITS_TO_BYTES( numberOfBitsUsed ) ];
-	memcpy( *_data, data, sizeof(unsigned char) * ( BITS_TO_BYTES( numberOfBitsUsed ) ) );
+	*_data = new unsigned char [ BITS_TO_uint8_tS( numberOfBitsUsed ) ];
+	memcpy( *_data, data, sizeof(unsigned char) * ( BITS_TO_uint8_tS( numberOfBitsUsed ) ) );
 	return numberOfBitsUsed;
 }
 
@@ -663,10 +663,10 @@ int BitStream::GetNumberOfBitsUsed( void ) const
 	return numberOfBitsUsed;
 }
 
-// Returns the length in bytes of the stream
-int BitStream::GetNumberOfBytesUsed( void ) const
+// Returns the length in uint8_ts of the stream
+int BitStream::GetNumberOfuint8_tsUsed( void ) const
 {
-	return BITS_TO_BYTES( numberOfBitsUsed );
+	return BITS_TO_uint8_tS( numberOfBitsUsed );
 }
 
 // Returns the number of bits into the stream that we have read
@@ -702,13 +702,13 @@ void BitStream::AssertCopyData( void )
 		
 		if ( numberOfBitsAllocated > 0 )
 		{
-			unsigned char * newdata = ( unsigned char* ) malloc( BITS_TO_BYTES( numberOfBitsAllocated ) );
+			unsigned char * newdata = ( unsigned char* ) malloc( BITS_TO_uint8_tS( numberOfBitsAllocated ) );
 #ifdef _DEBUG
 			
 			assert( data );
 #endif
 			
-			memcpy( newdata, data, BITS_TO_BYTES( numberOfBitsAllocated ) );
+			memcpy( newdata, data, BITS_TO_uint8_tS( numberOfBitsAllocated ) );
 			data = newdata;
 		}
 		
@@ -716,7 +716,7 @@ void BitStream::AssertCopyData( void )
 			data = 0;
 	}
 }
-void BitStream::ReverseBytes(unsigned char *input, unsigned char *output, int length)
+void BitStream::Reverseuint8_ts(unsigned char *input, unsigned char *output, int length)
 {
 	for (int i=0; i < length; i++)
 		output[i]=input[length-i-1];

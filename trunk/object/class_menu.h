@@ -9,7 +9,7 @@ struct t_MenuInteraction
 {
 	BOOL	Menu;
 	BOOL	Row[MAX_ITEMS];
-	BYTE	unknown[12];
+	uint8_t	unknown[12];
 };
 	
 class CMenu	// size 0xB84
@@ -17,7 +17,7 @@ class CMenu	// size 0xB84
 #pragma pack( 1 )
 public:
 
-	BYTE	menuID;														// + 0x0000
+	uint8_t	menuID;														// + 0x0000
 	char	title[ MAX_MENU_TEXT_SIZE ];								// + 0x0001
 	char	items[ MAX_ITEMS ][ MAX_COLUMNS ][ MAX_MENU_TEXT_SIZE ];	// + 0x0021
 	char	headers[MAX_COLUMNS][MAX_MENU_TEXT_SIZE];					// + 0x0321
@@ -27,15 +27,15 @@ public:
 	float	posY;														// + 0x0B75
 	float	column1Width;												// + 0x0B79
 	float	column2Width;												// + 0x0B7D
-	BYTE	columnsNumber;												// + 0x0B81
-	BYTE	itemsCount[ MAX_COLUMNS ];									// + 0x0B82
+	uint8_t	columnsNumber;												// + 0x0B81
+	uint8_t	itemsCount[ MAX_COLUMNS ];									// + 0x0B82
 	
 	
 
 
 
-	BYTE AddMenuItem( BYTE column, char* item );
-	void SetColumnHeader( BYTE column, char* title );
+	uint8_t AddMenuItem( uint8_t column, char* item );
+	void SetColumnHeader( uint8_t column, char* title );
 
 	void initForPlayer( _PlayerID playerID );
 

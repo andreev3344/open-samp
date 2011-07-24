@@ -31,9 +31,9 @@ int CTextDrawPool::Destroy( int textDrawID ) // Ref: 0x47D880
 	return 1;
 }
 
-WORD CTextDrawPool::Create( float x, float y, char* text ) // Ref: 0x47D0C0
+uint16_t CTextDrawPool::Create( float x, float y, char* text ) // Ref: 0x47D0C0
 {
-	WORD id = 0;
+	uint16_t id = 0;
 
 	while( id < MAX_TEXT_LABELS )
 	{
@@ -70,24 +70,24 @@ WORD CTextDrawPool::Create( float x, float y, char* text ) // Ref: 0x47D0C0
 	return id;
 }
 
-int CTextDrawPool::setColor( WORD textDrawID, DWORD color ) // Ref: 0x47D280
+int CTextDrawPool::setColor( uint16_t textDrawID, uint32_t color ) // Ref: 0x47D280
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
-	this->textDraw[textDrawID]->color = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
+	this->textDraw[textDrawID]->color = (((color << 16) | (uint16_t)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
-int CTextDrawPool::setBackgroundColor( WORD textDrawID, DWORD color ) // Ref: 0x47D300
+int CTextDrawPool::setBackgroundColor( uint16_t textDrawID, uint32_t color ) // Ref: 0x47D300
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
-	this->textDraw[textDrawID]->backgroundColor = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
+	this->textDraw[textDrawID]->backgroundColor = (((color << 16) | (uint16_t)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
-int CTextDrawPool::setAlignement( WORD textDrawID, BYTE value ) // Ref: 0x47D230
+int CTextDrawPool::setAlignement( uint16_t textDrawID, uint8_t value ) // Ref: 0x47D230
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -112,7 +112,7 @@ int CTextDrawPool::setAlignement( WORD textDrawID, BYTE value ) // Ref: 0x47D230
 	return 1;
 }
 
-int CTextDrawPool::setFont( WORD textDrawID, BYTE font )
+int CTextDrawPool::setFont( uint16_t textDrawID, uint8_t font )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -120,7 +120,7 @@ int CTextDrawPool::setFont( WORD textDrawID, BYTE font )
 	return 1;
 }
 
-int CTextDrawPool::setLetterSize( WORD textDrawID, float letterWidth, float letterHeight )
+int CTextDrawPool::setLetterSize( uint16_t textDrawID, float letterWidth, float letterHeight )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -129,7 +129,7 @@ int CTextDrawPool::setLetterSize( WORD textDrawID, float letterWidth, float lett
 	return 1;
 }
 
-int CTextDrawPool::setTextSize( WORD textDrawID, float sizeX, float sizeY )
+int CTextDrawPool::setTextSize( uint16_t textDrawID, float sizeX, float sizeY )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -138,7 +138,7 @@ int CTextDrawPool::setTextSize( WORD textDrawID, float sizeX, float sizeY )
 	return 1;
 }
 
-int CTextDrawPool::setOutline( WORD textDrawID, BYTE outline )
+int CTextDrawPool::setOutline( uint16_t textDrawID, uint8_t outline )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -146,7 +146,7 @@ int CTextDrawPool::setOutline( WORD textDrawID, BYTE outline )
 	return 1;
 }
 
-int CTextDrawPool::setShadow( WORD textDrawID, BYTE shadow )
+int CTextDrawPool::setShadow( uint16_t textDrawID, uint8_t shadow )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -154,7 +154,7 @@ int CTextDrawPool::setShadow( WORD textDrawID, BYTE shadow )
 	return 1;
 }
 
-int CTextDrawPool::setProportional( WORD textDrawID, BYTE value ) // Ref: 0x488880
+int CTextDrawPool::setProportional( uint16_t textDrawID, uint8_t value ) // Ref: 0x488880
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -164,12 +164,12 @@ int CTextDrawPool::setProportional( WORD textDrawID, BYTE value ) // Ref: 0x4888
 	return 1;
 }
 
-int CTextDrawPool::setUseBox( WORD textDrawID, BYTE value ) // Ref: 0x4886F0
+int CTextDrawPool::setUseBox( uint16_t textDrawID, uint8_t value ) // Ref: 0x4886F0
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 	
-	BYTE Flags = this->textDraw[textDrawID]->textdrawFlags;
+	uint8_t Flags = this->textDraw[textDrawID]->textdrawFlags;
 
 	value = ( ( value ? 1 : 0 ) );
 
@@ -178,15 +178,15 @@ int CTextDrawPool::setUseBox( WORD textDrawID, BYTE value ) // Ref: 0x4886F0
 	return 1;
 }
 
-int CTextDrawPool::setDrawBoxColor( WORD textDrawID, DWORD color ) // Ref: 0x47D2C0
+int CTextDrawPool::setDrawBoxColor( uint16_t textDrawID, uint32_t color ) // Ref: 0x47D2C0
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
-	this->textDraw[textDrawID]->boxColor = (((color << 16) | (WORD)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
+	this->textDraw[textDrawID]->boxColor = (((color << 16) | (uint16_t)(color & 0xFF00)) << 8) | (((color >> 16) | color & 0xFF0000) >> 8);
 	return 1;
 }
 
-int CTextDrawPool::setString( WORD textDrawID, char* text ) // Ref: 0x47D740
+int CTextDrawPool::setString( uint16_t textDrawID, char* text ) // Ref: 0x47D740
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -198,16 +198,16 @@ int CTextDrawPool::setString( WORD textDrawID, char* text ) // Ref: 0x47D740
 
 
 
-	DWORD RPC_TextDraw_SetString = 0x49;
+	uint32_t RPC_TextDraw_SetString = 0x49;
 	RakNet::BitStream bStream;
-	bStream.Write( (WORD)textDrawID );
+	bStream.Write( (uint16_t)textDrawID );
 	bStream.Write( text, MAX_TEXTDRAW_TEXT );
 
-	for( WORD i = 0; i < 500; i++ )
+	for( uint16_t i = 0; i < 500; i++ )
 	{
 		if( this->textDrawOwner[textDrawID][ i ] != 0 )
 		{
-			CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_TextDraw_SetString, &bStream, i, 2 );
+			CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_TextDraw_SetString, &bStream, i, 2 );
 		}
 
 	}
@@ -215,7 +215,7 @@ int CTextDrawPool::setString( WORD textDrawID, char* text ) // Ref: 0x47D740
 	return 1;
 }
 
-int CTextDrawPool::showForPlayer( _PlayerID playerid, WORD textDrawID ) //Ref: 0x47D340
+int CTextDrawPool::showForPlayer( _PlayerID playerid, uint16_t textDrawID ) //Ref: 0x47D340
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -224,23 +224,23 @@ int CTextDrawPool::showForPlayer( _PlayerID playerid, WORD textDrawID ) //Ref: 0
 	if( 0 > playerid || playerid >= MAX_PLAYERS ) return 0;
 	if( __NetGame->playerPool->isCreated[ playerid ] == 0 ) return 0;
 
-	DWORD RPC_ShowTextDraw = 0x46;
+	uint32_t RPC_ShowTextDraw = 0x46;
 
-	WORD textLen = (WORD)( strlen( this->text[ textDrawID ] ) +1 );
+	uint16_t textLen = (uint16_t)( strlen( this->text[ textDrawID ] ) +1 );
 
 	RakNet::BitStream bStream;
-	bStream.Write( (WORD)textDrawID );
+	bStream.Write( (uint16_t)textDrawID );
 	bStream.Write( (char*)this->textDraw[ textDrawID ], sizeof( tTextDraw ) );
-	bStream.Write( (WORD)textLen );
+	bStream.Write( (uint16_t)textLen );
 	bStream.Write( this->text[ textDrawID ], textLen );
 
 	this->textDrawOwner[ textDrawID ][ playerid ] = 1;
-	CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_ShowTextDraw, &bStream, playerid, 2 );
+	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowTextDraw, &bStream, playerid, 2 );
 	return 1;
 
 }
 
-int CTextDrawPool::hideForPlayer( _PlayerID playerid, WORD textDrawID )
+int CTextDrawPool::hideForPlayer( _PlayerID playerid, uint16_t textDrawID )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
@@ -252,29 +252,29 @@ int CTextDrawPool::hideForPlayer( _PlayerID playerid, WORD textDrawID )
 
 
 
-	DWORD RPC_HideTextDraw = 0x47;
+	uint32_t RPC_HideTextDraw = 0x47;
 	RakNet::BitStream bStream;
-	bStream.Write( (WORD)textDrawID );
+	bStream.Write( (uint16_t)textDrawID );
 	
-	CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_HideTextDraw, &bStream, playerid, 2 );
+	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_HideTextDraw, &bStream, playerid, 2 );
 	this->textDrawOwner[textDrawID][playerid] = 0;
 
 	return 1;
 }
 
-int CTextDrawPool::showForAll( WORD textDrawID )
+int CTextDrawPool::showForAll( uint16_t textDrawID )
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
 
-	DWORD RPC_ShowTextDraw = 0x46;
-	WORD textLen = (WORD)( strlen( this->text[textDrawID] ) + 1 );
+	uint32_t RPC_ShowTextDraw = 0x46;
+	uint16_t textLen = (uint16_t)( strlen( this->text[textDrawID] ) + 1 );
 
 	RakNet::BitStream bStream;
-	bStream.Write( (WORD)textDrawID );
+	bStream.Write( (uint16_t)textDrawID );
 	bStream.Write( (char*)this->textDraw[ textDrawID ], sizeof( tTextDraw ) );
-	bStream.Write( (WORD)textLen );
+	bStream.Write( (uint16_t)textLen );
 	bStream.Write( this->text[ textDrawID ], textLen );
 
 	for( int i = 0; i < 500; i++ )
@@ -282,7 +282,7 @@ int CTextDrawPool::showForAll( WORD textDrawID )
 		if( __NetGame->playerPool->GetSlotState( i ) )
 		{
 			this->textDrawOwner[ textDrawID ][ i ] = 1;
-			CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_ShowTextDraw, &bStream, i, 2 );
+			CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowTextDraw, &bStream, i, 2 );
 		}
 	}
 
@@ -290,21 +290,21 @@ int CTextDrawPool::showForAll( WORD textDrawID )
 	return 1;
 }
 
-int CTextDrawPool::hideForAll( WORD textDrawID ) // Ref: 0x47D670
+int CTextDrawPool::hideForAll( uint16_t textDrawID ) // Ref: 0x47D670
 {
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
 
-	DWORD RPC_HideTextDraw = 0x47;
+	uint32_t RPC_HideTextDraw = 0x47;
 	RakNet::BitStream bStream;
-	bStream.Write( (WORD)textDrawID );
+	bStream.Write( (uint16_t)textDrawID );
 
-	for( WORD i = 0; i < 500; i++ )
+	for( uint16_t i = 0; i < 500; i++ )
 	{
 		if( __NetGame->playerPool->GetSlotState( i ) && this->textDrawOwner[textDrawID][i] != 0 )
 		{
-			CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_HideTextDraw, &bStream, i, 2 );
+			CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_HideTextDraw, &bStream, i, 2 );
 			this->textDrawOwner[textDrawID][i] = 0;
 		}
 	}

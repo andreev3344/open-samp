@@ -99,6 +99,8 @@
     <ClCompile Include="object\class_menu.cpp" />
     <ClCompile Include="object\class_object.cpp" />
     <ClCompile Include="object\class_player.cpp" />
+    <ClCompile Include="object\class_player_text3dlabels.cpp" />
+    <ClCompile Include="object\class_player_var.cpp" />
     <ClCompile Include="pool\class_gangzonepool.cpp" />
     <ClCompile Include="pool\class_menupool.cpp" />
     <ClCompile Include="pool\class_objectpool.cpp" />
@@ -132,6 +134,8 @@
     <ClInclude Include="object\class_menu.h" />
     <ClInclude Include="object\class_object.h" />
     <ClInclude Include="object\class_player.h" />
+    <ClInclude Include="object\class_player_text3dlabels.h" />
+    <ClInclude Include="object\class_player_var.h" />
     <ClInclude Include="pool\class_gangzonepool.h" />
     <ClInclude Include="pool\class_menupool.h" />
     <ClInclude Include="pool\class_objectpool.h" />

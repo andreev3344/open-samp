@@ -585,8 +585,8 @@ cell AMX_NATIVE_CALL funcIsPlayerNPC ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcCreate3DTextLabel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcCreate3DTextLabel()" );
-	//__NetGame = *(DWORD*) 0x4F6270;
-	//CText3DLabels* pool = (CText3DLabels*)( *(DWORD*)( __NetGame + 0x0C ) );
+	//__NetGame = *(uint32_t*) 0x4F6270;
+	//CText3DLabels* pool = (CText3DLabels*)( *(uint32_t*)( __NetGame + 0x0C ) );
 	/*
 	for( int i = 0; i < 1024; i++ )
 	{
@@ -604,8 +604,8 @@ cell AMX_NATIVE_CALL funcCreate3DTextLabel ( AMX* a_AmxInterface, cell* a_Params
 cell AMX_NATIVE_CALL funcDelete3DTextLabel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDelete3DTextLabel()" );
-	//__NetGame = *(DWORD*) 0x4F6270;
-	//CText3DLabels* pool = (CText3DLabels*)( *(DWORD*)( __NetGame + 0x0C ) );
+	//__NetGame = *(uint32_t*) 0x4F6270;
+	//CText3DLabels* pool = (CText3DLabels*)( *(uint32_t*)( __NetGame + 0x0C ) );
 	return /*pool->Delete3DTextLabel( a_Params[1] );*/_funcDelete3DTextLabel ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcAttach3DTextLabelToPlayer ( AMX* a_AmxInterface, cell* a_Params )
@@ -1494,7 +1494,7 @@ cell AMX_NATIVE_CALL funcHTTP ( AMX* a_AmxInterface, cell* a_Params )
 .text:0048A7D0 amx_CustomInit  proc near               ; CODE XREF: CFilterScripts__LoadFilterScript+117p
 .text:0048A7D0                                         ; CFilterScripts__LoadFilterScriptFromMemory+C2p ...
 .text:0048A7D0
-.text:0048A7D0 a_AmxInstance   = dword ptr  4
+.text:0048A7D0 a_AmxInstance   = uint32_t ptr  4
 .text:0048A7D0
 .text:0048A7D0                 mov     eax, [esp+a_AmxInstance]
 .text:0048A7D4                 push    0FFFFFFFFh      ; a_Number

@@ -34,7 +34,7 @@ CMenu::~CMenu( )
 
 
 
-BYTE CMenu::AddMenuItem( BYTE column, char* item )
+uint8_t CMenu::AddMenuItem( uint8_t column, char* item )
 {
 
 	if( column < 2 )
@@ -54,7 +54,7 @@ BYTE CMenu::AddMenuItem( BYTE column, char* item )
 	return -1;
 }
 
-void CMenu::SetColumnHeader( BYTE column, char* title )
+void CMenu::SetColumnHeader( uint8_t column, char* title )
 {
 	if( column < 2 )
 	{
@@ -85,10 +85,10 @@ void CMenu::initForPlayer( _PlayerID playerID ) // ref: 0x498670
 		{
 			bStream.Write( (float)this->column2Width );
 		}
-		bStream.Write( (DWORD)this->interaction.Menu );
+		bStream.Write( (uint32_t)this->interaction.Menu );
 		for( int i = 0; i < MAX_ITEMS; i++ )
 		{
-			bStream.Write( (DWORD)this->interaction.Row[i] );
+			bStream.Write( (uint32_t)this->interaction.Row[i] );
 		}
 		bStream.Write( (char*)this->headers[0], MAX_MENU_TEXT_SIZE );
 		bStream.Write( this->itemsCount[0] );
@@ -110,8 +110,8 @@ void CMenu::initForPlayer( _PlayerID playerID ) // ref: 0x498670
 			}
 		}
 		logprintf( "Step %d", id++ );
-		DWORD RPC_Menu_InitForPlayer = 0x42;
-		CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_Menu_InitForPlayer, &bStream, playerID, 2 );
+		uint32_t RPC_Menu_InitForPlayer = 0x42;
+		CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_Menu_InitForPlayer, &bStream, playerID, 2 );
 		logprintf( "Step %d", id++ );
 	}
 	
@@ -126,11 +126,11 @@ int CMenu::showForPlayer( _PlayerID playerID )
 		{
 			this->initForPlayer( playerID );
 		}
-		DWORD RPC_Menu_ShowForPlayer = 0x43;
+		uint32_t RPC_Menu_ShowForPlayer = 0x43;
 		RakNet::BitStream bStream;
 		bStream.Write( this->menuID );
 
-		CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_Menu_ShowForPlayer, &bStream, playerID, 2 );
+		CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_Menu_ShowForPlayer, &bStream, playerID, 2 );
 
 	}
 	return -1;
@@ -142,10 +142,10 @@ int CMenu::hideForPlayer( _PlayerID playerID )
 	if( playerID < MAX_PLAYERS )
 	{
 
-		DWORD RPC_Menu_HideForPlayer = 0x44;
+		uint32_t RPC_Menu_HideForPlayer = 0x44;
 		RakNet::BitStream bStream;
 		bStream.Write( this->menuID );
-		CNetGame__RPC_SendToPlayer( (DWORD)__NetGame, &RPC_Menu_HideForPlayer, &bStream, playerID, 2 );
+		CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_Menu_HideForPlayer, &bStream, playerID, 2 );
 	}
 
 

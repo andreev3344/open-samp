@@ -94,13 +94,14 @@ void CPlayer::Init( )
 	this->ioFileNPC					= 0;
 	this->unknown1A4D				= __NetGame->GetTime( );
 
-	if( playerVarsClass )
+	if( this->playerText3DLabels )
 	{
-		delete playerVarsClass;
-		playerVarsClass = 0;
+		delete this->playerText3DLabels;
+		this->playerText3DLabels = 0;
 	}
 
-	playerVarsClass = new uint8_t[ 0xCB24 ]; // <-- new CPlayerVars
+	this->playerText3DLabels = new CPlayerText3DLabels( );
+	// this->playerText3DLabels = new uint8_t[ 0xCB24 ]; // <-- new CPlayerText3DLabels
 
 	this->velocity.X =
 		this->velocity.Y =
@@ -1051,6 +1052,7 @@ void CPlayer::setState( uint8_t state )
 void CPlayer::setMyID( _PlayerID playerID )
 {
 	this->myPlayerID;
+	this->playerText3DLabels->setOwnerID( playerID );
 }
 
 uint8_t CPlayer::getState( )

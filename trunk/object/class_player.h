@@ -139,7 +139,7 @@ public:
 	float		facingAngle;							// + 0x0024 - 36
 	BOOL		allowedToTeleport;						// + 0x0028 - 40
 	tVector		velocity;								// + 0x002C - 44
-	void*		playerText3DLabels;						// + 0x0038 - 56
+	CPlayerText3DLabels* playerText3DLabels;			// + 0x0038 - 56
 	uint16_t	myPlayerID;								// + 0x003C - 60
 	uint32_t	SyncingDataType;						// + 0x003E - 62
 

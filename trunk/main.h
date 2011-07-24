@@ -30,7 +30,7 @@ typedef struct QuaternionVector_t
 typedef struct _MATRIX4X4
 {
 	tVector  right;
-	DWORD   flags;
+	uint32_t   flags;
 	tVector  up;
 	float   pad_u;
 	tVector  at;
@@ -42,6 +42,8 @@ typedef struct _MATRIX4X4
 
 typedef uint16_t	_PlayerID;
 typedef uint16_t	_VehicleID;
+typedef uint16_t	_Text3DID;
+
 
 #include "raknet/BitStream.h"
 #include "raknet/GetTime.h"
@@ -65,8 +67,8 @@ void QuaternionToMatrix( tQuaternionVector* quaternion, MATRIX4X4* matrix );
 #include "script/class_gmmanager.h"
 #include "script/class_fsmanager.h"
 
-
-
+#include "object/class_player_text3dlabels.h"
+#include "object/class_player_var.h"
 #include "object/class_menu.h"
 #include "object/class_object.h"
 #include "object/class_player.h"

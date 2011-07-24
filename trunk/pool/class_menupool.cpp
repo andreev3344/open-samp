@@ -25,9 +25,9 @@ void CMenuPool::resetForPlayer( _PlayerID playerID )
 
 }
 
-BYTE CMenuPool::New( char* title, float x, float y, BYTE column, float col1width, float col2width )
+uint8_t CMenuPool::New( char* title, float x, float y, uint8_t column, float col1width, float col2width )
 {
-	BYTE menuID = 1;
+	uint8_t menuID = 1;
 
 	while( menuID < MAX_MENUS )
 	{
@@ -45,7 +45,7 @@ BYTE CMenuPool::New( char* title, float x, float y, BYTE column, float col1width
 	return menuID;
 }
 
-int CMenuPool::Destroy( BYTE menuID )
+int CMenuPool::Destroy( uint8_t menuID )
 {
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( this->isCreated[ menuID ] != 0 && this->menu[ menuID ] > 0 )

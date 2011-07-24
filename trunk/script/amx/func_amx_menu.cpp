@@ -23,31 +23,31 @@ cell AMX_NATIVE_CALL funcCreateMenu ( AMX* a_AmxInterface, cell* a_Params )
 	char* str = 0;
 	amx_StrParam( a_AmxInterface, a_Params[1], str );
 
-	BYTE ret = __MenuPool->New( str, amx_ctof( a_Params[3] ), amx_ctof( a_Params[4] ), (BYTE)a_Params[2], amx_ctof( a_Params[5] ), amx_ctof( a_Params[6] ) );
+	uint8_t ret = __MenuPool->New( str, amx_ctof( a_Params[3] ), amx_ctof( a_Params[4] ), (uint8_t)a_Params[2], amx_ctof( a_Params[5] ), amx_ctof( a_Params[6] ) );
 	return (cell) ret;
 }
 cell AMX_NATIVE_CALL funcDestroyMenu ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDestroyMenu()" );
-	return __MenuPool->Destroy( (BYTE)a_Params[1] );
+	return __MenuPool->Destroy( (uint8_t)a_Params[1] );
 }
 cell AMX_NATIVE_CALL funcAddMenuItem ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcAddMenuItem()" );
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
 
 	char* str = 0;
 	amx_StrParam( a_AmxInterface, a_Params[ 3 ], str );
 
-	__MenuPool->menu[ menuID ]->AddMenuItem( (BYTE)a_Params[ 2 ], str );
+	__MenuPool->menu[ menuID ]->AddMenuItem( (uint8_t)a_Params[ 2 ], str );
 	return 1;
 }
 cell AMX_NATIVE_CALL funcSetMenuColumnHeader ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetMenuColumnHeader()" );
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
@@ -55,7 +55,7 @@ cell AMX_NATIVE_CALL funcSetMenuColumnHeader ( AMX* a_AmxInterface, cell* a_Para
 	char* str = 0;
 	amx_StrParam( a_AmxInterface, a_Params[3], str );
 
-	__MenuPool->menu[ menuID ]->SetColumnHeader( (BYTE)a_Params[2], str );
+	__MenuPool->menu[ menuID ]->SetColumnHeader( (uint8_t)a_Params[2], str );
 	return 1;
 
 
@@ -66,7 +66,7 @@ cell AMX_NATIVE_CALL funcShowMenuForPlayer ( AMX* a_AmxInterface, cell* a_Params
 {
 	logprintf ( "[Call]-> funcShowMenuForPlayer()" );
 
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
@@ -83,7 +83,7 @@ cell AMX_NATIVE_CALL funcHideMenuForPlayer ( AMX* a_AmxInterface, cell* a_Params
 {
 	logprintf ( "[Call]-> funcHideMenuForPlayer()" );
 	
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
@@ -100,7 +100,7 @@ cell AMX_NATIVE_CALL funcHideMenuForPlayer ( AMX* a_AmxInterface, cell* a_Params
 cell AMX_NATIVE_CALL funcIsValidMenu ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsValidMenu()" );
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	return (cell)__MenuPool->isCreated[ menuID ];
@@ -108,7 +108,7 @@ cell AMX_NATIVE_CALL funcIsValidMenu ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcDisableMenu ( AMX* a_AmxInterface, cell* a_Params ) // Utile ? Inutile ? telle est la question. :p
 {
 	logprintf ( "[Call]-> funcDisableMenu()" );
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
 	
@@ -120,12 +120,12 @@ cell AMX_NATIVE_CALL funcDisableMenuRow ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDisableMenuRow()" );
 	
-	BYTE menuID = (BYTE)a_Params[ 1 ];
+	uint8_t menuID = (uint8_t)a_Params[ 1 ];
 	
 	if( 0 > menuID || menuID >= MAX_MENUS ) return 0;
 	if( __MenuPool->isCreated[ menuID ] == 0 ) return 0;
 	
-	BYTE row = (BYTE)a_Params[ 2 ];
+	uint8_t row = (uint8_t)a_Params[ 2 ];
 	
 	if( 0 > row  || row >= MAX_ITEMS ) return 0;
 
