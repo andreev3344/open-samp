@@ -672,7 +672,7 @@ uint32_t CFilterscriptsManager::OnVehiclePaintjob(cell playerid, cell vehicleid,
 	return (uint32_t)ret;
 }
 
-uint32_t CFilterscriptsManager::OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassuint16_t, cell success )
+uint32_t CFilterscriptsManager::OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassword, cell success )
 {
 	int idx;
 	cell retval;
@@ -687,7 +687,7 @@ uint32_t CFilterscriptsManager::OnRconLoginAttempt( unsigned char* szIP, unsigne
 				cell amx_addr, amx_addr2, *phys_addr;
 
 				amx_Push( fsAMX[i], success );
-				amx_PushString(fsAMX[i], &amx_addr, &phys_addr, (char*)szPassuint16_t, 0, 0);
+				amx_PushString(fsAMX[i], &amx_addr, &phys_addr, (char*)szPassword, 0, 0);
 				amx_PushString(fsAMX[i], &amx_addr2, &phys_addr, (char*)szIP, 0, 0);
 
 				amx_Exec( fsAMX[i], &retval, idx );

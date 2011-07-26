@@ -515,7 +515,7 @@ uint32_t CGamemodeManager::OnVehiclePaintjob(cell playerid, cell vehicleid, cell
 	return (uint32_t)ret;
 }
 
-uint32_t CGamemodeManager::OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassuint16_t, cell success )
+uint32_t CGamemodeManager::OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassword, cell success )
 {
 	if (!gmIsInit) return 0;
 	int idx;
@@ -526,7 +526,7 @@ uint32_t CGamemodeManager::OnRconLoginAttempt( unsigned char* szIP, unsigned cha
 		cell amx_addr, amx_addr2, *phys_addr;
 
 		amx_Push( &gmAMX, success );
-		amx_PushString(&gmAMX, &amx_addr, &phys_addr, (char*)szPassuint16_t, 0, 0);
+		amx_PushString(&gmAMX, &amx_addr, &phys_addr, (char*)szPassword, 0, 0);
 		amx_PushString(&gmAMX, &amx_addr2, &phys_addr, (char*)szIP, 0, 0);
 
 		amx_Exec( &gmAMX, &retval, idx );

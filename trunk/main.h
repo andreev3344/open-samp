@@ -68,7 +68,7 @@ void QuaternionToMatrix( tQuaternionVector* quaternion, MATRIX4X4* matrix );
 #include "script/class_fsmanager.h"
 
 #include "object/class_player_text3dlabels.h"
-#include "object/class_player_var.h"
+//#include "object/class_player_var.h"
 #include "object/class_menu.h"
 #include "object/class_object.h"
 #include "object/class_player.h"

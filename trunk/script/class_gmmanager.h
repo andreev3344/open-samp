@@ -44,7 +44,7 @@ public:
 	uint32_t OnPlayerInteriorChange(cell playerid, cell newid, cell oldid);
 	uint32_t OnPlayerKeyStateChange(cell playerid, cell newkeys, cell oldkeys);
 
-	uint32_t OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassuint16_t, cell success );
+	uint32_t OnRconLoginAttempt( unsigned char* szIP, unsigned char* szPassword, cell success );
 	uint32_t OnPlayerUpdate(cell playerid);
 	uint32_t OnPlayerStreamIn(cell playerid, cell forplayerid);
 	uint32_t OnPlayerStreamOut(cell playerid, cell forplayerid);

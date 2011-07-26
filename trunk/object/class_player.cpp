@@ -101,7 +101,7 @@ void CPlayer::Init( )
 	}
 
 	this->playerText3DLabels = new CPlayerText3DLabels( );
-	// this->playerText3DLabels = new uint8_t[ 0xCB24 ]; // <-- new CPlayerText3DLabels
+
 
 	this->velocity.X =
 		this->velocity.Y =

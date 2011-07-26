@@ -72,6 +72,7 @@ int CPlayerPool::Delete( _PlayerID playerID, uint8_t reason )
 	this->playersCount--;
 
 	// this->sub_47C800( );
+	return 1;
 }
 
 int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* serial, uint32_t isNPC )
@@ -135,6 +136,7 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* serial, ui
 	this->playersCount++;
 
 	//this->sub_47C800( );
+	return 1;
 }
 
 bool CPlayerPool::isNPC( _PlayerID playerID )
