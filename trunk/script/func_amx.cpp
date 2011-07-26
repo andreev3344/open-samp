@@ -292,7 +292,6 @@ cell AMX_NATIVE_CALL funcSetTeamCount ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcAddPlayerClass ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcAddPlayerClass()" );
-//	return _funcAddPlayerClass ( a_AmxInterface, a_Params );
 
 	tSPAWNS spawn;
 

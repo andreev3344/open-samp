@@ -196,6 +196,9 @@ public:
 	tSPAWNS* getCustomSpawn( );
 	bool HasCustomSpawn( );
 
+	void setColor( uint32_t color );
+	uint32_t getColor( );
+
 	tVector* getCameraPosition( );
 	tVector* getCameraFrontVector( );
 	tVector* getPosition( );

@@ -1033,6 +1033,22 @@ tSPAWNS* CPlayer::getCustomSpawn( )
 	return &this->customSpawn;
 }
 
+void CPlayer::setColor( uint32_t color )
+{
+	this->nickNameColor = color;
+	uint32_t RPC_SetPlayerColor = 0x14;
+	RakNet::BitStream bStream;
+	bStream.Write( ( _PlayerID ) this->myPlayerID );
+	bStream.Write( ( uint32_t ) color );
+
+	CNetGame__RPC_SendToEveryPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerColor, &bStream, this->myPlayerID, 2 );
+}
+
+uint32_t CPlayer::getColor( )
+{
+	return this->nickNameColor;
+}
+
 tVector* CPlayer::getCameraPosition( )
 {
 	return &this->aimSyncData.cameraPosition;

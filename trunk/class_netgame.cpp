@@ -18,8 +18,7 @@ uint32_t CNetGame::GetTime( )
 }
 uint32_t CNetGame::addSpawn( tSPAWNS spawn )
 {
-	if( this->spawnsNumber >= MAX_SPAWNS ) return MAX_SPAWNS; // Pourquoi ? demandez à Kye :p
-	
+	if( this->spawnsNumber >= MAX_SPAWNS ) return MAX_SPAWNS;
 	memcpy( &this->spawns[ this->spawnsNumber ], &spawn, sizeof( tSPAWNS ) );
 
 	return this->spawnsNumber++;

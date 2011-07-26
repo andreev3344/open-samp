@@ -217,7 +217,7 @@ cell AMX_NATIVE_CALL funcSetPlayerPos ( AMX* a_AmxInterface, cell* a_Params )
 	{
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
-		player->setPosition( ( float )a_Params[ 2 ], ( float )a_Params[ 3 ], ( float )a_Params[ 4 ] );
+		player->setPosition( amx_ctof( a_Params[ 2 ] ), amx_ctof( a_Params[ 3 ] ), amx_ctof( a_Params[ 4 ] ) );
 		return 1;
 	}
 	return 0;
@@ -233,7 +233,7 @@ cell AMX_NATIVE_CALL funcSetPlayerPosFindZ ( AMX* a_AmxInterface, cell* a_Params
 	{
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
-		player->setPositionFindZ( ( float )a_Params[ 2 ], ( float )a_Params[ 3 ], ( float )a_Params[ 4 ] );
+		player->setPositionFindZ( amx_ctof( a_Params[ 2 ] ), amx_ctof( a_Params[ 3 ] ), amx_ctof( a_Params[ 4 ] ) );
 		return 1;
 	}
 	return 0;
@@ -267,7 +267,7 @@ cell AMX_NATIVE_CALL funcSetPlayerHealth ( AMX* a_AmxInterface, cell* a_Params )
 	{
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
-		player->setHealth( ( float ) a_Params[ 2 ] );
+		player->setHealth( amx_ctof( a_Params[ 2 ] ) );
 		return 1;
 	}
 	return 0;
@@ -276,12 +276,33 @@ cell AMX_NATIVE_CALL funcSetPlayerHealth ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcSetPlayerColor ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerColor()" );
-	return _funcSetPlayerColor ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		player->setColor( a_Params[ 2 ] );
+		return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPlayerColor ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerColor()" );
-	return _funcGetPlayerColor ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		return player->getColor( );
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPlayerVehicleID ( AMX* a_AmxInterface, cell* a_Params )
 {
