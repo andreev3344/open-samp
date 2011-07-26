@@ -1023,6 +1023,11 @@ ON_FOOT_SYNC* CPlayer::getOnFootSyncData( )
 	return &this->onFootSyncData;
 }
 
+bool CPlayer::HasCustomSpawn( )
+{
+	return ( bool )( this->hasCustomSpawn ? true : false );
+}
+
 tSPAWNS* CPlayer::getCustomSpawn( )
 {
 	return &this->customSpawn;
@@ -1119,7 +1124,44 @@ float CPlayer::getHealth( )
 	return this->health;
 }
 
+void CPlayer::setHealth( float health )
+{
+	uint32_t RPC_SetPlayerHealth = 0x11;
+	RakNet::BitStream bStream;
+	bStream.Write( ( float ) health );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerHealth, &bStream, this->myPlayerID, 2 );
+}
+
 tVector* CPlayer::getPosition( )
 {
 	return &this->position;
+}
+
+void CPlayer::setPosition( tVector position )
+{
+	setPosition( position.X, position.Y, position.Z );
+}
+
+void CPlayer::setPosition( float x, float y, float z )
+{
+	uint32_t RPC_SetPlayerPosition = 0x0F;
+	RakNet::BitStream bStream;
+
+	bStream.Write( ( float ) x );
+	bStream.Write( ( float ) y );
+	bStream.Write( ( float ) z );
+
+	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerPosition, &bStream, this->myPlayerID, 2 );
+}
+
+void CPlayer::setPositionFindZ( float x, float y, float z )
+{
+	uint32_t RPC_SetPlayerPositionFindZ = 0x10;
+	RakNet::BitStream bStream;
+
+	bStream.Write( ( float ) x );
+	bStream.Write( ( float ) y );
+	bStream.Write( ( float ) z );
+
+	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerPositionFindZ, &bStream, this->myPlayerID, 2 );
 }

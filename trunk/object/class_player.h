@@ -194,10 +194,15 @@ public:
 
 	ON_FOOT_SYNC* getOnFootSyncData( );
 	tSPAWNS* getCustomSpawn( );
+	bool HasCustomSpawn( );
 
 	tVector* getCameraPosition( );
 	tVector* getCameraFrontVector( );
 	tVector* getPosition( );
+
+	void setPosition( tVector position );
+	void setPosition( float x, float y, float z );
+	void setPositionFindZ( float x, float y, float z );
 
 	float getFacingAngle( );
 
@@ -213,6 +218,7 @@ public:
 	bool isSpawned( );
 
 	float getHealth( );
+	void setHealth( float health );
 
 	void Init( );
 
