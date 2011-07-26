@@ -35,6 +35,7 @@ public:
 
 	bool isNPC( _PlayerID playerID );
 
+	void setPlayerNick( _PlayerID playerID, char* nickname );
 	char* getPlayerNick( _PlayerID playerID );
 	bool isNicknameUsed( char* nick );
 

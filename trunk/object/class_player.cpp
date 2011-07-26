@@ -917,7 +917,7 @@ bool CPlayer::isPlayerStreamedIn( _PlayerID playerID )
 	return this->bisPlayerStreamedIn[ playerID ];
 }
 
-bool CPlayer::isVehicleStreamedIn( uint16_t vehicleID )
+bool CPlayer::isVehicleStreamedIn( _VehicleID vehicleID )
 {
 	if( 0 > vehicleID || vehicleID >= MAX_VEHICLES ) return false;
 	return this->bisVehicleStreamedIn[ vehicleID ];
@@ -928,7 +928,7 @@ bool CPlayer::isPickupStreamedIn( uint16_t pickupID )
 	if( 0 > pickupID || pickupID >= LIMIT_MAX_PICKUPS ) return false;
 	return this->bisPickupStreamedIn[ pickupID ];
 }
-bool CPlayer::isText3DLabelStreamedIn( uint16_t text3dID )
+bool CPlayer::isText3DLabelStreamedIn( _Text3DID text3dID )
 {
 	if( 0 > text3dID  || text3dID  >= MAX_TEXT_LABELS ) return false;
 	return this->bisText3DLabelStreamedIn[ text3dID ];
@@ -1017,6 +1017,15 @@ void CPlayer::showCheckpoint( bool show )
 uint16_t CPlayer::getCurrentVehicleID( )
 {
 	return this->currentVehicleID;
+}
+ON_FOOT_SYNC* CPlayer::getOnFootSyncData( )
+{
+	return &this->onFootSyncData;
+}
+
+tSPAWNS* CPlayer::getCustomSpawn( )
+{
+	return &this->customSpawn;
 }
 
 tVector* CPlayer::getCameraPosition( )

@@ -34,16 +34,16 @@ public:
 	tText3DLabels		TextLabels[ MAX_TEXT_LABELS ];	// + 0x0000
 	BOOL				isCreated[ MAX_TEXT_LABELS ];	// + 0x8400
 
-	int	Create3DTextLabel( char* text, uint32_t color, float x, float y, float z, float drawDistance, uint32_t virtualWorld, bool useLOS );
-	int Delete3DTextLabel( int labelID );
-	int Update3DTextLabelText( int labelID, uint32_t color, char* text );
-	int Attach3DTextLabelToVehicle( int labelID, uint16_t vehicleID, float offsetX, float offsetY, float offsetZ );
-	int Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ );
+	_Text3DID	Create3DTextLabel( char* text, uint32_t color, float x, float y, float z, float drawDistance, uint32_t virtualWorld, bool useLOS );
+	int Delete3DTextLabel( _Text3DID labelID );
+	int Update3DTextLabelText( _Text3DID labelID, uint32_t color, char* text );
+	int Attach3DTextLabelToVehicle( _Text3DID labelID, uint16_t vehicleID, float offsetX, float offsetY, float offsetZ );
+	int Attach3DTextLabelPlayer( _Text3DID labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ );
 
-	void showForPlayer( uint16_t labelID, _PlayerID playerID );
+	void showForPlayer( _Text3DID labelID, _PlayerID playerID );
 
-	void hideForPlayer( uint16_t labelID, _PlayerID playerID );
-	void hideForAll( uint16_t labelID, bool to_update = false );
+	void hideForPlayer( _Text3DID labelID, _PlayerID playerID );
+	void hideForAll( _Text3DID labelID, bool to_update = false );
 
 	CText3DLabels( );
 	~CText3DLabels( );

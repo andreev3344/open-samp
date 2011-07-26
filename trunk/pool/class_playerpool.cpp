@@ -148,6 +148,15 @@ bool CPlayerPool::isNPC( _PlayerID playerID )
 	return false;
 }
 
+void CPlayerPool::setPlayerNick( _PlayerID playerID, char* nickname )
+{
+	if( GetSlotState( playerID )) 
+	{
+		strcpy( this->nickNames[playerID], nickname);
+	}
+
+}
+
 char* CPlayerPool::getPlayerNick( _PlayerID playerID )
 {
 	if( GetSlotState( playerID ) )

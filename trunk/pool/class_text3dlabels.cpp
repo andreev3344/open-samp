@@ -3,7 +3,7 @@
 CText3DLabels::CText3DLabels( )
 {
 	
-	for( int i = 0; i < MAX_TEXT_LABELS; i++ )
+	for( _Text3DID i = 0; i < MAX_TEXT_LABELS; i++ )
 	{
 		this->TextLabels[i].posX = 0.f;
 		this->TextLabels[i].posY = 0.f;
@@ -174,7 +174,7 @@ CText3DLabels::~CText3DLabels( )
 
 */
 
-int	CText3DLabels::Create3DTextLabel( char* text, uint32_t color, float x, float y, float z, float drawDistance, uint32_t virtualWorld, bool useLOS )
+_Text3DID	CText3DLabels::Create3DTextLabel( char* text, uint32_t color, float x, float y, float z, float drawDistance, uint32_t virtualWorld, bool useLOS )
 {
 	int id = 0;
 	while( id < MAX_TEXT_LABELS )
@@ -234,7 +234,7 @@ int	CText3DLabels::Create3DTextLabel( char* text, uint32_t color, float x, float
 }
 
 
-void CText3DLabels::showForPlayer( uint16_t labelID, _PlayerID playerID )
+void CText3DLabels::showForPlayer( _Text3DID labelID, _PlayerID playerID )
 {
 	
 	RakNet::BitStream* bStream = new RakNet::BitStream( );
@@ -264,7 +264,7 @@ void CText3DLabels::showForPlayer( uint16_t labelID, _PlayerID playerID )
 
 }
 
-int CText3DLabels::Delete3DTextLabel( int labelID )
+int CText3DLabels::Delete3DTextLabel( _Text3DID labelID )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 
@@ -293,7 +293,7 @@ int CText3DLabels::Delete3DTextLabel( int labelID )
 	return 1;
 }
 
-int CText3DLabels::Update3DTextLabelText( int labelID, uint32_t color, char* text )
+int CText3DLabels::Update3DTextLabelText( _Text3DID labelID, uint32_t color, char* text )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
@@ -312,7 +312,7 @@ int CText3DLabels::Update3DTextLabelText( int labelID, uint32_t color, char* tex
 	return 1;
 }
 
-int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, uint16_t vehicleID, float offsetX, float offsetY, float offsetZ )
+int CText3DLabels::Attach3DTextLabelToVehicle( _Text3DID labelID, uint16_t vehicleID, float offsetX, float offsetY, float offsetZ )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
@@ -332,7 +332,7 @@ int CText3DLabels::Attach3DTextLabelToVehicle( int labelID, uint16_t vehicleID, 
 	return 1;
 }
 
-int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ )
+int CText3DLabels::Attach3DTextLabelPlayer( _Text3DID labelID, _PlayerID playerID, float offsetX, float offsetY, float offsetZ )
 {
 	if( 0 > labelID || labelID > MAX_TEXT_LABELS ) return 0; 
 	if( this->isCreated[ labelID ] == 0 ) return 0;
@@ -351,7 +351,7 @@ int CText3DLabels::Attach3DTextLabelPlayer( int labelID, _PlayerID playerID, flo
 	return 1;
 }
 
-void CText3DLabels::hideForPlayer( uint16_t labelID, _PlayerID playerID )
+void CText3DLabels::hideForPlayer( _Text3DID labelID, _PlayerID playerID )
 {
 	if( 0 > labelID || labelID >= MAX_TEXT_LABELS ) return;
 
@@ -366,7 +366,7 @@ void CText3DLabels::hideForPlayer( uint16_t labelID, _PlayerID playerID )
 
 }
 
-void CText3DLabels::hideForAll( uint16_t labelID, bool to_update )
+void CText3DLabels::hideForAll( _Text3DID labelID, bool to_update )
 {
 
 	if( __NetGame->playerPool > 0 )
@@ -379,8 +379,8 @@ void CText3DLabels::hideForAll( uint16_t labelID, bool to_update )
 				CPlayer* player = 0;
 				if( ( player = __NetGame->playerPool->GetPlayer( playerID ) ) > 0 )
 				{
-
-					if( player->bisText3DLabelStreamedIn[ labelID ] )
+					
+					if( player->isText3DLabelStreamedIn( labelID ) )
 					{
 						player->destroyText3DLabel( labelID );
 						if( to_update == true )

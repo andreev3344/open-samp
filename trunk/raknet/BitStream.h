@@ -34,8 +34,8 @@
 namespace RakNet
 {
 
-/// Given a number of bits, return how many uint8_ts are needed to represent that.
-#define BITS_TO_uint8_tS(x) (((x)+7)>>3)
+/// Given a number of bits, return how many bytes are needed to represent that.
+#define BITS_TO_BYTES(x) (((x)+7)>>3)
 
 	/// This class allows you to write and read native types as a string of bits.  BitStream is used extensively throughout RakNet and is designed to be used by users as well.	
 	/// \sa BitStreamSample.txt
@@ -46,11 +46,11 @@ namespace RakNet
 		/// Default Constructor 
 		BitStream();
 		
-		/// Create the bitstream, with some number of uint8_ts to immediately allocate.
-		/// There is no benefit to calling this, unless you know exactly how many uint8_ts you need and it is greater than BITSTREAM_STACK_ALLOCATION_SIZE.
+		/// Create the bitstream, with some number of bytes to immediately allocate.
+		/// There is no benefit to calling this, unless you know exactly how many bytes you need and it is greater than BITSTREAM_STACK_ALLOCATION_SIZE.
 		/// In that case all it does is save you one or more realloc calls.
-		/// \param[in] initialuint8_tsToAllocate the number of uint8_ts to pre-allocate. 
-		BitStream( int initialuint8_tsToAllocate );
+		/// \param[in] initialBytesToAllocate the number of bytes to pre-allocate. 
+		BitStream( int initialBytesToAllocate );
 		
 		/// Initialize the BitStream, immediately setting the data it contains to a predefined pointer.
 		/// Set \a _copyData to true if you want to make an internal copy of the data you are passing. Set it to false to just save a pointer to the data.
@@ -59,10 +59,10 @@ namespace RakNet
 		/// \code
 		/// RakNet::BitStream bs(packet->data, packet->length, false);
 		/// \endcode
-		/// \param[in] _data An array of uint8_ts.
-		/// \param[in] lengthInuint8_ts Size of the \a _data.
+		/// \param[in] _data An array of bytes.
+		/// \param[in] lengthInBytes Size of the \a _data.
 		/// \param[in] _copyData true or false to make a copy of \a _data or not.
-		BitStream( char* _data, unsigned int lengthInuint8_ts, bool _copyData );
+		BitStream( char* _data, unsigned int lengthInBytes, bool _copyData );
 		
 		/// Destructor 
 		~BitStream();
@@ -88,8 +88,8 @@ namespace RakNet
 			void WriteDelta(templateType currentValue);
 
 		/// Write any integral type to a bitstream.  Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
-		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
-		/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
+		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 		/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
 		/// \param[in] var The value to write
 		template <class templateType>
@@ -97,9 +97,9 @@ namespace RakNet
 
 		/// Write any integral type to a bitstream.  If the current value is different from the last value
 		/// the current value will be written.  Otherwise, a single bit will be written
-		/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 		/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 		/// \param[in] currentValue The current value to write
 		/// \param[in] lastValue The last value to compare against
 		template <class templateType>
@@ -122,9 +122,9 @@ namespace RakNet
 			bool ReadDelta(templateType &var);
 
 		/// Read any integral type from a bitstream.  Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
-		/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 		/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 		/// \param[in] var The value to read
 		template <class templateType>
 			bool ReadCompressed(templateType &var);
@@ -132,25 +132,25 @@ namespace RakNet
 		/// Read any integral type from a bitstream.  If the written value differed from the value compared against in the write function,
 		/// var will be updated.  Otherwise it will retain the current value.
 		/// the current value will be updated.
-		/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+		/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 		/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+		/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 		/// ReadCompressedDelta is only valid from a previous call to WriteDelta
 		/// \param[in] var The value to read
 		template <class templateType>
 			bool ReadCompressedDelta(templateType &var);
 
 		/// Write an array or casted stream or raw data.  This does NOT do endian swapping.
-		/// \param[in] input a uint8_t buffer 
-		/// \param[in] numberOfuint8_ts the size of \a input in uint8_ts 
-		void Write( const char* input, const int numberOfuint8_ts );
+		/// \param[in] input a byte buffer 
+		/// \param[in] numberOfBytes the size of \a input in bytes 
+		void Write( const char* input, const int numberOfBytes );
 		
 		/// Write one bitstream to another
-		/// \bug \a bitStream must be uint8_t aligned.
+		/// \bug \a bitStream must be byte aligned.
 		/// \param bitStream the bitstream to copy from
 		void Write( BitStream *bitStream );
 		
-		/// Read a normalized 3D vector, using (at most) 4 uint8_ts + 3 bits instead of 12-24 uint8_ts.  Will further compress y or z axis aligned vectors.
+		/// Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] x x
 		/// \param[in] y y
@@ -158,15 +158,15 @@ namespace RakNet
 		template <class templateType> // templateType for this function must be a float or double
 		void WriteNormVector( templateType x, templateType y, templateType z );
 
-		/// Write a vector, using 10 uint8_ts instead of 12.
-		/// Loses accuracy to about 3/10ths and only saves 2 uint8_ts, so only use if accuracy is not important.
+		/// Write a vector, using 10 bytes instead of 12.
+		/// Loses accuracy to about 3/10ths and only saves 2 bytes, so only use if accuracy is not important.
 		/// \param[in] x x
 		/// \param[in] y y
 		/// \param[in] z z
 		template <class templateType> // templateType for this function must be a float or double
 		void WriteVector( templateType x, templateType y, templateType z );
 
-		/// Write a normalized quaternion in 6 uint8_ts + 4 bits instead of 16 uint8_ts.  Slightly lossy.
+		/// Write a normalized quaternion in 6 bytes + 4 bits instead of 16 bytes.  Slightly lossy.
 		/// \param[in] w w
 		/// \param[in] x x
 		/// \param[in] y y
@@ -174,8 +174,8 @@ namespace RakNet
 		template <class templateType> // templateType for this function must be a float or double
 		void WriteNormQuat( templateType w, templateType x, templateType y, templateType z);
 
-		/// Write an orthogonal matrix by creating a quaternion, and writing 3 components of the quaternion in 2 uint8_ts each
-		/// for 6 uint8_ts instead of 36
+		/// Write an orthogonal matrix by creating a quaternion, and writing 3 components of the quaternion in 2 bytes each
+		/// for 6 bytes instead of 36
 		/// Lossy, although the result is renormalized
 		template <class templateType> // templateType for this function must be a float or double
 		void WriteOrthMatrix( 
@@ -183,14 +183,14 @@ namespace RakNet
 			templateType m10, templateType m11, templateType m12,
 			templateType m20, templateType m21, templateType m22 );
 
-		/// Read an array or casted stream of uint8_t. The array
+		/// Read an array or casted stream of byte. The array
 		/// is raw data. There is no automatic endian conversion with this function
-		/// \param[in] output The result uint8_t array. It should be larger than @em numberOfuint8_ts. 
-		/// \param[in] numberOfuint8_ts The number of uint8_t to read
-		/// \return true on success false if there is some missing uint8_ts. 
-		bool Read( char* output, const int numberOfuint8_ts );
+		/// \param[in] output The result byte array. It should be larger than @em numberOfBytes. 
+		/// \param[in] numberOfBytes The number of byte to read
+		/// \return true on success false if there is some missing bytes. 
+		bool Read( char* output, const int numberOfBytes );
 
-		/// Read a normalized 3D vector, using (at most) 4 uint8_ts + 3 bits instead of 12-24 uint8_ts.  Will further compress y or z axis aligned vectors.
+		/// Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] x x
 		/// \param[in] y y
@@ -198,15 +198,15 @@ namespace RakNet
 		template <class templateType> // templateType for this function must be a float or double
 		bool ReadNormVector( templateType &x, templateType &y, templateType &z );
 
-		/// Read 3 floats or doubles, using 10 uint8_ts, where those float or doubles comprise a vector
-		/// Loses accuracy to about 3/10ths and only saves 2 uint8_ts, so only use if accuracy is not important.
+		/// Read 3 floats or doubles, using 10 bytes, where those float or doubles comprise a vector
+		/// Loses accuracy to about 3/10ths and only saves 2 bytes, so only use if accuracy is not important.
 		/// \param[in] x x
 		/// \param[in] y y
 		/// \param[in] z z
 		template <class templateType> // templateType for this function must be a float or double
 		bool ReadVector( templateType &x, templateType &y, templateType &z );
 		
-		/// Read a normalized quaternion in 6 uint8_ts + 4 bits instead of 16 uint8_ts.
+		/// Read a normalized quaternion in 6 bytes + 4 bits instead of 16 bytes.
 		/// \param[in] w w
 		/// \param[in] x x
 		/// \param[in] y y
@@ -214,8 +214,8 @@ namespace RakNet
 		template <class templateType> // templateType for this function must be a float or double
 		bool ReadNormQuat( templateType &w, templateType &x, templateType &y, templateType &z);
 		
-		/// Read an orthogonal matrix from a quaternion, reading 3 components of the quaternion in 2 uint8_ts each and extrapolatig the 4th.
-		/// for 6 uint8_ts instead of 36
+		/// Read an orthogonal matrix from a quaternion, reading 3 components of the quaternion in 2 bytes each and extrapolatig the 4th.
+		/// for 6 bytes instead of 36
 		/// Lossy, although the result is renormalized
 		template <class templateType> // templateType for this function must be a float or double
 		bool ReadOrthMatrix( 
@@ -249,8 +249,8 @@ namespace RakNet
 		/// Returns the length in bits of the stream
 		int GetNumberOfBitsUsed( void ) const;
 		
-		///Returns the length in uint8_ts of the stream
-		int GetNumberOfuint8_tsUsed( void ) const;
+		///Returns the length in bytes of the stream
+		int GetNumberOfBytesUsed( void ) const;
 		
 		///Returns the number of bits into the stream that we have read
 		int GetReadOffset( void ) const;
@@ -263,24 +263,24 @@ namespace RakNet
 		
 		/// Makes a copy of the internal data for you \a _data will point to
 		/// the stream. Returns the length in bits of the stream. Partial
-		/// uint8_ts are left aligned 
+		/// bytes are left aligned 
 		/// \param[out] _data The allocated copy of GetData()
 		int CopyData( unsigned char** _data ) const;
 		
 		/// Set the stream to some initial data.
 		/// \internal
-		/// Partial uint8_ts are left aligned
+		/// Partial bytes are left aligned
 		/// \param[in] input The data
 		/// \param[in] numberOfBits the number of bits set in the data buffer 
 		void SetData( const unsigned char* input, const int numberOfBits );
 		
 		/// Gets the data that BitStream is writing to / reading from
-		/// Partial uint8_ts are left aligned.
+		/// Partial bytes are left aligned.
 		/// \return A pointer to the internal state 
 		unsigned char* GetData( void ) const;
 		
 		/// Write numberToWrite bits from the input source Right aligned
-		/// data means in the case of a partial uint8_t, the bits are aligned
+		/// data means in the case of a partial byte, the bits are aligned
 		/// from the right (bit 0) rather than the left (as in the normal
 		/// internal representation) You would set this to true when
 		/// writing user data, and false when copying bitstream data, such
@@ -290,36 +290,36 @@ namespace RakNet
 		/// \param[in] rightAlignedBits if true data will be right aligned 
 		void WriteBits( const unsigned char* input,	int numberOfBitsToWrite, const bool rightAlignedBits = true );
 		
-		/// Align the bitstream to the uint8_t boundary and then write the
+		/// Align the bitstream to the byte boundary and then write the
 		/// specified number of bits.  This is faster than WriteBits but
 		/// wastes the bits to do the alignment and requires you to call
 		/// ReadAlignedBits at the corresponding read position.
 		/// \param[in] input The data
-		/// \param[in] numberOfuint8_tsToWrite The size of data. 
-		void WriteAligneduint8_ts( const unsigned char *input,	const int numberOfuint8_tsToWrite );
+		/// \param[in] numberOfBytesToWrite The size of data. 
+		void WriteAlignedBytes( const unsigned char *input,	const int numberOfBytesToWrite );
 		
 		/// Read bits, starting at the next aligned bits. Note that the
 		/// modulus 8 starting offset of the sequence must be the same as
 		/// was used with WriteBits. This will be a problem with packet
-		/// coalescence unless you uint8_t align the coalesced packets.
-		/// \param[in] output The uint8_t array larger than @em numberOfuint8_tsToRead
-		/// \param[in] numberOfuint8_tsToRead The number of uint8_t to read from the internal state 
-		/// \return true if there is enough uint8_t. 
-		bool ReadAligneduint8_ts( unsigned char *output,	const int numberOfuint8_tsToRead );
+		/// coalescence unless you byte align the coalesced packets.
+		/// \param[in] output The byte array larger than @em numberOfBytesToRead
+		/// \param[in] numberOfBytesToRead The number of byte to read from the internal state 
+		/// \return true if there is enough byte. 
+		bool ReadAlignedBytes( unsigned char *output,	const int numberOfBytesToRead );
 		
-		/// Align the next write and/or read to a uint8_t boundary.  This can
-		/// be used to 'waste' bits to uint8_t align for efficiency reasons It
-		/// can also be used to force coalesced bitstreams to start on uint8_t
+		/// Align the next write and/or read to a byte boundary.  This can
+		/// be used to 'waste' bits to byte align for efficiency reasons It
+		/// can also be used to force coalesced bitstreams to start on byte
 		/// boundaries so so WriteAlignedBits and ReadAlignedBits both
 		/// calculate the same offset when aligning.
-		void AlignWriteTouint8_tBoundary( void );
+		void AlignWriteToByteBoundary( void );
 		
-		/// Align the next write and/or read to a uint8_t boundary.  This can
-		/// be used to 'waste' bits to uint8_t align for efficiency reasons It
-		/// can also be used to force coalesced bitstreams to start on uint8_t
+		/// Align the next write and/or read to a byte boundary.  This can
+		/// be used to 'waste' bits to byte align for efficiency reasons It
+		/// can also be used to force coalesced bitstreams to start on byte
 		/// boundaries so so WriteAlignedBits and ReadAlignedBits both
 		/// calculate the same offset when aligning.
-		void AlignReadTouint8_tBoundary( void );
+		void AlignReadToByteBoundary( void );
 		
 		/// Read \a numberOfBitsToRead bits to the output source
 		/// alignBitsToRight should be set to true to convert internal
@@ -467,7 +467,7 @@ namespace RakNet
 		/// Reallocates (if necessary) in preparation of writing numberOfBitsToWrite 
 		void AddBitsAndReallocate( const int numberOfBitsToWrite );
 
-		void Reverseuint8_ts(unsigned char *input, unsigned char *output, int length);
+		void ReverseBytes(unsigned char *input, unsigned char *output, int length);
 
 		bool DoEndianSwap(void) const;
 		
@@ -501,7 +501,7 @@ namespace RakNet
 			if (DoEndianSwap())
 			{
 				unsigned char output[sizeof(templateType)];
-				Reverseuint8_ts((unsigned char*)&var, output, sizeof(templateType));
+				ReverseBytes((unsigned char*)&var, output, sizeof(templateType));
 				WriteBits( ( unsigned char* ) output, sizeof(templateType) * 8, true );
 			}
 			else
@@ -619,9 +619,9 @@ namespace RakNet
 	}
 
 	/// Write any integral type to a bitstream.  Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
-	/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 	/// \param[in] var The value to write
 	template <class templateType>
 		inline void BitStream::WriteCompressed(templateType var)
@@ -641,7 +641,7 @@ namespace RakNet
 			if (DoEndianSwap())
 			{
 				unsigned char output[sizeof(templateType)];
-				Reverseuint8_ts((unsigned char*)&var, output, sizeof(templateType));
+				ReverseBytes((unsigned char*)&var, output, sizeof(templateType));
 				WriteCompressed( ( unsigned char* ) output, sizeof(templateType) * 8, true );
 			}
 			else
@@ -697,9 +697,9 @@ namespace RakNet
 
 	/// Write any integral type to a bitstream.  If the current value is different from the last value
 	/// the current value will be written.  Otherwise, a single bit will be written
-	/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 	/// \param[in] currentValue The current value to write
 	/// \param[in] lastValue The last value to compare against
 	template <class templateType>
@@ -764,7 +764,7 @@ namespace RakNet
 				unsigned char output[sizeof(templateType)];
 				if (ReadBits( ( unsigned char* ) output, sizeof(templateType) * 8, true ))
 				{
-					Reverseuint8_ts(output, (unsigned char*)&var, sizeof(templateType));
+					ReverseBytes(output, (unsigned char*)&var, sizeof(templateType));
 					return true;
 				}
 				return false;
@@ -835,9 +835,9 @@ namespace RakNet
 	}
 
 	/// Read any integral type from a bitstream.  Undefine __BITSTREAM_NATIVE_END if you need endian swapping.
-	/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 	/// \param[in] var The value to read
 	template <class templateType>
 		inline bool BitStream::ReadCompressed(templateType &var)
@@ -855,7 +855,7 @@ namespace RakNet
 				unsigned char output[sizeof(templateType)];
 				if (ReadCompressed( ( unsigned char* ) output, sizeof(templateType) * 8, true ))
 				{
-					Reverseuint8_ts(output, (unsigned char*)&var, sizeof(templateType));
+					ReverseBytes(output, (unsigned char*)&var, sizeof(templateType));
 					return true;
 				}
 				return false;
@@ -914,9 +914,9 @@ namespace RakNet
 	/// Read any integral type from a bitstream.  If the written value differed from the value compared against in the write function,
 	/// var will be updated.  Otherwise it will retain the current value.
 	/// the current value will be updated.
-	/// For floating point, this is lossy, using 2 uint8_ts for a float and 4 for a double.  The range must be between -1 and +1.
+	/// For floating point, this is lossy, using 2 bytes for a float and 4 for a double.  The range must be between -1 and +1.
 	/// For non-floating point, this is lossless, but only has benefit if you use less than half the range of the type
-	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 uint8_t
+	/// If you are not using __BITSTREAM_NATIVE_END the opposite is true for types larger than 1 byte
 	/// ReadCompressedDelta is only valid from a previous call to WriteDelta
 	/// \param[in] var The value to read
 	template <class templateType>

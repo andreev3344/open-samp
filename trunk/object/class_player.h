@@ -132,6 +132,94 @@ class CPlayer // size 0x1AF8
 #pragma pack( 1 )
 public:
 
+	void Say( char* text, uint8_t len );
+
+	void SendTime( );
+	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
+
+	int showForPlayer( _PlayerID playerID );
+	void streamInPlayer( _PlayerID playerID );
+	void streamOutPlayer( _PlayerID playerID );
+
+
+	void ProcessStreaming( );
+	void CheckKeysUpdate( uint16_t keys );
+	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
+	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
+	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
+	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
+//	void ProcessAimingSyncData( AIM_SYNC* syncData );
+	void ProcessSpectatingSyncData( SPECTATING_SYNC* syncData );
+
+	
+//	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
+	bool isPickupStreamedIn( uint16_t pickupID );
+	bool isText3DLabelStreamedIn( _Text3DID text3dID );
+	bool isPlayerStreamedIn( _PlayerID playerID );
+	bool isVehicleStreamedIn( _VehicleID vehicleID );
+
+
+
+	int GetWeaponSlot( uint8_t weapon );
+	uint16_t getSkillLevel( int skill );
+	void setSkillLevel( int skill, uint16_t level );
+
+
+	int stopNPCRecordingData( );
+	int startNPCRecordingData( int recordType, char* recordname );
+
+
+	void createText3DLabel( uint16_t labelID );
+	void destroyText3DLabel( uint16_t labelID );
+
+	float GetDistanceFrom3DPoint( tVector point );
+	float GetDistanceFrom3DPoint( float x, float y, float z );
+
+	float getSquaredDistanceFrom3DPoint( tVector position );
+	float getSquaredDistanceFrom3DPoint( float x, float y, float z );
+
+	float getDistanceFrom2DPoint( float x, float y );
+	float getSquaredDistanceFrom2DPoint( float x, float y );
+
+	bool isInRaceCheckpoint( );
+	void setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size );
+	void showRaceCheckpoint( bool show );
+
+	bool isInCheckpoint( );
+	void setCheckpoint( tVector position, float size );
+	void showCheckpoint( bool show );
+
+	void	setMyID( _PlayerID playerID );
+	uint16_t getCurrentVehicleID( );
+
+	ON_FOOT_SYNC* getOnFootSyncData( );
+	tSPAWNS* getCustomSpawn( );
+
+	tVector* getCameraPosition( );
+	tVector* getCameraFrontVector( );
+	tVector* getPosition( );
+
+	float getFacingAngle( );
+
+	void setState( uint8_t state );
+	uint8_t getState( );
+
+	bool isActive( );
+	bool isDriving( );
+	bool isSpectating( );
+	bool isOnFoot( );
+	bool isPassenger( );
+	bool isWasted( );
+	bool isSpawned( );
+
+	float getHealth( );
+
+	void Init( );
+
+	CPlayer( );
+	~CPlayer( );
+private:
+
 	tVector		position;								// + 0x000	- 0x08
 	float		health;									// + 0x000C - 12
 	float		armour;									// + 0x0010	- 16
@@ -221,92 +309,6 @@ public:
 	uint32_t	lastNPCWritingInFile;					// + 0x1AF0	
 
 	void*		playerVarsClass;						// + 0x1AF4
-
-	void Say( char* text, uint8_t len );
-
-	void SendTime( );
-	void ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t objectID );
-
-	int showForPlayer( _PlayerID playerID );
-	void streamInPlayer( _PlayerID playerID );
-	void streamOutPlayer( _PlayerID playerID );
-
-
-	void ProcessStreaming( );
-	void CheckKeysUpdate( uint16_t keys );
-	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
-	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
-	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
-	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
-//	void ProcessAimingSyncData( AIM_SYNC* syncData );
-	void ProcessSpectatingSyncData( SPECTATING_SYNC* syncData );
-
-	
-//	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
-	bool isPickupStreamedIn( uint16_t pickupID );
-	bool isText3DLabelStreamedIn( uint16_t text3dID );
-	bool isPlayerStreamedIn( _PlayerID playerID );
-	bool isVehicleStreamedIn( uint16_t vehicleID );
-
-
-
-	int GetWeaponSlot( uint8_t weapon );
-	uint16_t getSkillLevel( int skill );
-	void setSkillLevel( int skill, uint16_t level );
-
-
-	int stopNPCRecordingData( );
-	int startNPCRecordingData( int recordType, char* recordname );
-
-
-	void createText3DLabel( uint16_t labelID );
-	void destroyText3DLabel( uint16_t labelID );
-
-	float GetDistanceFrom3DPoint( tVector point );
-	float GetDistanceFrom3DPoint( float x, float y, float z );
-
-	float getSquaredDistanceFrom3DPoint( tVector position );
-	float getSquaredDistanceFrom3DPoint( float x, float y, float z );
-
-	float getDistanceFrom2DPoint( float x, float y );
-	float getSquaredDistanceFrom2DPoint( float x, float y );
-
-	bool isInRaceCheckpoint( );
-	void setRaceCheckpoint( uint8_t type, tVector position, tVector next_position, float size );
-	void showRaceCheckpoint( bool show );
-
-	bool isInCheckpoint( );
-	void setCheckpoint( tVector position, float size );
-	void showCheckpoint( bool show );
-
-	void	setMyID( _PlayerID playerID );
-	uint16_t getCurrentVehicleID( );
-
-	tVector* getCameraPosition( );
-	tVector* getCameraFrontVector( );
-	tVector* getPosition( );
-
-	float getFacingAngle( );
-
-	void setState( uint8_t state );
-	uint8_t getState( );
-
-	bool isActive( );
-	bool isDriving( );
-	bool isSpectating( );
-	bool isOnFoot( );
-	bool isPassenger( );
-	bool isWasted( );
-	bool isSpawned( );
-
-	float getHealth( );
-
-	void Init( );
-
-	CPlayer( );
-	~CPlayer( );
-private:
-
 
 };
 

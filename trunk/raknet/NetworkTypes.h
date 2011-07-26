@@ -93,7 +93,7 @@ struct Packet
 	/// The system that send this packet.
 	PlayerID playerId;
 
-	/// The length of the data in uint8_ts
+	/// The length of the data in bytes
 	/// \deprecated You should use bitSize.
 	unsigned int length;
 
@@ -125,7 +125,7 @@ struct RPCParameters
 	/// Which instance of RakPeer (or a derived RakServer or RakClient) got this call
 	RakPeerInterface *recipient;
 
-	/// If true, the first 4 uint8_ts of input represents a timestamp corresonding to RakNet::GetTime() and shifted to be relative to this system.
+	/// If true, the first 4 bytes of input represents a timestamp corresonding to RakNet::GetTime() and shifted to be relative to this system.
 	bool hasTimestamp;
 
 	/// You can return values from RPC calls by writing them to this BitStream.
@@ -168,11 +168,11 @@ const int PING_TIMES_ARRAY_SIZE = 5;
 /// 1.
 /// Cast input to a struct (such as if you sent a struct)
 /// i.e. MyStruct *s = (MyStruct*) input;
-/// Make sure that the sizeof(MyStruct) is equal to the number of uint8_ts passed!
+/// Make sure that the sizeof(MyStruct) is equal to the number of bytes passed!
 /// 2.
-/// Create a BitStream instance with input as data and the number of uint8_ts
+/// Create a BitStream instance with input as data and the number of bytes
 /// i.e. BitStream myBitStream(input, (numberOfBitsOfData-1)/8+1)
-/// (numberOfBitsOfData-1)/8+1 is how convert from bits to uint8_ts
+/// (numberOfBitsOfData-1)/8+1 is how convert from bits to bytes
 /// Full example:
 /// @code
 /// void MyFunc(RPCParameters *rpcParms) {}
