@@ -50,8 +50,8 @@ void CPlayer::Init( )
 	this->spectateType			= SPECTATE_TYPE_NONE;
 	this->spectateID			= -1;
 
-	this->unknown1A23			= 0;
-	this->unknown1A27			= 0;
+	this->hasAplaceToBe			= FALSE;
+	this->timePlaceToBeHasSet	= 0;
 	this->unknown02B7			= 0;
 
 	this->lastStreaming			= __NetGame->GetTime( );
@@ -376,6 +376,16 @@ void CPlayer::ProcessStreaming( )
 
 }
 
+void CPlayer::SetPlaceToBe( float x, float y, float z ) // ????????????
+{
+	this->hasAplaceToBe = TRUE;
+	this->timePlaceToBeHasSet = __NetGame->GetTime( );
+
+	placeToBe.X = x;
+	placeToBe.Y = y;
+	placeToBe.Z = z;
+}
+
 void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProcess )
 {
 	this->position.X = x;
@@ -383,7 +393,7 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 	this->position.Z = z;
 
 
-	if( this->unknown1A23 == 0 )
+	if( this->hasAplaceToBe == FALSE )
 	{
 		if( forceStreamingProcess )
 		{
@@ -404,9 +414,9 @@ void CPlayer::UpdatePosition( float x, float y, float z, bool forceStreamingProc
 			C'est pas très clair mais ça le deviendra ...
 	*/
 	// this->unknown1A2B // Place to be ?
-	if( __NetGame->GetTime( ) - this->unknown1A27 >= 5000 || this->GetDistanceFrom3DPoint( this->unknown1A2B ) <= *(float*)0x4E6404 ) // 0x4E6404 = stream_distance
+	if( __NetGame->GetTime( ) - this->timePlaceToBeHasSet >= 5000 || this->GetDistanceFrom3DPoint( this->placeToBe ) <= *(float*)0x4E6404 ) // 0x4E6404 = stream_distance
 	{
-		this->unknown1A23 = 0;
+		this->hasAplaceToBe = FALSE;
 		ProcessStreaming( );
 	}
 
@@ -1013,11 +1023,26 @@ void CPlayer::showCheckpoint( bool show )
 	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowOrHideThatIsTheQuestion, &bStream, this->myPlayerID, 2 );
 
 }
+void CPlayer::setCurrentVehicleID( _VehicleID vehicleID )
+{
+	this->currentVehicleID = vehicleID;
+}
+
+void CPlayer::setCurrentSeatID( uint8_t seatID )
+{
+	this->currentSeatinVehicle = seatID;
+}
 
 uint16_t CPlayer::getCurrentVehicleID( )
 {
 	return this->currentVehicleID;
 }
+
+uint8_t CPlayer::getCurrentVehicleSeatID( )
+{
+	return this->currentSeatinVehicle;
+}
+
 ON_FOOT_SYNC* CPlayer::getOnFootSyncData( )
 {
 	return &this->onFootSyncData;

@@ -145,6 +145,7 @@ public:
 	void ProcessStreaming( );
 	void CheckKeysUpdate( uint16_t keys );
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
+	void SetPlaceToBe( float x, float y, float z );
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
 	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
 	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
@@ -190,7 +191,12 @@ public:
 	void showCheckpoint( bool show );
 
 	void	setMyID( _PlayerID playerID );
+
+	void setCurrentVehicleID( _VehicleID vehicleID );
+	void setCurrentSeatID( uint8_t seatID );
+
 	uint16_t getCurrentVehicleID( );
+	uint8_t getCurrentVehicleSeatID( );
 
 	ON_FOOT_SYNC* getOnFootSyncData( );
 	tSPAWNS* getCustomSpawn( );
@@ -282,10 +288,10 @@ private:
 
 	uint8_t		unknown1A1F[0x1A23-0x1A1F];				// + 0x1A1F
 
-	uint32_t	unknown1A23;							// + 0x1A23
-	uint32_t	unknown1A27;							// + 0x1A27
+	BOOL		hasAplaceToBe;							// + 0x1A23
+	uint32_t	timePlaceToBeHasSet;					// + 0x1A27
 
-	tVector		unknown1A2B;							// + 0x1A2B
+	tVector		placeToBe;								// + 0x1A2B
 
 	uint16_t	skillsLevel[11];						// + 0x1A37 -> 0x1A4D
 	uint32_t	unknown1A4D;							// + 0x1A4D

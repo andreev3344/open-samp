@@ -195,11 +195,11 @@ cell AMX_NATIVE_CALL funcGetPlayerPos ( AMX* a_AmxInterface, cell* a_Params )
 		cell* ptr = 0;
 
 		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &ptr );
-		*ptr = (cell)player->getPosition( )->X;
+		*ptr = amx_ftoc( player->getPosition( )->X );
 		amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &ptr );
-		*ptr = (cell)player->getPosition( )->Y;
+		*ptr = amx_ftoc( player->getPosition( )->Y );
 		amx_GetAddr( a_AmxInterface, a_Params[ 4 ], &ptr );
-		*ptr = (cell)player->getPosition( )->Z;
+		*ptr = amx_ftoc( player->getPosition( )->Z );
 
 		return 1;
 	}
@@ -251,7 +251,8 @@ cell AMX_NATIVE_CALL funcGetPlayerHealth ( AMX* a_AmxInterface, cell* a_Params )
 		if( player == 0 ) return 0;
 		cell* ptr = 0;
 		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &ptr );
-		*ptr = (cell)player->getHealth( );
+		float health = player->getHealth( );
+		*ptr = amx_ftoc( health );
 		return 1;
 	}
 	return 0;
@@ -307,18 +308,77 @@ cell AMX_NATIVE_CALL funcGetPlayerColor ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcGetPlayerVehicleID ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerVehicleID()" );
-	return _funcGetPlayerVehicleID ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		return ( cell )player->getCurrentVehicleID( );
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPlayerVehicleSeat ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerVehicleSeat()" );
-	return _funcGetPlayerVehicleSeat ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return -1;
+		
+		if( player->isDriving( ) || player->isPassenger( ) )
+		{
+			return (cell)player->getCurrentVehicleSeatID( );
+		}
+	}
+	return -1;
 }
 
 cell AMX_NATIVE_CALL funcPutPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPutPlayerInVehicle()" );
 	return _funcPutPlayerInVehicle ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	_VehicleID vehicleID = ( _VehicleID ) a_Params[ 2 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) && __NetGame->vehiclePool->GetSlotState( vehicleID ) )
+	{
+		RakNet::BitStream bStream;
+
+
+		bStream.Write( ( _VehicleID ) vehicleID );
+		bStream.Write( ( uint8_t ) a_Params[ 3 ] ); // seat
+
+		void* vehicle = __NetGame->vehiclePool->GetVehicle( vehicleID );
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+
+		if( vehicle && player )
+		{
+			// player->sub_491340( vehicle, 0.0f );
+//			if( a_Params[ 3 ] == 0 )
+//				vehicle->setDriver( playerID );
+			player->setCurrentVehicleID( vehicleID );
+			//player->UpdatePosition( vehicle->getPosition().X, vehicle->getPosition().Y, vehicle->getPosition().Z, true );
+			//player->SetPlaceToBe( vehicle->getPosition().X, vehicle->getPosition().Y, vehicle->getPosition().Z );
+
+			uint32_t RPC_SetPlayerInVehicle = 0x12;
+
+			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerInVehicle, &bStream, playerID, 2 );
+			return 1;
+		}
+
+
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcRemovePlayerFromVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
