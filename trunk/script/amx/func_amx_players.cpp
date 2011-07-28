@@ -383,22 +383,76 @@ cell AMX_NATIVE_CALL funcPutPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Param
 cell AMX_NATIVE_CALL funcRemovePlayerFromVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcRemovePlayerFromVehicle()" );
-	return _funcRemovePlayerFromVehicle ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		RakNet::BitStream bStream;
+		uint32_t RPC_RemovePlayerFromPlayer = 0x13;
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_RemovePlayerFromPlayer, &bStream, playerID, 2 );
+		return 1;
+	}
+
+	return 0;
+	//return _funcRemovePlayerFromVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerInVehicle()" );
-	return _funcIsPlayerInVehicle ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	_VehicleID vehicleID = ( _VehicleID ) a_Params[ 2 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		if( player->getState( ) == PLAYER_STATE_DRIVER || player->getState( ) == PLAYER_STATE_PASSENGER )
+		{
+			if( player->getCurrentVehicleID( ) == vehicleID ) 
+				return 1;
+		}
+	}
+
+	return 0;
+	//return _funcIsPlayerInVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsPlayerInAnyVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerInAnyVehicle()" );
-	return _funcIsPlayerInAnyVehicle ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		if( player->getState( ) == PLAYER_STATE_DRIVER || player->getState( ) == PLAYER_STATE_PASSENGER )
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+
+	//return _funcIsPlayerInAnyVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 {
+	/* playerid, array, size_of_array */
 	logprintf ( "[Call]-> funcGetPlayerName()" );
-	return _funcGetPlayerName ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		return amx_SetString( &a_Params[ 2 ], __NetGame->playerPool->getPlayerNick( playerID ), 0, 1, a_Params[ 3 ] );
+	}
+	return 0;
+	//return _funcGetPlayerName ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {

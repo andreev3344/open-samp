@@ -153,7 +153,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load( void **ppData )
  //   VirtualProtect ( ( LPVOID )0x004A0526, 4, PAGE_READWRITE, &l_uint32_OldProtect );
 
 
-	/* Seulement pour tester quelques petits truc ;) */
+	///* Seulement pour tester quelques petits truc ;) */
 	//*( uint32_t* )0x4A0526 = ( uint32_t ) RPC_ClientJoin;
 
 	__PickupPool = new CPickupPool();
