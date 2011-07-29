@@ -630,7 +630,7 @@ void CPlayer::ProcessOnFootSyncData( ON_FOOT_SYNC* syncData )
 	{
 		if( this->ioFileNPC )
 		{
-			uint32_t timeElapsed = __NetGame->GetTime( ) - this->lastNPCWritingInFile;
+			uint32_t timeElapsed = __NetGame->GetTime( ) - this->FirstNPCWritingTime;
 			fwrite( &timeElapsed, 4, 1, this->ioFileNPC );
 			fwrite( syncData, sizeof( ON_FOOT_SYNC ), 1, this->ioFileNPC );
 		}
@@ -717,7 +717,7 @@ void CPlayer::ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData )
 	{
 		if( this->currentVehicleID )
 		{
-			uint32_t time = __NetGame->GetTime( ) - this->lastNPCWritingInFile;
+			uint32_t time = __NetGame->GetTime( ) - this->FirstNPCWritingTime;
 			fwrite( &time, 4, 1, this->ioFileNPC );
 			fwrite( syncData, sizeof( IN_VEHICLE_SYNC ), 1, this->ioFileNPC );
 		}
@@ -855,7 +855,7 @@ int CPlayer::startNPCRecordingData( int recordType, char* recordname )
 			uint32_t version = 0x3E8;
 			fwrite( &version, 1, 4, this->ioFileNPC );
 			fwrite( &recordType, 1, 4, this->ioFileNPC );
-			lastNPCWritingInFile = __NetGame->GetTime( );
+			FirstNPCWritingTime = __NetGame->GetTime( );
 		}
 		return 1;
 	}

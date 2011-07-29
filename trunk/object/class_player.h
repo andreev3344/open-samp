@@ -321,7 +321,7 @@ private:
 	uint32_t	lastStreaming;							// + 0x1AE4
 	uint32_t	NPCRecordingType;						// + 0x1AE8				http://wiki.sa-mp.com/wiki/Recordingtypes
 	FILE*		ioFileNPC;								// + 0x1AEC
-	uint32_t	lastNPCWritingInFile;					// + 0x1AF0	
+	uint32_t	FirstNPCWritingTime;					// + 0x1AF0	
 
 	void*		playerVarsClass;						// + 0x1AF4
 

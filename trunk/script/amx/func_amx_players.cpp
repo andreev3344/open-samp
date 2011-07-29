@@ -395,7 +395,6 @@ cell AMX_NATIVE_CALL funcRemovePlayerFromVehicle ( AMX* a_AmxInterface, cell* a_
 	}
 
 	return 0;
-	//return _funcRemovePlayerFromVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
@@ -416,7 +415,6 @@ cell AMX_NATIVE_CALL funcIsPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Params
 	}
 
 	return 0;
-	//return _funcIsPlayerInVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsPlayerInAnyVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
@@ -437,7 +435,6 @@ cell AMX_NATIVE_CALL funcIsPlayerInAnyVehicle ( AMX* a_AmxInterface, cell* a_Par
 
 	return 0;
 
-	//return _funcIsPlayerInAnyVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 {
@@ -452,42 +449,141 @@ cell AMX_NATIVE_CALL funcGetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 		return amx_SetString( &a_Params[ 2 ], __NetGame->playerPool->getPlayerNick( playerID ), 0, 1, a_Params[ 3 ] );
 	}
 	return 0;
-	//return _funcGetPlayerName ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerCheckpoint()" );
-	return _funcSetPlayerCheckpoint ( a_AmxInterface, a_Params );
+/* playerID, posX, posY, posZ, size*/
+	CHECK_PARAMS( 5 );
+
+	_PlayerID playerID = (_PlayerID) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector vecPos;
+		vecPos.X = amx_ctof( a_Params[ 2 ] );
+		vecPos.Y = amx_ctof( a_Params[ 3 ] );
+		vecPos.Z = amx_ctof( a_Params[ 4 ] );
+		player->setCheckpoint( vecPos, amx_ctof( a_Params[ 5 ] ) );
+
+		return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcDisablePlayerCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDisablePlayerCheckpoint()" );
-	return _funcDisablePlayerCheckpoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = (_PlayerID) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		player->showCheckpoint( false );
+
+		return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcIsPlayerInCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerInCheckpoint()" );
-	return _funcIsPlayerInCheckpoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = (_PlayerID) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		if( player->isInCheckpoint( ) ) return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcSetPlayerRaceCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerRaceCheckpoint()" );
-	return _funcSetPlayerRaceCheckpoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 9 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector vecPos, vecNext;
+		vecPos.X = amx_ctof( a_Params[ 3 ] );
+		vecPos.Y = amx_ctof( a_Params[ 4 ] );
+		vecPos.Z = amx_ctof( a_Params[ 5 ] );
+
+		vecNext.X = amx_ctof( a_Params[ 6 ] );
+		vecNext.Y = amx_ctof( a_Params[ 7 ] );
+		vecNext.Z = amx_ctof( a_Params[ 8 ] );
+
+		player->setRaceCheckpoint( ( uint8_t ) a_Params[ 2 ], vecPos, vecNext, amx_ctof( a_Params[ 9 ] ) );
+		return 1;
+	}
+
+	return 0;
 }
 cell AMX_NATIVE_CALL funcDisablePlayerRaceCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDisablePlayerRaceCheckpoint()" );
-	return _funcDisablePlayerRaceCheckpoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = (_PlayerID) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		player->showRaceCheckpoint( false );
+
+		return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcIsPlayerInRaceCheckpoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerInRaceCheckpoint()" );
-	return _funcIsPlayerInRaceCheckpoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = (_PlayerID) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		if( player->isInRaceCheckpoint( ) ) return 1;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcSetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerInterior()" );
-	return _funcSetPlayerInterior ( a_AmxInterface, a_Params );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[0];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) ) 
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		uint32_t RPC_SetPlayerInterior = 0x16;
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint8_t ) a_Params[ 2 ] );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerInterior, &bStream, playerID, 2 );
+		return 1;
+	}
+
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params )
 {
