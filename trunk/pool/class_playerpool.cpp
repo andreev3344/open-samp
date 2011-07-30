@@ -165,6 +165,69 @@ bool CPlayerPool::isNPC( _PlayerID playerID )
 	return false;
 }
 
+
+uint32_t CPlayerPool::getPlayerMoney( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return this->playersMoney[ playerID ];
+	}
+	return 0;
+}
+
+void CPlayerPool::setPlayerMoney( _PlayerID playerID, uint32_t amount )
+{
+	if( GetSlotState( playerID ) )
+	{
+		uint32_t old_value = this->playersMoney[ playerID ];
+		this->playersMoney[ playerID ] = amount;
+
+		if( old_value != this->playersMoney[ playerID ] )
+		{
+			if( __NetGame->filterscriptsManager )
+				__NetGame->filterscriptsManager->OnPlayerMoneyChange( playerID, old_value, this->playersMoney[ playerID ] );
+			if( __NetGame->gamemodeManager )
+				__NetGame->gamemodeManager->OnPlayerMoneyChange( playerID, old_value, this->playersMoney[ playerID ] );
+		}
+	}
+}
+
+void CPlayerPool::givePlayerMoney( _PlayerID playerID, uint32_t amount )
+{
+	if( GetSlotState( playerID ) )
+	{
+		uint32_t RPC_GivePlayerMoney = 0x20;
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint32_t ) amount );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_GivePlayerMoney, &bStream, playerID, 2 );
+		uint32_t old_value = this->playersMoney[ playerID ];
+		this->playersMoney[ playerID ] += amount;
+
+		if( __NetGame->filterscriptsManager )
+			__NetGame->filterscriptsManager->OnPlayerMoneyChange( playerID, old_value, this->playersMoney[ playerID ] );
+		if( __NetGame->gamemodeManager )
+			__NetGame->gamemodeManager->OnPlayerMoneyChange( playerID, old_value, this->playersMoney[ playerID ] );
+	}
+}
+
+void CPlayerPool::resetPlayerMoney( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		uint32_t RPC_ResetPlayerMoney = 0x22;
+		RakNet::BitStream bStream;
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ResetPlayerMoney, &bStream, playerID, 2 );
+
+
+		uint32_t old_value = this->playersMoney[ playerID ];
+		this->playersMoney[ playerID ] = 0;
+		if( __NetGame->filterscriptsManager )
+			__NetGame->filterscriptsManager->OnPlayerMoneyChange( playerID, old_value, 0 );
+		if( __NetGame->gamemodeManager )
+			__NetGame->gamemodeManager->OnPlayerMoneyChange( playerID, old_value, 0 );
+	}
+}
+
 void CPlayerPool::setPlayerNick( _PlayerID playerID, char* nickname )
 {
 	if( GetSlotState( playerID )) 

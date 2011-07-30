@@ -55,6 +55,8 @@ public:
 	uint32_t OnPlayerClickPlayer(cell playerid, cell clickedplayerid, cell source);
 	uint32_t OnVehicleDamageStatusUpdate(cell vehicleid, cell playerid);
 
+	uint32_t OnPlayerMoneyChange( cell playerid, cell old_value, cell new_value );
+
 	CGamemodeManager();
 	~CGamemodeManager();
 };

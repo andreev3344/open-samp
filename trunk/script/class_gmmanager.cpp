@@ -675,3 +675,21 @@ uint32_t CGamemodeManager::OnVehicleDamageStatusUpdate(cell vehicleid, cell play
 
 	return (uint32_t)ret;
 }
+
+
+uint32_t CGamemodeManager::OnPlayerMoneyChange( cell playerid, cell old_value, cell new_value ) // useful for anticheat
+{
+	if (!gmIsInit) return 0;
+
+	int idx;
+	cell ret = 0;
+
+	if(!amx_FindPublic(&gmAMX, "OnPlayerMoneyChange", &idx)) {
+		amx_Push(&gmAMX, playerid);
+		amx_Push(&gmAMX, old_value );
+		amx_Push(&gmAMX, new_value );
+		amx_Exec(&gmAMX, &ret, idx);
+	}
+
+	return (uint32_t)ret;
+}

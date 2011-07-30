@@ -38,6 +38,12 @@ public:
 
 	bool isNPC( _PlayerID playerID );
 
+	uint32_t getPlayerMoney( _PlayerID playerID );
+	void setPlayerMoney( _PlayerID playerID, uint32_t amount );
+	void givePlayerMoney( _PlayerID playerID, uint32_t amount );
+	void resetPlayerMoney( _PlayerID playerID );
+
+
 	void setPlayerNick( _PlayerID playerID, char* nickname );
 	char* getPlayerNick( _PlayerID playerID );
 	bool isNicknameUsed( char* nick );

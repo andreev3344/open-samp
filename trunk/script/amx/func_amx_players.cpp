@@ -877,34 +877,104 @@ cell AMX_NATIVE_CALL funcGetPlayerScore ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcSetPlayerFacingAngle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerFacingAngle()" );
-	return _funcSetPlayerFacingAngle ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 2 );
+
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		RakNet::BitStream bStream;
+		uint32_t RPC_SetPlayerFacingAngle = 0x21;
+		bStream.Write( ( float )amx_ctof( a_Params[ 2 ] ) );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerFacingAngle, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerFacingAngle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerFacingAngle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerFacingAngle()" );
-	return _funcGetPlayerFacingAngle ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		cell* ptr = 0;
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &ptr );
+		float angle = player->getFacingAngle( );
+		*ptr = amx_ftoc( angle );
+		return 1;
+	}
+	return 0;
+	//return _funcGetPlayerFacingAngle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGivePlayerMoney ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGivePlayerMoney()" );
-	return _funcGivePlayerMoney ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		__NetGame->playerPool->givePlayerMoney( playerID, a_Params[ 2 ] );
+		return 1;
+	}
+	return 0;
+	//return _funcGivePlayerMoney ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerMoney()" );
-	return _funcGetPlayerMoney ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		return __NetGame->playerPool->getPlayerMoney( playerID );
+	}
+	return 0;
+//	return _funcGetPlayerMoney ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcResetPlayerMoney ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcResetPlayerMoney()" );
-	return _funcResetPlayerMoney ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		__NetGame->playerPool->resetPlayerMoney( playerID );
+	}
+	return 0;	
+	//	return _funcResetPlayerMoney ( a_AmxInterface, a_Params );
 }
 
 cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params )
 {
+	logprintf ( "[Call]-> funcGetPlayerState()" );
+	CHECK_PARAMS( 1 );
 
-	//logprintf ( "[Call]-> funcGetPlayerState()" );
-	return _funcGetPlayerState ( a_AmxInterface, a_Params );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		return (cell)player->getState( );
+	}
+	return 0;
+	//return _funcGetPlayerState ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcResetPlayerWeapons ( AMX* a_AmxInterface, cell* a_Params )
 {
@@ -1206,7 +1276,7 @@ cell AMX_NATIVE_CALL funcIsPlayerStreamedIn ( AMX* a_AmxInterface, cell* a_Param
 	CPlayer* player = __NetGame->playerPool->GetPlayer( forplayerID );
 	if( player == 0 ) return 0;
 
-	return player->isPlayerStreamedIn( playerID );
+	return ( cell )( player->isPlayerStreamedIn( playerID ) ? 1 : 0 );
 }
 
 cell AMX_NATIVE_CALL funcIsVehicleStreamedIn ( AMX* a_AmxInterface, cell* a_Params )

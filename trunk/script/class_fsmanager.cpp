@@ -867,3 +867,25 @@ uint32_t CFilterscriptsManager::OnVehicleDamageStatusUpdate(cell vehicleid, cell
 
 	return (uint32_t)ret;
 }
+
+uint32_t CFilterscriptsManager::OnPlayerMoneyChange(cell playerid, cell old_value, cell new_value )
+{
+	int idx;
+	cell ret = 0;
+	
+	for(uint32_t i=0; i < MAX_FS; i++)
+	{
+		if(fsAMX[i])
+		{
+			if(!amx_FindPublic(fsAMX[i], "OnPlayerMoneyChange", &idx))
+			{
+				amx_Push(fsAMX[i], playerid );
+				amx_Push(fsAMX[i], old_value );
+				amx_Push(fsAMX[i], new_value );
+				amx_Exec(fsAMX[i], &ret, idx );
+				if (ret) return 1;
+			}
+		}
+	}
+	return (uint32_t)ret;
+}
