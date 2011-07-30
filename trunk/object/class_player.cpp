@@ -1249,6 +1249,11 @@ void CPlayer::setHealth( float health )
 	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerHealth, &bStream, this->myPlayerID, 2 );
 }
 
+float CPlayer::getArmour( )
+{
+	return this->armour;
+}
+
 tVector* CPlayer::getPosition( )
 {
 	return &this->position;

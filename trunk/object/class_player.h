@@ -238,6 +238,8 @@ public:
 	float getHealth( );
 	void setHealth( float health );
 
+	float getArmour( );
+
 	void Init( );
 
 	CPlayer( );

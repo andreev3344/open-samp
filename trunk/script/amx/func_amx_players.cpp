@@ -979,24 +979,70 @@ cell AMX_NATIVE_CALL funcGetPlayerState ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcResetPlayerWeapons ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcResetPlayerWeapons()" );
-	return _funcResetPlayerWeapons ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_ResetPlayerWeapons = 0x23;
+		RakNet::BitStream bStream;
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ResetPlayerWeapons, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcResetPlayerWeapons ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGivePlayerWeapon ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGivePlayerWeapon()" );
-	return _funcGivePlayerWeapon ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_GivePlayerWeapon = 0x24;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint32_t ) a_Params[2] );
+		bStream.Write( ( uint32_t ) a_Params[3] );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_GivePlayerWeapon, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcGivePlayerWeapon ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerArmedWeapon ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerArmedWeapon()" );
-	return _funcSetPlayerArmedWeapon ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerArmedWeapon = 0x0A;
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerArmedWeapon, &bStream, playerID, 2 );
+		return 1;
+	}
+
+	return 0;
+//	return _funcSetPlayerArmedWeapon ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcGetPlayerIp ( AMX* a_AmxInterface, cell* a_Params )
+cell AMX_NATIVE_CALL funcGetPlayerIp ( AMX* a_AmxInterface, cell* a_Params ) // Need rakserverinterface
 {
 	logprintf ( "[Call]-> funcGetPlayerIp()" );
 	return _funcGetPlayerIp ( a_AmxInterface, a_Params );
 }
-cell AMX_NATIVE_CALL funcGetPlayerPing ( AMX* a_AmxInterface, cell* a_Params )
+cell AMX_NATIVE_CALL funcGetPlayerPing ( AMX* a_AmxInterface, cell* a_Params ) // Need rakserverinterface
 {
 	logprintf ( "[Call]-> funcGetPlayerPing()" );
 	return _funcGetPlayerPing ( a_AmxInterface, a_Params );
@@ -1004,17 +1050,56 @@ cell AMX_NATIVE_CALL funcGetPlayerPing ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcGetPlayerWeapon ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerWeapon()" );
-	return _funcGetPlayerWeapon ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		return (cell)player->getOnFootSyncData()->weapon;
+	}
+	return 0;
+	//return _funcGetPlayerWeapon ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerArmour ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerArmour()" );
-	return _funcSetPlayerArmour ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		float armour = amx_ctof( a_Params[ 2 ] );
+		uint32_t RPC_SetPlayerArmour = 0x27;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( float )armour );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerArmour, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerArmour ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerArmour ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerArmour()" );
-	return _funcGetPlayerArmour ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[1];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		cell* ptr = 0;
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &ptr );
+		*ptr = player->getArmour( );
+	}
+	return 0;
+	//return _funcGetPlayerArmour ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerMapIcon ( AMX* a_AmxInterface, cell* a_Params )
 {
