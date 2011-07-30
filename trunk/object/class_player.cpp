@@ -233,6 +233,56 @@ void CPlayer::streamInPlayer( _PlayerID playerID )
 
 }
 
+
+void CPlayer::setAttachedObject( uint32_t index, uint32_t model, uint32_t bone, tVector offset, tVector rotation, tVector scale )
+{
+	if( 0 > index || index >= MAX_ATTACHED_OBJECT ) return;
+
+	attachedObject[ index ].modelID		= model;
+	attachedObject[ index ].boneID		= bone;
+	attachedObject[ index ].offset		= offset;
+	attachedObject[ index ].rotation	= rotation;
+	attachedObject[ index ].scale		= scale;
+
+	this->attachedObjectSlot[ index ] = TRUE;
+
+	RakNet::BitStream bStream;
+	uint32_t RPC_AttachObject = 0x5B;
+	bStream.Write( ( _PlayerID ) this->myPlayerID );
+	bStream.Write( ( uint32_t ) index );
+	bStream.Write( ( bool ) true );
+	bStream.Write( ( char* )&attachedObject[ index ], sizeof( tAttachedObject ) );
+
+	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+
+}
+
+void CPlayer::removeAttachedObject( uint32_t index )
+{
+	if( 0 > index || index >= MAX_ATTACHED_OBJECT ) return;
+
+	memset( &this->attachedObject[ index ], 0x00, sizeof( tAttachedObject ) );
+
+	this->attachedObjectSlot[ index ] = FALSE;
+
+	RakNet::BitStream bStream;
+	uint32_t RPC_AttachObject = 0x5B;
+	bStream.Write( ( _PlayerID ) this->myPlayerID );
+	bStream.Write( ( uint32_t ) index );
+	bStream.Write( ( bool ) false );
+
+	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+
+}
+
+bool CPlayer::IsAttachedObjectSlotUsed( uint32_t index )
+{
+	if( 0 > index || index >= MAX_ATTACHED_OBJECT ) return false;
+	return ( bool )( this->attachedObjectSlot[ index ] != FALSE ? true : false );
+}
+
 void CPlayer::streamOutPlayer( _PlayerID playerID )
 {
 	if( __NetGame->playerPool )
@@ -483,6 +533,12 @@ void CPlayer::CheckKeysUpdate( uint16_t keys )
 
 
 }
+
+uint32_t CPlayer::getInterior( )
+{
+	return this->currentInterior;
+}
+
 
 int CPlayer::GetWeaponSlot( uint8_t weapon )
 {
@@ -1046,6 +1102,26 @@ uint8_t CPlayer::getCurrentVehicleSeatID( )
 ON_FOOT_SYNC* CPlayer::getOnFootSyncData( )
 {
 	return &this->onFootSyncData;
+}
+
+IN_VEHICLE_SYNC* CPlayer::getInVehicleSyncData( )
+{
+	return &this->onVehicleSyncData;
+}
+
+PASSENGER_SYNC* CPlayer::getPassengerSyncData( )
+{
+	return &this->passengerSyncData;
+}
+
+AIM_SYNC* CPlayer::getAimSyncData( )
+{
+	return &this->aimSyncData;
+}
+
+SPECTATING_SYNC* CPlayer::getSpectatingSyncData( )
+{
+	return &this->spectatingSyncData;
 }
 
 bool CPlayer::HasCustomSpawn( )

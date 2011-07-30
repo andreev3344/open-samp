@@ -588,68 +588,291 @@ cell AMX_NATIVE_CALL funcSetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params
 cell AMX_NATIVE_CALL funcGetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerInterior()" );
-	return _funcGetPlayerInterior ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		return player->getInterior( );
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcSetPlayerAttachedObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerAttachedObject()" );
-	return _funcSetPlayerAttachedObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 13 );
+	
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		tVector offset, rotation, scale;
+
+		offset.X = amx_ctof( a_Params[5] );
+		offset.Y = amx_ctof( a_Params[6] );
+		offset.Z = amx_ctof( a_Params[7] );
+
+		rotation.X = amx_ctof( a_Params[8] );
+		rotation.Y = amx_ctof( a_Params[9] );
+		rotation.Z = amx_ctof( a_Params[10] );
+
+		scale.X = amx_ctof( a_Params[11] );
+		scale.Y = amx_ctof( a_Params[12] );
+		scale.Z = amx_ctof( a_Params[13] );
+
+		player->setAttachedObject( ( uint32_t ) a_Params[2], ( uint32_t ) a_Params[3], ( uint32_t ) a_Params[4], offset, rotation, scale );		
+
+	}
+	return 0;
+	//return _funcSetPlayerAttachedObject ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcRemovePlayerAttachedObject ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcRemovePlayerAttachedObject()" );
-	return _funcRemovePlayerAttachedObject ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 2 );
+
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[1];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		player->removeAttachedObject( a_Params[ 2 ] );
+	}
+	return 0;
 }
 
 cell AMX_NATIVE_CALL funcIsPlayerAttachedObjectSlotUsed ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerAttachedObjectSlotUsed()" );
-	return _funcIsPlayerAttachedObjectSlotUsed ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		if( player->IsAttachedObjectSlotUsed( a_Params[ 2 ] ) ) return 1;
+
+	}
+	return 0;
+	//return _funcIsPlayerAttachedObjectSlotUsed ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerCameraLookAt ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerCameraLookAt()" );
-	return _funcSetPlayerCameraLookAt ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector lookAt;
+		lookAt.X	= amx_ctof( a_Params[ 2 ] );
+		lookAt.Y	= amx_ctof( a_Params[ 3 ] );
+		lookAt.Z	= amx_ctof( a_Params[ 4 ] );
+
+		uint32_t RPC_SetPlayerCameralookAt = 0x18;
+
+		RakNet::BitStream bStream;
+		bStream.Write( ( char* ) &lookAt, sizeof( tVector ) );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameralookAt, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerCameraLookAt ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerCameraPos ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerCameraPos()" );
-	return _funcSetPlayerCameraPos ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector cameraPos;
+		cameraPos.X	= amx_ctof( a_Params[ 2 ] );
+		cameraPos.Y	= amx_ctof( a_Params[ 3 ] );
+		cameraPos.Z	= amx_ctof( a_Params[ 4 ] );
+
+		uint32_t RPC_SetPlayerCameraPos = 0x17;
+
+		RakNet::BitStream bStream;
+		bStream.Write( ( char* ) &cameraPos, sizeof( tVector ) );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameraPos, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+//	return _funcSetPlayerCameraPos ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetCameraBehindPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetCameraBehindPlayer()" );
-	return _funcSetCameraBehindPlayer ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		uint32_t RPC_SetPlayerCameraBehindPlayer = 0x1C;
+		RakNet::BitStream bStream;
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameraBehindPlayer, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcSetCameraBehindPlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerCameraPos ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerCameraPos()" );
-	return _funcGetPlayerCameraPos ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector cam_pos = player->getAimSyncData( )->cameraPosition;
+
+		cell* addr = 0;
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &addr );
+		*addr = amx_ftoc( cam_pos.X );
+		amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &addr );
+		*addr = amx_ftoc( cam_pos.Y );
+		amx_GetAddr( a_AmxInterface, a_Params[ 4 ], &addr );
+		*addr = amx_ftoc( cam_pos.Z );
+
+		return 1;
+	}
+	return 0;
+//	return _funcGetPlayerCameraPos ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerCameraFrontVector ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerCameraFrontVector()" );
-	return _funcGetPlayerCameraFrontVector ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		tVector front_vector = player->getAimSyncData( )->cameraFrontVector;
+
+		cell* addr = 0;
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &addr );
+		*addr = amx_ftoc( front_vector.X );
+		amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &addr );
+		*addr = amx_ftoc( front_vector.Y );
+		amx_GetAddr( a_AmxInterface, a_Params[ 4 ], &addr );
+		*addr = amx_ftoc( front_vector.Z );
+
+		return 1;
+	}
+	return 0;
+	//return _funcGetPlayerCameraFrontVector ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcTogglePlayerControllable ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcTogglePlayerControllable()" );
-	return _funcTogglePlayerControllable ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint8_t toggle = ( uint8_t ) a_Params[ 2 ];
+
+		uint32_t RPC_TogglePlayerControllable = 0x1D;
+
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint8_t ) toggle );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_TogglePlayerControllable, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+//	return _funcTogglePlayerControllable ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcPlayerPlaySound ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPlayerPlaySound()" );
-	return _funcPlayerPlaySound ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 5 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		tVector position;
+		uint32_t soundid	= a_Params[ 2 ];
+		position.X			= amx_ctof( a_Params[ 3 ] );
+		position.Y			= amx_ctof( a_Params[ 4 ] );
+		position.Z			= amx_ctof( a_Params[ 5 ] );
+
+		uint32_t RPC_PlayerPlaySound = 0x1E;
+
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint32_t ) soundid );
+		bStream.Write( ( char* )&position, sizeof( tVector ) );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_PlayerPlaySound, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcPlayerPlaySound ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerScore ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerScore()" );
-	return _funcSetPlayerScore ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		__NetGame->playerPool->setScore( playerID, a_Params[ 2 ] );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerScore ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerScore ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerScore()" );
-	return _funcGetPlayerScore ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	return __NetGame->playerPool->getScore( playerID );
+	//return _funcGetPlayerScore ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerFacingAngle ( AMX* a_AmxInterface, cell* a_Params )
 {

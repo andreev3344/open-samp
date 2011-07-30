@@ -19,6 +19,23 @@ CPlayerPool::~CPlayerPool( )
 {
 }
 
+void CPlayerPool::setScore( _PlayerID playerID, uint32_t value )
+{
+	if( GetSlotState( playerID ) )
+	{
+		this->playersScore[ playerID ] = value;
+	}
+}
+
+uint32_t CPlayerPool::getScore( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return this->playersScore[ playerID ];
+	}
+	return 0;
+}
+
 float CPlayerPool::GetDistanceBetweenPlayers( _PlayerID player_one, _PlayerID player_two )
 {
 	if( GetSlotState( player_one ) == false || GetSlotState( player_two ) ) return 0.0f;

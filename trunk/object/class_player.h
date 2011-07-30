@@ -142,6 +142,10 @@ public:
 	void streamOutPlayer( _PlayerID playerID );
 
 
+	void setAttachedObject( uint32_t index, uint32_t model, uint32_t bone, tVector offset, tVector rotation, tVector scale );
+	void removeAttachedObject( uint32_t index );
+	bool IsAttachedObjectSlotUsed( uint32_t index );
+
 	void ProcessStreaming( );
 	void CheckKeysUpdate( uint16_t keys );
 	void UpdatePosition( float x, float y, float z, bool forceStreamingProces );
@@ -159,7 +163,7 @@ public:
 	bool isPlayerStreamedIn( _PlayerID playerID );
 	bool isVehicleStreamedIn( _VehicleID vehicleID );
 
-
+	uint32_t getInterior( );
 
 	int GetWeaponSlot( uint8_t weapon );
 	uint16_t getSkillLevel( int skill );
@@ -199,6 +203,11 @@ public:
 	uint8_t getCurrentVehicleSeatID( );
 
 	ON_FOOT_SYNC* getOnFootSyncData( );
+	IN_VEHICLE_SYNC* getInVehicleSyncData( );
+	PASSENGER_SYNC* getPassengerSyncData( );
+	AIM_SYNC* getAimSyncData( );
+	SPECTATING_SYNC* getSpectatingSyncData( );
+
 	tSPAWNS* getCustomSpawn( );
 	bool HasCustomSpawn( );
 

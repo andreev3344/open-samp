@@ -24,6 +24,9 @@ public:
 
 
 
+	void setScore( _PlayerID playerID, uint32_t value );
+	uint32_t getScore( _PlayerID playerID );
+
 	float GetDistanceBetweenPlayers( _PlayerID player_one, _PlayerID player_two );
 
 	int New( _PlayerID playerID, const char* nickname, char* serial, uint32_t isNPC = 0 );
