@@ -62,6 +62,7 @@ void QuaternionToMatrix( tQuaternionVector* quaternion, MATRIX4X4* matrix );
 #define MAX_VEHICLES		2000
 #define MAX_TEXT_LABELS		1024
 #define LIMIT_MAX_PICKUPS	2048
+#define MAX_MAP_ICON		100
 
 
 #include "script/class_gmmanager.h"

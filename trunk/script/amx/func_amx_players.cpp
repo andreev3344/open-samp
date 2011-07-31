@@ -1104,32 +1104,182 @@ cell AMX_NATIVE_CALL funcGetPlayerArmour ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcSetPlayerMapIcon ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerMapIcon()" );
-	return _funcSetPlayerMapIcon ( a_AmxInterface, a_Params );
+
+	CHECK_PARAMS( 8 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+	uint8_t iconID = ( uint8_t )a_Params[ 2 ];
+
+	if( iconID >= MAX_MAP_ICON ) return 0;
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerMapIcon = 0x29;
+		RakNet::BitStream bStream;
+		tVector position;
+
+		bStream.Write( ( uint8_t ) iconID );		// iconid
+		position.X	= amx_ctof( a_Params[ 3 ] );	// posX
+		position.Y	= amx_ctof( a_Params[ 4 ] );	// posY
+		position.Z	= amx_ctof( a_Params[ 5 ] );	// posZ
+		bStream.Write( ( char* )&position, sizeof( tVector ) );
+		bStream.Write( ( uint8_t ) a_Params[ 6 ] );		// markertype
+		bStream.Write( ( uint32_t ) a_Params[ 7 ] );	// color
+		bStream.Write( ( uint8_t ) a_Params[ 8 ] );		// style
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerMapIcon, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerMapIcon ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcRemovePlayerMapIcon ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcRemovePlayerMapIcon()" );
-	return _funcRemovePlayerMapIcon ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+	uint8_t iconID = ( uint8_t )a_Params[ 2 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) && iconID < MAX_MAP_ICON )
+	{
+		uint32_t RPC_RemovePlayerMapIcon = 0x2A;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint8_t ) iconID );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_RemovePlayerMapIcon, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcRemovePlayerMapIcon ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerKeys ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerKeys()" );
-	return _funcGetPlayerKeys ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+
+		uint32_t keys = 0, leftright = 0, updown = 0;
+
+		switch( player->getState( ) )
+		{
+		case PLAYER_STATE_ONFOOT:
+			{
+				leftright	= player->getOnFootSyncData( )->leftRightKeysOnfoot;
+				updown		= player->getOnFootSyncData( )->updownKeysOnfoot;
+				keys		= player->getOnFootSyncData( )->keysOnfoot;
+				break;
+			}
+		case PLAYER_STATE_DRIVER:
+			{
+				leftright	= player->getInVehicleSyncData( )->leftRightKeysOnVehicle;
+				updown		= player->getInVehicleSyncData( )->updownKeysOnVehicle;
+				keys		= player->getInVehicleSyncData( )->keysOnVehicle;
+				break;
+			}
+		case PLAYER_STATE_PASSENGER:
+			{
+				leftright	= player->getPassengerSyncData( )->leftRightKeysPassenger;
+				updown		= player->getPassengerSyncData( )->updownKeysPassenger;
+				keys		= player->getPassengerSyncData( )->passengersKeys;
+				break;
+			}
+		case PLAYER_STATE_SPECTATING:
+			{
+				leftright	= player->getSpectatingSyncData( )->leftRightKeysOnSpectating;
+				updown		= player->getSpectatingSyncData( )->updownKeysOnSpectating;
+				keys		= player->getSpectatingSyncData( )->keysOnSpectating;
+				break;
+			}
+		default: 
+			{
+				return 0;
+				break;
+			}
+		}
+
+		cell* ptr = 0;
+
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &ptr );
+		*ptr = ( cell )keys;
+		amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &ptr );
+		*ptr = ( cell )updown;
+		amx_GetAddr( a_AmxInterface, a_Params[ 4 ], &ptr );
+		*ptr = ( cell )leftright;
+		return 1;
+	}
+	return 0;
+//	return _funcGetPlayerKeys ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerMarkerForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerMarkerForPlayer()" );
-	return _funcSetPlayerMarkerForPlayer ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerColor = 0x14;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( _PlayerID ) a_Params[ 2 ] );
+		bStream.Write( ( uint32_t ) a_Params[ 3 ] );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerColor, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerMarkerForPlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerAmmo ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerAmmo()" );
-	return _funcGetPlayerAmmo ( a_AmxInterface, a_Params );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		int slot = player->GetWeaponSlot( player->GetCurrentWeapon( ) );
+		if( slot != -1 )
+		{
+			return ( cell )player->GetAmmoInSlot( slot );
+		}
+		return 0;
+	}
+	return 0;
+//	return _funcGetPlayerAmmo ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerAmmo ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerAmmo()" );
-	return _funcSetPlayerAmmo ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerAmmo = 0x2B;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint8_t ) a_Params[ 2 ] );
+		bStream.Write( ( uint16_t ) a_Params[ 3 ] );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerAmmo, &bStream, playerID, 0 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerAmmo ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerWeaponData ( AMX* a_AmxInterface, cell* a_Params )
 {

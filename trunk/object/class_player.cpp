@@ -539,6 +539,15 @@ uint32_t CPlayer::getInterior( )
 	return this->currentInterior;
 }
 
+int CPlayer::GetAmmoInSlot( int slot )
+{
+	return this->ammoInSlot[ slot ];
+}
+
+int CPlayer::GetCurrentWeapon( )
+{
+	return this->currentWeapon;
+}
 
 int CPlayer::GetWeaponSlot( uint8_t weapon )
 {

@@ -165,7 +165,9 @@ public:
 
 	uint32_t getInterior( );
 
+	int GetAmmoInSlot( int slot );
 	int GetWeaponSlot( uint8_t weapon );
+	int GetCurrentWeapon( );
 	uint16_t getSkillLevel( int skill );
 	void setSkillLevel( int skill, uint16_t level );
 
