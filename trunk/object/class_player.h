@@ -166,7 +166,9 @@ public:
 	uint32_t getInterior( );
 
 	int GetAmmoInSlot( int slot );
+	int GetWeaponInSlot( int slot );
 	int GetWeaponSlot( uint8_t weapon );
+
 	int GetCurrentWeapon( );
 	uint16_t getSkillLevel( int skill );
 	void setSkillLevel( int skill, uint16_t level );
@@ -220,6 +222,8 @@ public:
 	tVector* getCameraFrontVector( );
 	tVector* getPosition( );
 
+	tVector* getVelocity( );
+
 	void setPosition( tVector position );
 	void setPosition( float x, float y, float z );
 	void setPositionFindZ( float x, float y, float z );
@@ -237,10 +241,19 @@ public:
 	bool isWasted( );
 	bool isSpawned( );
 
+	void setWantedLevel( uint8_t level );
+	uint8_t getWantedLevel( );
+
+	void setFightingStyle( uint8_t style );
+	uint8_t getFightingStyle( );
+
 	float getHealth( );
 	void setHealth( float health );
+	
 
 	float getArmour( );
+
+	void allowTeleport( BOOL value );
 
 	void Init( );
 

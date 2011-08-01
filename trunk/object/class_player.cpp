@@ -544,6 +544,11 @@ int CPlayer::GetAmmoInSlot( int slot )
 	return this->ammoInSlot[ slot ];
 }
 
+int CPlayer::GetWeaponInSlot( int slot )
+{
+	return this->weaponInSlot[ slot ];
+}
+
 int CPlayer::GetCurrentWeapon( )
 {
 	return this->currentWeapon;
@@ -1244,6 +1249,25 @@ bool CPlayer::isSpawned( )
 	return false;
 }
 
+void CPlayer::setWantedLevel( uint8_t level )
+{
+	this->wantedLevel = level;
+}
+
+uint8_t CPlayer::getWantedLevel( )
+{
+	return this->wantedLevel;
+}
+
+void CPlayer::setFightingStyle( uint8_t style )
+{
+	this->fightingStyle = style;
+}
+
+uint8_t CPlayer::getFightingStyle( )
+{
+	return this->fightingStyle;
+}
 
 float CPlayer::getHealth( )
 {
@@ -1263,9 +1287,19 @@ float CPlayer::getArmour( )
 	return this->armour;
 }
 
+void CPlayer::allowTeleport( BOOL value )
+{
+	allowedToTeleport = value;
+}
+
 tVector* CPlayer::getPosition( )
 {
 	return &this->position;
+}
+
+tVector* CPlayer::getVelocity( )
+{
+	return &this->velocity;
 }
 
 void CPlayer::setPosition( tVector position )
