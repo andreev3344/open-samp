@@ -300,3 +300,38 @@ CPlayer* CPlayerPool::GetPlayer( _PlayerID playerID )
 
 	return this->player[ playerID ];
 }
+
+void CPlayerPool::setPlayerVirtualWorld( _PlayerID playerID, uint32_t virtualWorld )
+{
+	if( GetSlotState( playerID ) )
+	{
+		this->playersVirtualWorlds[ playerID ] = virtualWorld;
+	}
+}
+
+uint32_t CPlayerPool::getPlayerVirtualWorld( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return this->playersVirtualWorlds[ playerID ];
+	}
+	return 0;
+}
+
+
+uint32_t CPlayerPool::getPlayerDrunkLevel( _PlayerID playerID )
+{
+	if( GetSlotState( playerID ) )
+	{
+		return this->drunkLevel[ playerID ];
+	}
+	return 0;
+}
+
+void CPlayerPool::setPlayerDrunkLevel( _PlayerID playerID, uint32_t level )
+{
+	if( GetSlotState( playerID ) )
+	{
+		this->drunkLevel[ playerID ] = level;
+	}
+}

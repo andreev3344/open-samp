@@ -568,8 +568,8 @@ cell AMX_NATIVE_CALL funcIsPlayerInRaceCheckpoint ( AMX* a_AmxInterface, cell* a
 cell AMX_NATIVE_CALL funcSetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerInterior()" );
-
-	_PlayerID playerID = ( _PlayerID ) a_Params[0];
+	CHECK_PARAMS( 2 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) ) 
 	{
@@ -1489,49 +1489,163 @@ cell AMX_NATIVE_CALL funcGetPlayerVelocity ( AMX* a_AmxInterface, cell* a_Params
 cell AMX_NATIVE_CALL funcSetPlayerVelocity ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerVelocity()" );
-	return _funcSetPlayerVelocity ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerVelocity = 0x52;
+		RakNet::BitStream bStream;
+		bStream.Write( ( float ) amx_ctof( a_Params[ 2 ] ) );
+		bStream.Write( ( float ) amx_ctof( a_Params[ 3 ] ) );
+		bStream.Write( ( float ) amx_ctof( a_Params[ 4 ] ) );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerVelocity, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerVelocity ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcIsPlayerInRangeOfPoint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcIsPlayerInRangeOfPoint()" );
-	return _funcIsPlayerInRangeOfPoint ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 5 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		if( player->getSquaredDistanceFrom3DPoint( amx_ctof( a_Params[ 3 ] ), amx_ctof( a_Params[ 4 ] ), amx_ctof( a_Params[ 5 ] ) ) <= amx_ctof( a_Params[ 2 ] ) * amx_ctof( a_Params[ 2 ] ) )
+			return 1;
+	}
+	return 0;
+	//return _funcIsPlayerInRangeOfPoint ( a_AmxInterface, a_Params );
 }
 
 
 cell AMX_NATIVE_CALL funcSetPlayerVirtualWorld ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerVirtualWorld()" );
-	return _funcSetPlayerVirtualWorld ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		__NetGame->playerPool->setPlayerVirtualWorld( playerID, a_Params[ 2 ] );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerVirtualWorld ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerVirtualWorld ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerVirtualWorld()" );
-	return _funcGetPlayerVirtualWorld ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		return __NetGame->playerPool->getPlayerVirtualWorld( playerID );
+	}
+	return 0;
+	//return _funcGetPlayerVirtualWorld ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcShowPlayerNameTagForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcShowPlayerNameTagForPlayer()" );
-	return _funcShowPlayerNameTagForPlayer ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_ShowPlayerNameTagForPlayer = 0x37;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( _PlayerID ) a_Params[ 2 ] );
+		bStream.Write( ( uint8_t ) a_Params[ 3 ] );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowPlayerNameTagForPlayer, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcShowPlayerNameTagForPlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcEnableStuntBonusForAll ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcEnableStuntBonusForAll()" );
-	return _funcEnableStuntBonusForAll ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+	if( a_Params[ 1 ] != 1 ) a_Params[ 1 ] = 0;
+
+	__NetGame->enableBonusStuntForAll = ( bool )( a_Params[ 1 ] == 0 ? false : true );
+
+	uint32_t RPC_EnableStuntBonus = 0x48;
+	RakNet::BitStream bStream;
+
+	bStream.Write( ( bool )( a_Params[ 1 ] ? true : false ) );
+	CNetGame__RPC_SendToEveryPlayer( ( uint32_t ) __NetGame, &RPC_EnableStuntBonus, &bStream, -1, 2 );
+	//if( a_Params[ 1 ] )
+	//	bStream.Write( true );
+	//else 
+	//	bStream.Write( false );
+	return 1;
+	//return _funcEnableStuntBonusForAll ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcEnableStuntBonusForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcEnableStuntBonusForPlayer()" );
-	return _funcEnableStuntBonusForPlayer ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		if( a_Params[ 2 ] != 1 ) a_Params[ 2 ] = 0;
+
+		uint32_t RPC_EnableStuntBonus = 0x48;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( bool )( a_Params[ 2 ] ? true : false ) );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_EnableStuntBonus, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;	
+	//	return _funcEnableStuntBonusForPlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcTogglePlayerSpectating ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcTogglePlayerSpectating()" );
-	return _funcTogglePlayerSpectating ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID )a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		player->setSpectateID( -1 );
+		player->setSpectatingType( SPECTATE_TYPE_NONE );
+
+		uint32_t RPC_TogglePlayerSpectating = 0x00;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_TogglePlayerSpectating, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcTogglePlayerSpectating ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerDrunkLevel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerDrunkLevel()" );
-	return _funcGetPlayerDrunkLevel ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	return __NetGame->playerPool->getPlayerDrunkLevel( playerID );
+	//return _funcGetPlayerDrunkLevel ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerDrunkLevel ( AMX* a_AmxInterface, cell* a_Params )
 {

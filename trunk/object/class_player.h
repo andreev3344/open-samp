@@ -132,6 +132,9 @@ class CPlayer // size 0x1AF8
 #pragma pack( 1 )
 public:
 
+	void setSpectateID( _PlayerID playerID );
+	void setSpectatingType( uint8_t type );
+
 	void Say( char* text, uint8_t len );
 
 	void SendTime( );

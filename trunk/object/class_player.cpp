@@ -1330,3 +1330,13 @@ void CPlayer::setPositionFindZ( float x, float y, float z )
 
 	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerPositionFindZ, &bStream, this->myPlayerID, 2 );
 }
+
+void CPlayer::setSpectateID( _PlayerID playerID )
+{
+	this->spectateID = playerID;
+}
+
+void CPlayer::setSpectatingType( uint8_t type )
+{
+	this->spectateType = type;
+}

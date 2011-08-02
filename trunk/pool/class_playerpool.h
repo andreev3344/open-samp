@@ -50,6 +50,12 @@ public:
 	bool GetSlotState( _PlayerID playerID );
 	CPlayer* GetPlayer( _PlayerID playerID );
 
+	void setPlayerVirtualWorld( _PlayerID playerID, uint32_t virtualWorld );
+	uint32_t getPlayerVirtualWorld( _PlayerID playerID );
+
+	uint32_t getPlayerDrunkLevel( _PlayerID playerID );
+	void setPlayerDrunkLevel( _PlayerID playerID, uint32_t level );
+
 	CPlayerPool( );
 	~CPlayerPool( );
 private:
