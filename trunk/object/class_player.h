@@ -17,6 +17,8 @@
 #define SYNCING_TYPE_PASSENGER		3
 
 #define SPECTATE_TYPE_NONE			0
+#define SPECTATE_TYPE_PLAYER		1			
+#define SPECTATE_TYPE_VEHICLE		2
 
 #define RECORD_TYPE_INVEHICLE		1
 #define RECORD_TYPE_ONFOOT			2
@@ -132,7 +134,7 @@ class CPlayer // size 0x1AF8
 #pragma pack( 1 )
 public:
 
-	void setSpectateID( _PlayerID playerID );
+	void setSpectateID( uint32_t ID );
 	void setSpectatingType( uint8_t type );
 
 	void Say( char* text, uint8_t len );

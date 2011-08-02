@@ -1650,22 +1650,122 @@ cell AMX_NATIVE_CALL funcGetPlayerDrunkLevel ( AMX* a_AmxInterface, cell* a_Para
 cell AMX_NATIVE_CALL funcSetPlayerDrunkLevel ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerDrunkLevel()" );
-	return _funcSetPlayerDrunkLevel ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) ) 
+	{
+		uint32_t RPC_SetPlayerDrunkLevel = 0x90;
+		RakNet::BitStream bStream;
+
+		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerDrunkLevel, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerDrunkLevel ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcPlayerSpectateVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPlayerSpectateVehicle()" );
+	//CHECK_PARAMS( 3 );
+	//_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	//_VehicleID vehicleID = ( _VehicleID ) a_Params[ 2 ];
+
+	//if( __NetGame->playerPool->GetSlotState( playerID ) && __NetGame->vehiclePool->GetSlotState( vehicleID ) )
+	//{
+	//	CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+	//	if( player == 0 ) return 0;
+
+	//	CVehicle* vehicle = __NetGame->vehiclePool->GetVehicle( vehicleID );
+	//	if( vehicle == 0 ) return 0;
+
+	//	player->setSpectateID( vehicleID );
+	//	player->setSpectatingType( SPECTATE_TYPE_VEHICLE );
+
+	//	player->UpdatePosition( vehicle->GetPosition( ).X, vehicle->GetPosition( ).Y, vehicle->GetPosition( ).Z, true );
+	//	player->SetPlaceToBe( vehicle->GetPosition( ).X, vehicle->GetPosition( ).Y, vehicle->GetPosition( ).Z );
+	//	player->setState( PLAYER_STATE_SPECTATING );
+
+	//	uint32_t RPC_SetPlayerSpectatingVehicle = 0x3E;
+	//	RakNet::BitStream bStream;
+
+	//	bStream.Write( vehicleID );
+	//	bStream.Write( ( uint8_t ) a_Params[ 3 ] );
+
+	//	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerSpectatingVehicle, &bStream, playerID, 2 );
+	//	return 1;
+	//}
+	//return 0;
 	return _funcPlayerSpectateVehicle ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcPlayerSpectatePlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPlayerSpectatePlayer()" );
-	return _funcPlayerSpectatePlayer ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ], playerIDToSpectate = ( _PlayerID ) a_Params[ 2 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) && __NetGame->playerPool->GetSlotState( playerIDToSpectate ) )
+	{
+		CPlayer *player = __NetGame->playerPool->GetPlayer( playerID ), *playerToSpectate = __NetGame->playerPool->GetPlayer( playerIDToSpectate );
+		
+		if( player == 0 || playerToSpectate == 0 ) return 0;
+
+		player->setSpectateID( playerIDToSpectate );
+		player->setSpectatingType( SPECTATE_TYPE_PLAYER );
+
+		player->UpdatePosition( playerToSpectate->getPosition( )->X, playerToSpectate->getPosition( )->Y, playerToSpectate->getPosition( )->Z, true );
+		player->SetPlaceToBe( playerToSpectate->getPosition( )->X, playerToSpectate->getPosition( )->Y, playerToSpectate->getPosition( )->Z );
+		player->setState( PLAYER_STATE_SPECTATING );
+
+		uint32_t RPC_SetPlayerSpectatingPlayer = 0x3D;
+		RakNet::BitStream bStream;
+
+		bStream.Write( playerIDToSpectate );
+		bStream.Write( ( uint8_t ) a_Params[ 3 ] );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerSpectatingPlayer, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcPlayerSpectatePlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcApplyAnimation ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcApplyAnimation()" );
-	return _funcApplyAnimation ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 9 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		char *animlib = 0, *animname = 0;
+		amx_StrParam( a_AmxInterface, a_Params[ 2 ], animlib );
+		amx_StrParam( a_AmxInterface, a_Params[ 3 ], animname );
+
+		RakNet::BitStream bStream;
+		uint32_t RPC_ApplyAnimation = 0x4E;
+
+		bStream.Write( playerID );
+		bStream.Write( ( uint8_t ) strlen( animlib ) );
+		bStream.Write( ( char* ) animlib, strlen( animlib ) );
+		bStream.Write( ( uint8_t ) strlen( animname ) );
+		bStream.Write( ( char* ) animname, strlen( animname ) );
+
+		bStream.Write( ( float ) amx_ctof( a_Params[ 4 ] ) );
+		bStream.Write( ( bool )( a_Params[ 5 ] != 0 ? true : false ) );
+		bStream.Write( ( bool )( a_Params[ 6 ] != 0 ? true : false ) );
+		bStream.Write( ( bool )( a_Params[ 7 ] != 0 ? true : false ) );
+		bStream.Write( ( bool )( a_Params[ 8 ] != 0 ? true : false ) );
+		bStream.Write( ( bool )( a_Params[ 9 ] != 0 ? true : false ) );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ApplyAnimation, &bStream, playerID, 2 );
+		CNetGame__RPC_SendToUnknown( ( uint32_t ) __NetGame, &RPC_ApplyAnimation, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcApplyAnimation ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcClearAnimations ( AMX* a_AmxInterface, cell* a_Params )
 {
