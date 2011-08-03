@@ -446,7 +446,9 @@ cell AMX_NATIVE_CALL funcGetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		return amx_SetString( &a_Params[ 2 ], __NetGame->playerPool->getPlayerNick( playerID ), 0, 1, a_Params[ 3 ] );
+		cell* dest = 0;
+		amx_GetAddr( a_AmxInterface, a_Params[ 2 ], &dest );
+		return amx_SetString( dest, __NetGame->playerPool->getPlayerNick( playerID ), 0, 1, a_Params[ 3 ] );
 	}
 	return 0;
 }
@@ -1734,7 +1736,7 @@ cell AMX_NATIVE_CALL funcPlayerSpectatePlayer ( AMX* a_AmxInterface, cell* a_Par
 cell AMX_NATIVE_CALL funcApplyAnimation ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcApplyAnimation()" );
-	CHECK_PARAMS( 9 );
+	CHECK_PARAMS( 10 );
 	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
@@ -1759,9 +1761,11 @@ cell AMX_NATIVE_CALL funcApplyAnimation ( AMX* a_AmxInterface, cell* a_Params )
 		bStream.Write( ( bool )( a_Params[ 8 ] != 0 ? true : false ) );
 		bStream.Write( ( bool )( a_Params[ 9 ] != 0 ? true : false ) );
 
-		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ApplyAnimation, &bStream, playerID, 2 );
+		if( a_Params[ 10 ] /*|| *(uint32*)( player + 0x5014 )*/ )
+		{
+			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ApplyAnimation, &bStream, playerID, 2 );
+		}
 		CNetGame__RPC_SendToUnknown( ( uint32_t ) __NetGame, &RPC_ApplyAnimation, &bStream, playerID, 2 );
-
 		return 1;
 	}
 	return 0;
@@ -1770,37 +1774,148 @@ cell AMX_NATIVE_CALL funcApplyAnimation ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcClearAnimations ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcClearAnimations()" );
-	return _funcClearAnimations ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		RakNet::BitStream bStream;
+		uint32_t RPC_ClearAnimation = 0x4F;
+		bStream.Write( playerID );
+
+		if( a_Params[ 2 ] /*|| *(uint32*)( player + 0x5014 )*/ )
+		{
+			CNetGame__RPC_SendToUnknown( ( uint32_t ) __NetGame, &RPC_ClearAnimation, &bStream, playerID, 2 );
+		}
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ClearAnimation, &bStream, playerID, 2 );
+		return 1;
+	}
+	return 0;
+	//return _funcClearAnimations ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerAnimationIndex ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerAnimationIndex()" );
-	return _funcGetPlayerAnimationIndex ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		if( player->getState( ) == PLAYER_STATE_ONFOOT )
+		{
+			return player->getOnFootSyncData( )->animationIndex;
+		}
+
+	}
+
+	return 0;
+	//return _funcGetPlayerAnimationIndex ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetAnimationName ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetAnimationName()" );
-	return _funcGetAnimationName ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 5 );
+
+	char* animationName = GetAnimationNameByIndex( a_Params[ 1 ] );
+
+	if( animationName )
+	{
+		char* delim = strchr( animationName, ':' );
+		if( delim )
+		{
+			char *animlib = new char[ delim - animationName ], *animname = new char[ strlen( animationName ) - ( delim - animationName ) + 1 ];
+			strncpy( animlib, animationName, delim - animationName );
+			strncpy( animname, &animationName[ delim - animationName + 1 ], strlen( animationName ) - ( delim - animationName ) + 1 ); // GOD :o
+
+			cell* dest = 0;
+			amx_GetAddr( a_AmxInterface, a_Params[2], &dest );
+			amx_SetString( dest, animlib, 0, 0, a_Params[ 3 ] );
+			amx_GetAddr( a_AmxInterface, a_Params[4], &dest );
+			amx_SetString( dest, animlib, 0, 0, a_Params[ 5 ] );
+			return 1;
+		}
+	}
+	return 0;
+	//return _funcGetAnimationName ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerSpecialAction ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerSpecialAction()" );
-	return _funcSetPlayerSpecialAction ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		uint32_t RPC_SetPlayerSpecialAction = 0x50;
+		RakNet::BitStream bStream;
+		bStream.Write( ( uint8_t )a_Params[ 2 ] );
+
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerSpecialAction, &bStream, playerID, 2 );
+
+		return 1;
+	}
+	return 0;
+	//return _funcSetPlayerSpecialAction ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcGetPlayerSpecialAction ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPlayerSpecialAction()" );
-	return _funcGetPlayerSpecialAction ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+
+		if( player->getState( ) == PLAYER_STATE_ONFOOT )
+		{
+			return ( cell )player->getOnFootSyncData( )->specialAction;	
+		}
+	}
+	return 0;
+	//return _funcGetPlayerSpecialAction ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcStartRecordingPlayerData ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcStartRecordingPlayerData()" );
-	return _funcStartRecordingPlayerData ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		char* recordname = 0;
+		amx_StrParam( a_AmxInterface, a_Params[ 3 ], recordname );
+		player->startNPCRecordingData( a_Params[ 2 ], recordname );
+		return 1;
+	}
+	return 0;
+	//return _funcStartRecordingPlayerData ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcStopRecordingPlayerData ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcStopRecordingPlayerData()" );
-	return _funcStopRecordingPlayerData ( a_AmxInterface, a_Params );
+	CHECK_PARAMS(1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player == 0 ) return 0;
+		player->stopNPCRecordingData( );
+		return 1;
+	}
+	return 0;
+	//return _funcStopRecordingPlayerData ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcPlayCrimeReportForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {

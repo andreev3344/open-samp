@@ -56,6 +56,8 @@ extern int ( __thiscall* CNetGame__RPC_SendToPlayerVehicle )( uint32_t a_NetGame
 
 void QuaternionToMatrix( float &quaterW, float &quaterX, float &quaterY, float &quaterZ, tVector* right, tVector* up, tVector* at );
 void QuaternionToMatrix( tQuaternionVector* quaternion, MATRIX4X4* matrix );
+char* GetAnimationNameByIndex( uint32_t index );
+
 
 #define MAX_PLAYER_NAME		0x18
 #define MAX_PLAYERS			500
