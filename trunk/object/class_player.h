@@ -134,6 +134,8 @@ class CPlayer // size 0x1AF8
 #pragma pack( 1 )
 public:
 
+	void SendSyncData( );
+
 	void setSpectateID( uint32_t ID );
 	void setSpectatingType( uint8_t type );
 

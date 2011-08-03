@@ -16,6 +16,81 @@ CPlayer::~CPlayer( )
 {
 }
 
+void CPlayer::SendSyncData( )
+{
+	if( this->hasAplaceToBe ) return;
+
+	RakNet::BitStream bStream;
+
+	if( getState( ) == PLAYER_STATE_ONFOOT || this->SyncingDataType == SYNCING_TYPE_ON_FOOT )
+	{
+		bStream.Write( ( uint8_t ) PACKET_PLAYER_SYNC );
+		bStream.Write( ( _PlayerID ) this->myPlayerID );
+
+		if( this->onFootSyncData.leftRightKeysOnfoot )
+		{
+			bStream.Write( true );
+			bStream.Write( ( uint16_t ) this->onFootSyncData.leftRightKeysOnfoot );
+		}
+		else
+			bStream.Write( false );
+
+		if( this->onFootSyncData.updownKeysOnfoot )
+		{
+			bStream.Write( true );
+			bStream.Write( ( uint16_t ) this->onFootSyncData.updownKeysOnfoot );
+		}
+		else
+			bStream.Write( false );
+
+		bStream.Write( ( uint16_t ) this->onFootSyncData.keysOnfoot );
+		bStream.Write( ( char*)&this->onFootSyncData.position, sizeof( tVector ) );
+		bStream.WriteNormQuat( this->onFootSyncData.quaterRotation.W, this->onFootSyncData.quaterRotation.X,
+			this->onFootSyncData.quaterRotation.Y, this->onFootSyncData.quaterRotation.Z );
+
+		uint8_t compressedHealthArmour = 0;
+		if( this->onFootSyncData.health > 0 && this->onFootSyncData.health < 100 )
+			compressedHealthArmour = ( this->onFootSyncData.health / 7 ) << 4;
+		else if( this->onFootSyncData.health >= 100 )
+			compressedHealthArmour = 0xF0;
+
+		if( this->onFootSyncData.armour > 0 && this->onFootSyncData.armour < 100 )
+			compressedHealthArmour |= ( this->onFootSyncData.armour / 7 );
+		else if( this->onFootSyncData.health >= 100 )
+			compressedHealthArmour |= 0x0F;
+
+		bStream.Write( ( uint8_t ) compressedHealthArmour );
+		bStream.Write( ( uint8_t ) this->onFootSyncData.weapon );
+		bStream.Write( ( uint8_t ) this->onFootSyncData.specialAction );
+
+		bStream.WriteNormVector( this->onFootSyncData.velocity.X, this->onFootSyncData.velocity.Y, this->onFootSyncData.velocity.Z );
+
+		if( this->onFootSyncData.surfingVehicleID )
+		{
+			bStream.Write( true );
+			bStream.Write( this->onFootSyncData.surfingVehicleID );
+			bStream.Write( (char*)&this->onFootSyncData.surfingOffsets, sizeof( tVector ) );
+		}
+		else
+			bStream.Write( false );
+
+		if( this->onFootSyncData.animationIndex )
+		{
+			bStream.Write( true );
+			bStream.Write( ( uint32_t ) this->onFootSyncData.animationIndex );
+		}
+		else 
+			bStream.Write( false );
+
+
+		// __NetGame->sub_499310( &bStream, this->myPlayerID );
+
+	}
+
+
+
+}
+
 void CPlayer::Init( )
 {
 
