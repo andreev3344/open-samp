@@ -157,6 +157,13 @@ cell ( __cdecl* _funcHTTP )( AMX* a_AmxInterface, cell* a_Params ) = ( cell ( __
 cell AMX_NATIVE_CALL funcPrint ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPrint()" );
+	/*
+	CHECK_PARAMS( 1 );
+
+	char* str;
+	amx_StrParam(a_AmxInterface, a_Params[ 1 ], str);
+	logprintf("%s", str);
+	*/
 	return _funcPrint ( a_AmxInterface, a_Params );
 }
 
@@ -187,7 +194,7 @@ cell AMX_NATIVE_CALL funcKillTimer ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcGetTickCount ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetTickCount()" );
-	return _funcGetTickCount ( a_AmxInterface, a_Params );
+	return __NetGame->GetTime();
 }
 
 cell AMX_NATIVE_CALL funcGetMaxPlayers ( AMX* a_AmxInterface, cell* a_Params )
@@ -642,47 +649,190 @@ cell AMX_NATIVE_CALL funcSetPVarInt ( AMX* a_AmxInterface, cell* a_Params )
 cell AMX_NATIVE_CALL funcSetPVarString ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPVarString()" );
-	return _funcSetPVarString ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			char* pVarValue;
+			amx_StrParam( a_AmxInterface, a_Params[ 3 ], pVarValue );
+			if( pVarValue == 0 ) pVarValue = "\0";
+
+			if(player->getPlayerVars()->SetStringVar(pVarName, pVarValue)) return 1;
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcSetPVarFloat ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPVarFloat()" );
-	return _funcSetPVarFloat ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			if(player->getPlayerVars()->SetFloatVar(pVarName, amx_ctof(a_Params[ 3 ]))) return 1;
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarInt ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarInt()" );
-	return _funcGetPVarInt ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			return player->getPlayerVars()->GetIntVar(pVarName);
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarString ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarString()" );
-	return _funcGetPVarString ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			char* pVarValue = player->getPlayerVars()->GetStringVar(pVarName);
+			if( pVarValue == 0 ) return 0;
+
+			cell* dest = 0;
+			amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &dest );
+			return amx_SetString( dest, pVarValue, 0, 1, a_Params[ 4 ] );
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarFloat ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarFloat()" );
-	return _funcGetPVarFloat ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			float ret = player->getPlayerVars()->GetFloatVar(pVarName);
+			return amx_ftoc(ret);
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcDeletePVar ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcDeletePVar()" );
-	return _funcDeletePVar ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			return player->getPlayerVars()->DeleteVar(pVarName);
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarType ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarType()" );
-	return _funcGetPVarType ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			return player->getPlayerVars()->GetVarType(pVarName);
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarNameAtIndex ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarNameAtIndex()" );
-	return _funcGetPVarNameAtIndex ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 4 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = player->getPlayerVars()->GetVarNameFromID(a_Params[ 2 ]);
+			cell* dest = 0;
+			amx_GetAddr( a_AmxInterface, a_Params[ 3 ], &dest );
+			if(pVarName == NULL) 
+			{
+				amx_SetString( dest, "\0", 0, 1, a_Params[ 4 ] );
+				return 0;
+			}
+			return amx_SetString( dest, pVarName, 0, 1, a_Params[ 4 ] );
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcGetPVarsUpperIndex ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcGetPVarsUpperIndex()" );
-	return _funcGetPVarsUpperIndex ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 1 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+			return player->getPlayerVars()->upperIndex;
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcIsValidVehicle ( AMX* a_AmxInterface, cell* a_Params )
 {
