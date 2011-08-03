@@ -75,6 +75,9 @@
     <ClCompile Include="object\class_player_text3dlabels.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="object\class_player_var.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -187,6 +190,9 @@
       <Filter>pool</Filter>
     </ClInclude>
     <ClInclude Include="object\class_player_text3dlabels.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_player_var.h">
       <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>

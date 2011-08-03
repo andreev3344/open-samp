@@ -622,7 +622,22 @@ cell AMX_NATIVE_CALL funcSetPlayerChatBubble ( AMX* a_AmxInterface, cell* a_Para
 cell AMX_NATIVE_CALL funcSetPVarInt ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPVarInt()" );
-	return _funcSetPVarInt ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 3 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
+		if( player )
+		{
+			char* pVarName = NULL;
+			amx_StrParam( a_AmxInterface, a_Params[ 2 ], pVarName );
+			if( pVarName == 0 ) return 0;
+
+			if(player->getPlayerVars()->SetIntVar(pVarName, a_Params[ 3 ])) return 1;
+		}
+	}
+	return 0;
 }
 cell AMX_NATIVE_CALL funcSetPVarString ( AMX* a_AmxInterface, cell* a_Params )
 {

@@ -71,7 +71,7 @@ char* GetAnimationNameByIndex( uint32_t index );
 #include "script/class_fsmanager.h"
 
 #include "object/class_player_text3dlabels.h"
-//#include "object/class_player_var.h"
+#include "object/class_player_var.h"
 #include "object/class_menu.h"
 #include "object/class_object.h"
 #include "object/class_player.h"

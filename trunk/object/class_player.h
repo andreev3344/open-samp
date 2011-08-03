@@ -254,6 +254,8 @@ public:
 
 	float getHealth( );
 	void setHealth( float health );
+
+	CPlayerVar*	getPlayerVars() { return playerVarsClass; }
 	
 
 	float getArmour( );
@@ -354,7 +356,7 @@ private:
 	FILE*		ioFileNPC;								// + 0x1AEC
 	uint32_t	FirstNPCWritingTime;					// + 0x1AF0	
 
-	void*		playerVarsClass;						// + 0x1AF4
+	CPlayerVar*	playerVarsClass;						// + 0x1AF4
 
 };
 

