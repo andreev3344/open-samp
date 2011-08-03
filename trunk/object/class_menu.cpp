@@ -68,7 +68,6 @@ void CMenu::SetColumnHeader( uint8_t column, char* title )
 void CMenu::initForPlayer( _PlayerID playerID ) // ref: 0x498670
 {
 	int id  = 0;
-	logprintf( "Step %d", id++ );
 	if( playerID < MAX_PLAYERS )
 	{
 		this->isInitiedForPlayer[playerID] = 1;
@@ -97,7 +96,6 @@ void CMenu::initForPlayer( _PlayerID playerID ) // ref: 0x498670
 		{
 			bStream.Write( (char*)this->items[i][0], MAX_MENU_TEXT_SIZE );
 		}
-		logprintf( "Step %d", id++ );
 		if( this->columnsNumber == 2 )
 		{
 			bStream.Write( (char*)this->headers[1], MAX_MENU_TEXT_SIZE );
@@ -109,10 +107,8 @@ void CMenu::initForPlayer( _PlayerID playerID ) // ref: 0x498670
 				bStream.Write( (char*)this->items[i][1], MAX_MENU_TEXT_SIZE );
 			}
 		}
-		logprintf( "Step %d", id++ );
-		uint32_t RPC_Menu_InitForPlayer = 0x42;
+		
 		CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_Menu_InitForPlayer, &bStream, playerID, 2 );
-		logprintf( "Step %d", id++ );
 	}
 	
 }
@@ -126,7 +122,7 @@ int CMenu::showForPlayer( _PlayerID playerID )
 		{
 			this->initForPlayer( playerID );
 		}
-		uint32_t RPC_Menu_ShowForPlayer = 0x43;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( this->menuID );
 
@@ -141,8 +137,6 @@ int CMenu::hideForPlayer( _PlayerID playerID )
 
 	if( playerID < MAX_PLAYERS )
 	{
-
-		uint32_t RPC_Menu_HideForPlayer = 0x44;
 		RakNet::BitStream bStream;
 		bStream.Write( this->menuID );
 		CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_Menu_HideForPlayer, &bStream, playerID, 2 );

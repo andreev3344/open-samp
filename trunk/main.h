@@ -66,6 +66,7 @@ char* GetAnimationNameByIndex( uint32_t index );
 #define LIMIT_MAX_PICKUPS	2048
 #define MAX_MAP_ICON		100
 
+#include "RPC.h"
 
 #include "script/class_gmmanager.h"
 #include "script/class_fsmanager.h"

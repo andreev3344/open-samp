@@ -11,8 +11,8 @@ void CObject::SpawnForPlayer ( uint16_t a_uint16_PlayerIndex )
 	RakNet::BitStream* l_BitStream = ComputeBitStream_Spawn();
 	if ( l_BitStream )
 	{
-		uint32_t l_RpcSpawnObject = 0x00000030;
-		CNetGame__RPC_SendToPlayer	( ( uint32_t )__NetGame, &l_RpcSpawnObject, l_BitStream, a_uint16_PlayerIndex, 2 );
+		
+		CNetGame__RPC_SendToPlayer	( ( uint32_t )__NetGame, &RPC_SpawnObject, l_BitStream, a_uint16_PlayerIndex, 2 );
 
 		delete l_BitStream;
 	}
@@ -23,8 +23,7 @@ void CObject::SpawnForAll ( void )
 	RakNet::BitStream* l_BitStream = ComputeBitStream_Spawn();
 	if ( l_BitStream )
 	{
-		uint32_t l_RpcSpawnObject = 0x00000030;
-		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSpawnObject, l_BitStream, 0xFFFF, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_SpawnObject, l_BitStream, 0xFFFF, 2 );
 
 		delete l_BitStream;
 	}

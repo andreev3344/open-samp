@@ -132,10 +132,10 @@ cell AMX_NATIVE_CALL funcSetPlayerName ( AMX* a_AmxInterface, cell* a_Params )
 
 		if( success )
 		{
-			uint32_t RPC_ChangeName = 0x0E;
+			
 			__NetGame->playerPool->setPlayerNick( playerID, new_nickname );
 			logprintf( "[nick] %s nick changed to %s", old_nickname, new_nickname );
-			CNetGame__RPC_SendToEveryPlayer( ( uint32_t ) __NetGame, &RPC_ChangeName, &bStream, -1, 2 );
+			CNetGame__RPC_SendToEveryPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerName, &bStream, -1, 2 );
 			return 1;
 		}
 		return 0;
@@ -157,7 +157,7 @@ cell AMX_NATIVE_CALL funcSetPlayerSkin ( AMX* a_AmxInterface, cell* a_Params )
 
 		if( player->HasCustomSpawn( ) )
 		{
-			uint32_t RPC_SetPlayerSkin = 0x0D;
+			
 			RakNet::BitStream bStream;
 			bStream.Write( ( uint32_t ) playerID );
 			bStream.Write( ( uint32_t ) a_Params[ 2 ] );
@@ -370,9 +370,9 @@ cell AMX_NATIVE_CALL funcPutPlayerInVehicle ( AMX* a_AmxInterface, cell* a_Param
 			//player->UpdatePosition( vehicle->getPosition().X, vehicle->getPosition().Y, vehicle->getPosition().Z, true );
 			//player->SetPlaceToBe( vehicle->getPosition().X, vehicle->getPosition().Y, vehicle->getPosition().Z );
 
-			uint32_t RPC_SetPlayerInVehicle = 0x12;
+			
 
-			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerInVehicle, &bStream, playerID, 2 );
+			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_PutPlayerInVehicle, &bStream, playerID, 2 );
 			return 1;
 		}
 
@@ -389,8 +389,8 @@ cell AMX_NATIVE_CALL funcRemovePlayerFromVehicle ( AMX* a_AmxInterface, cell* a_
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
 		RakNet::BitStream bStream;
-		uint32_t RPC_RemovePlayerFromPlayer = 0x13;
-		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_RemovePlayerFromPlayer, &bStream, playerID, 2 );
+		
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_RemovePlayerFromVehicle, &bStream, playerID, 2 );
 		return 1;
 	}
 
@@ -578,7 +578,7 @@ cell AMX_NATIVE_CALL funcSetPlayerInterior ( AMX* a_AmxInterface, cell* a_Params
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
 
-		uint32_t RPC_SetPlayerInterior = 0x16;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint8_t ) a_Params[ 2 ] );
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerInterior, &bStream, playerID, 2 );
@@ -687,8 +687,6 @@ cell AMX_NATIVE_CALL funcSetPlayerCameraLookAt ( AMX* a_AmxInterface, cell* a_Pa
 		lookAt.Y	= amx_ctof( a_Params[ 3 ] );
 		lookAt.Z	= amx_ctof( a_Params[ 4 ] );
 
-		uint32_t RPC_SetPlayerCameralookAt = 0x18;
-
 		RakNet::BitStream bStream;
 		bStream.Write( ( char* ) &lookAt, sizeof( tVector ) );
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameralookAt, &bStream, playerID, 2 );
@@ -714,8 +712,6 @@ cell AMX_NATIVE_CALL funcSetPlayerCameraPos ( AMX* a_AmxInterface, cell* a_Param
 		cameraPos.Y	= amx_ctof( a_Params[ 3 ] );
 		cameraPos.Z	= amx_ctof( a_Params[ 4 ] );
 
-		uint32_t RPC_SetPlayerCameraPos = 0x17;
-
 		RakNet::BitStream bStream;
 		bStream.Write( ( char* ) &cameraPos, sizeof( tVector ) );
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameraPos, &bStream, playerID, 2 );
@@ -735,8 +731,7 @@ cell AMX_NATIVE_CALL funcSetCameraBehindPlayer ( AMX* a_AmxInterface, cell* a_Pa
 	{
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
-
-		uint32_t RPC_SetPlayerCameraBehindPlayer = 0x1C;
+		
 		RakNet::BitStream bStream;
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerCameraBehindPlayer, &bStream, playerID, 2 );
 
@@ -812,8 +807,6 @@ cell AMX_NATIVE_CALL funcTogglePlayerControllable ( AMX* a_AmxInterface, cell* a
 	{
 		uint8_t toggle = ( uint8_t ) a_Params[ 2 ];
 
-		uint32_t RPC_TogglePlayerControllable = 0x1D;
-
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( uint8_t ) toggle );
@@ -839,8 +832,6 @@ cell AMX_NATIVE_CALL funcPlayerPlaySound ( AMX* a_AmxInterface, cell* a_Params )
 		position.X			= amx_ctof( a_Params[ 3 ] );
 		position.Y			= amx_ctof( a_Params[ 4 ] );
 		position.Z			= amx_ctof( a_Params[ 5 ] );
-
-		uint32_t RPC_PlayerPlaySound = 0x1E;
 
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint32_t ) soundid );
@@ -888,7 +879,7 @@ cell AMX_NATIVE_CALL funcSetPlayerFacingAngle ( AMX* a_AmxInterface, cell* a_Par
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
 		RakNet::BitStream bStream;
-		uint32_t RPC_SetPlayerFacingAngle = 0x21;
+		
 		bStream.Write( ( float )amx_ctof( a_Params[ 2 ] ) );
 		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerFacingAngle, &bStream, playerID, 2 );
 		return 1;
@@ -988,7 +979,7 @@ cell AMX_NATIVE_CALL funcResetPlayerWeapons ( AMX* a_AmxInterface, cell* a_Param
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_ResetPlayerWeapons = 0x23;
+		
 		RakNet::BitStream bStream;
 		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ResetPlayerWeapons, &bStream, playerID, 2 );
 
@@ -1007,7 +998,7 @@ cell AMX_NATIVE_CALL funcGivePlayerWeapon ( AMX* a_AmxInterface, cell* a_Params 
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_GivePlayerWeapon = 0x24;
+		
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( uint32_t ) a_Params[2] );
@@ -1028,7 +1019,6 @@ cell AMX_NATIVE_CALL funcSetPlayerArmedWeapon ( AMX* a_AmxInterface, cell* a_Par
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerArmedWeapon = 0x0A;
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
 
@@ -1075,7 +1065,6 @@ cell AMX_NATIVE_CALL funcSetPlayerArmour ( AMX* a_AmxInterface, cell* a_Params )
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
 		float armour = amx_ctof( a_Params[ 2 ] );
-		uint32_t RPC_SetPlayerArmour = 0x27;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( float )armour );
@@ -1117,7 +1106,6 @@ cell AMX_NATIVE_CALL funcSetPlayerMapIcon ( AMX* a_AmxInterface, cell* a_Params 
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerMapIcon = 0x29;
 		RakNet::BitStream bStream;
 		tVector position;
 
@@ -1146,11 +1134,8 @@ cell AMX_NATIVE_CALL funcRemovePlayerMapIcon ( AMX* a_AmxInterface, cell* a_Para
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) && iconID < MAX_MAP_ICON )
 	{
-		uint32_t RPC_RemovePlayerMapIcon = 0x2A;
 		RakNet::BitStream bStream;
-
 		bStream.Write( ( uint8_t ) iconID );
-
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_RemovePlayerMapIcon, &bStream, playerID, 2 );
 		return 1;
 	}
@@ -1229,7 +1214,6 @@ cell AMX_NATIVE_CALL funcSetPlayerMarkerForPlayer ( AMX* a_AmxInterface, cell* a
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerColor = 0x14;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( _PlayerID ) a_Params[ 2 ] );
@@ -1272,7 +1256,6 @@ cell AMX_NATIVE_CALL funcSetPlayerAmmo ( AMX* a_AmxInterface, cell* a_Params )
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerAmmo = 0x2B;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( uint8_t ) a_Params[ 2 ] );
@@ -1357,7 +1340,7 @@ cell AMX_NATIVE_CALL funcForceClassSelection ( AMX* a_AmxInterface, cell* a_Para
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
 		RakNet::BitStream bStream;
-		uint32_t RPC_ForceClassSelection = 0x40;
+	
 		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ForceClassSelection, &bStream, playerID, 2 );
 		return 1;
 	}
@@ -1379,7 +1362,6 @@ cell AMX_NATIVE_CALL funcSetPlayerWantedLevel ( AMX* a_AmxInterface, cell* a_Par
 		player->setWantedLevel( ( uint8_t )a_Params[ 2 ] );
 
 		RakNet::BitStream bStream;
-		uint32_t RPC_SetPlayerWantedLevel = 0x45;
 		bStream.Write( ( uint8_t )a_Params[ 2 ] );
 
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerWantedLevel, &bStream, playerID, 2 );
@@ -1434,7 +1416,7 @@ cell AMX_NATIVE_CALL funcSetPlayerFightingStyle ( AMX* a_AmxInterface, cell* a_P
 		CPlayer* player = __NetGame->playerPool->GetPlayer( playerID );
 		if( player == 0 ) return 0;
 		player->setFightingStyle( fightingStyle );
-		uint32_t RPC_SetPlayerFightingStyle = 0x51;
+
 		RakNet::BitStream bStream;
 		bStream.Write( ( _PlayerID ) playerID );
 		bStream.Write( ( uint8_t ) fightingStyle );
@@ -1496,7 +1478,7 @@ cell AMX_NATIVE_CALL funcSetPlayerVelocity ( AMX* a_AmxInterface, cell* a_Params
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerVelocity = 0x52;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( float ) amx_ctof( a_Params[ 2 ] ) );
 		bStream.Write( ( float ) amx_ctof( a_Params[ 3 ] ) );
@@ -1562,7 +1544,6 @@ cell AMX_NATIVE_CALL funcShowPlayerNameTagForPlayer ( AMX* a_AmxInterface, cell*
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_ShowPlayerNameTagForPlayer = 0x37;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( _PlayerID ) a_Params[ 2 ] );
@@ -1581,7 +1562,7 @@ cell AMX_NATIVE_CALL funcEnableStuntBonusForAll ( AMX* a_AmxInterface, cell* a_P
 
 	__NetGame->enableBonusStuntForAll = ( bool )( a_Params[ 1 ] == 0 ? false : true );
 
-	uint32_t RPC_EnableStuntBonus = 0x48;
+	
 	RakNet::BitStream bStream;
 
 	bStream.Write( ( bool )( a_Params[ 1 ] ? true : false ) );
@@ -1604,7 +1585,6 @@ cell AMX_NATIVE_CALL funcEnableStuntBonusForPlayer ( AMX* a_AmxInterface, cell* 
 	{
 		if( a_Params[ 2 ] != 1 ) a_Params[ 2 ] = 0;
 
-		uint32_t RPC_EnableStuntBonus = 0x48;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( bool )( a_Params[ 2 ] ? true : false ) );
@@ -1629,7 +1609,6 @@ cell AMX_NATIVE_CALL funcTogglePlayerSpectating ( AMX* a_AmxInterface, cell* a_P
 		player->setSpectateID( -1 );
 		player->setSpectatingType( SPECTATE_TYPE_NONE );
 
-		uint32_t RPC_TogglePlayerSpectating = 0x00;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
@@ -1658,7 +1637,6 @@ cell AMX_NATIVE_CALL funcSetPlayerDrunkLevel ( AMX* a_AmxInterface, cell* a_Para
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) ) 
 	{
-		uint32_t RPC_SetPlayerDrunkLevel = 0x90;
 		RakNet::BitStream bStream;
 
 		bStream.Write( ( uint32_t ) a_Params[ 2 ] );
@@ -1690,7 +1668,7 @@ cell AMX_NATIVE_CALL funcPlayerSpectateVehicle ( AMX* a_AmxInterface, cell* a_Pa
 	//	player->SetPlaceToBe( vehicle->GetPosition( ).X, vehicle->GetPosition( ).Y, vehicle->GetPosition( ).Z );
 	//	player->setState( PLAYER_STATE_SPECTATING );
 
-	//	uint32_t RPC_SetPlayerSpectatingVehicle = 0x3E;
+	//	
 	//	RakNet::BitStream bStream;
 
 	//	bStream.Write( vehicleID );
@@ -1722,7 +1700,7 @@ cell AMX_NATIVE_CALL funcPlayerSpectatePlayer ( AMX* a_AmxInterface, cell* a_Par
 		player->SetPlaceToBe( playerToSpectate->getPosition( )->X, playerToSpectate->getPosition( )->Y, playerToSpectate->getPosition( )->Z );
 		player->setState( PLAYER_STATE_SPECTATING );
 
-		uint32_t RPC_SetPlayerSpectatingPlayer = 0x3D;
+		
 		RakNet::BitStream bStream;
 
 		bStream.Write( playerIDToSpectate );
@@ -1746,7 +1724,7 @@ cell AMX_NATIVE_CALL funcApplyAnimation ( AMX* a_AmxInterface, cell* a_Params )
 		amx_StrParam( a_AmxInterface, a_Params[ 3 ], animname );
 
 		RakNet::BitStream bStream;
-		uint32_t RPC_ApplyAnimation = 0x4E;
+		
 
 		bStream.Write( playerID );
 		bStream.Write( ( uint8_t ) strlen( animlib ) );
@@ -1781,7 +1759,7 @@ cell AMX_NATIVE_CALL funcClearAnimations ( AMX* a_AmxInterface, cell* a_Params )
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
 		RakNet::BitStream bStream;
-		uint32_t RPC_ClearAnimation = 0x4F;
+		
 		bStream.Write( playerID );
 
 		if( a_Params[ 2 ] /*|| *(uint32*)( player + 0x5014 )*/ )
@@ -1851,7 +1829,7 @@ cell AMX_NATIVE_CALL funcSetPlayerSpecialAction ( AMX* a_AmxInterface, cell* a_P
 
 	if( __NetGame->playerPool->GetSlotState( playerID ) )
 	{
-		uint32_t RPC_SetPlayerSpecialAction = 0x50;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint8_t )a_Params[ 2 ] );
 
@@ -1928,7 +1906,7 @@ cell AMX_NATIVE_CALL funcPlayCrimeReportForPlayer ( AMX* a_AmxInterface, cell* a
 	//{
 	//	CPlayer* suspect = __NetGame->playerPool->GetPlayer( suspectID );
 	//	if( suspect == 0 ) return 0;
-	//	uint32_t RPC_PlayCrimeReportForPlayer = 0x5A;
+	//	
 	//	RakNet::BitStream bStream;
 
 	//	if( suspect->getState( ) == PLAYER_STATE_DRIVER || suspect->getState( ) == PLAYER_STATE_PASSENGER )
@@ -1976,7 +1954,7 @@ cell AMX_NATIVE_CALL funcSetPlayerShopName ( AMX* a_AmxInterface, cell* a_Params
 		amx_StrParam( a_AmxInterface, a_Params[ 2 ], str );
 		if( strlen( str ) <= 31 )
 		{
-			uint32_t RPC_SetPlayerShopName = 0x8E;
+			
 			RakNet::BitStream bStream;
 			bStream.Write( str, 32 );
 			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerShopName, &bStream, playerID, 2 );

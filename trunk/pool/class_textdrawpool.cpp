@@ -192,13 +192,7 @@ int CTextDrawPool::setString( uint16_t textDrawID, char* text ) // Ref: 0x47D740
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
 	strncpy( this->text[textDrawID], text, MAX_TEXTDRAW_TEXT );
-	/*
-			RakNet ICI !
-	*/
-
-
-
-	uint32_t RPC_TextDraw_SetString = 0x49;
+	
 	RakNet::BitStream bStream;
 	bStream.Write( (uint16_t)textDrawID );
 	bStream.Write( text, MAX_TEXTDRAW_TEXT );
@@ -224,8 +218,6 @@ int CTextDrawPool::showForPlayer( _PlayerID playerid, uint16_t textDrawID ) //Re
 	if( 0 > playerid || playerid >= MAX_PLAYERS ) return 0;
 	if( __NetGame->playerPool->isCreated[ playerid ] == 0 ) return 0;
 
-	uint32_t RPC_ShowTextDraw = 0x46;
-
 	uint16_t textLen = (uint16_t)( strlen( this->text[ textDrawID ] ) +1 );
 
 	RakNet::BitStream bStream;
@@ -250,9 +242,6 @@ int CTextDrawPool::hideForPlayer( _PlayerID playerid, uint16_t textDrawID )
 
 	if( this->textDrawOwner[textDrawID][playerid] == 0 ) return 0;
 
-
-
-	uint32_t RPC_HideTextDraw = 0x47;
 	RakNet::BitStream bStream;
 	bStream.Write( (uint16_t)textDrawID );
 	
@@ -267,8 +256,6 @@ int CTextDrawPool::showForAll( uint16_t textDrawID )
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
-
-	uint32_t RPC_ShowTextDraw = 0x46;
 	uint16_t textLen = (uint16_t)( strlen( this->text[textDrawID] ) + 1 );
 
 	RakNet::BitStream bStream;
@@ -295,8 +282,6 @@ int CTextDrawPool::hideForAll( uint16_t textDrawID ) // Ref: 0x47D670
 	if( 0 > textDrawID || textDrawID >= MAX_TEXTDRAW ) return 0;
 	if( this->isCreated[textDrawID ] == 0 ) return 0;
 
-
-	uint32_t RPC_HideTextDraw = 0x47;
 	RakNet::BitStream bStream;
 	bStream.Write( (uint16_t)textDrawID );
 

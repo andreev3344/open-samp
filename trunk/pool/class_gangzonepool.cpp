@@ -39,8 +39,8 @@ void CGangZonePool::Delete ( uint16_t a_uint16_ZoneIndex )
 		l_BitStream;
 		l_BitStream.Write ( a_uint16_ZoneIndex );
 
-	uint32_t l_RpcRemoveGangZone = 0x0000004B;
-	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &l_RpcRemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
+	
+	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &RPC_RemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
 void CGangZonePool::ShowForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
@@ -60,8 +60,8 @@ void CGangZonePool::ShowForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_u
 		a_uint32_ZoneColor = RGBA_ABGR ( a_uint32_ZoneColor );
 		l_BitStream.Write ( a_uint32_ZoneColor );
 
-	uint32_t l_RpcAddGangZone = 0x0000004A;
-	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &l_RpcAddGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
+	
+	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &RPC_AddGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
 }
 
 void CGangZonePool::ShowForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
@@ -79,8 +79,7 @@ void CGangZonePool::ShowForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_
 		a_uint32_ZoneColor = RGBA_ABGR ( a_uint32_ZoneColor );
 		l_BitStream.Write ( a_uint32_ZoneColor );
 
-	uint32_t l_RpcAddGangZone = 0x0000004A;
-	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &l_RpcAddGangZone, &l_BitStream, 0xFFFFu, 2 );
+	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &RPC_AddGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
 void CGangZonePool::HideForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
@@ -93,8 +92,7 @@ void CGangZonePool::HideForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_u
 		l_BitStream;
 		l_BitStream.Write ( a_uint16_ZoneIndex );
 
-	uint32_t l_RpcRemoveGangZone = 0x0000004B;
-	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &l_RpcRemoveGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
+	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &RPC_RemoveGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
 }
 
 void CGangZonePool::HideForAll ( uint16_t a_uint16_ZoneIndex )
@@ -106,8 +104,7 @@ void CGangZonePool::HideForAll ( uint16_t a_uint16_ZoneIndex )
 		l_BitStream;
 		l_BitStream.Write ( a_uint16_ZoneIndex );
 
-	uint32_t l_RpcRemoveGangZone = 0x0000004B;
-	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &l_RpcRemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
+	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &RPC_RemoveGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
 void CGangZonePool::FlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
@@ -123,8 +120,8 @@ void CGangZonePool::FlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_
 		a_uint32_ZoneColor = RGBA_ABGR ( a_uint32_ZoneColor );
 		l_BitStream.Write ( a_uint32_ZoneColor );
 
-	uint32_t l_RpcFlashGangZone = 0x0000004C;
-	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &l_RpcFlashGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
+	
+	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &RPC_FlashGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
 }
 
 void CGangZonePool::FlashForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32_ZoneColor )
@@ -139,8 +136,7 @@ void CGangZonePool::FlashForAll ( uint16_t a_uint16_ZoneIndex, uint32_t a_uint32
 		a_uint32_ZoneColor = RGBA_ABGR ( a_uint32_ZoneColor );
 		l_BitStream.Write ( a_uint32_ZoneColor );
 
-	uint32_t l_RpcFlashGangZone = 0x0000004C;
-	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &l_RpcFlashGangZone, &l_BitStream, 0xFFFFu, 2 );
+	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &RPC_FlashGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
 void CGangZonePool::StopFlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_t a_uint16_ZoneIndex )
@@ -152,8 +148,8 @@ void CGangZonePool::StopFlashForPlayer ( _PlayerID a_uint16_PlayerIndex, uint16_
 		l_BitStream;
 		l_BitStream.Write ( a_uint16_ZoneIndex );
 
-	uint32_t l_RpcStopFlashGangZone = 0x0000004D;
-	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &l_RpcStopFlashGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
+	
+	CNetGame__RPC_SendToPlayer ( (uint32_t)__NetGame, &RPC_StopFlashGangZone, &l_BitStream, a_uint16_PlayerIndex, 2 );
 }
 
 void CGangZonePool::StopFlashForAll ( uint16_t a_uint16_ZoneIndex )
@@ -166,8 +162,7 @@ void CGangZonePool::StopFlashForAll ( uint16_t a_uint16_ZoneIndex )
 		l_BitStream;
 		l_BitStream.Write ( a_uint16_ZoneIndex );
 
-	uint32_t l_RpcStopFlashGangZone = 0x0000004D;
-	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &l_RpcStopFlashGangZone, &l_BitStream, 0xFFFFu, 2 );
+	CNetGame__RPC_SendToEveryPlayer ( (uint32_t)__NetGame, &RPC_StopFlashGangZone, &l_BitStream, 0xFFFFu, 2 );
 }
 
 BOOL CGangZonePool::GetSlotState ( uint16_t a_uint16_ZoneIndex )

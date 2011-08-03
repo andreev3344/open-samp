@@ -88,10 +88,9 @@ void CPlayerText3DLabels::hide( _Text3DID labelID )
 {
 	if( GetSlotState( labelID ) )
 	{
-		uint32_t RPC_Hide_TextLabel = 0x92;
 		RakNet::BitStream bStream;
 		bStream.Write( ( _Text3DID ) labelID + MAX_TEXT_LABELS );
-		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_Hide_TextLabel, &bStream, this->ownerID, 2 );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_HideText3DLabel, &bStream, this->ownerID, 2 );
 	}
 }
 
@@ -99,7 +98,6 @@ void CPlayerText3DLabels::show( _Text3DID labelID )
 {
 	if( GetSlotState( labelID ) )
 	{
-		uint32_t RPC_Show_TextLabel = 0x91;
 		RakNet::BitStream bStream;
 		bStream.Write( ( _Text3DID ) labelID + MAX_TEXT_LABELS  );
 		bStream.Write( ( float ) this->TextLabels[ labelID ].posX );
@@ -110,7 +108,7 @@ void CPlayerText3DLabels::show( _Text3DID labelID )
 		bStream.Write( ( _PlayerID ) this->TextLabels[ labelID ].attachedToPlayerID );
 		bStream.Write( ( _VehicleID ) this->TextLabels[ labelID ].attachedToVehicleID );
 		//sub_47A140()->sub_47A4B0( this->TextLabels[ labelID ].text, strlen( this->TextLabels[ labelID ].text ) + 1, &bStream, 0);
-		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_Show_TextLabel, &bStream, this->ownerID, 2 );
+		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_ShowText3DLabels, &bStream, this->ownerID, 2 );
 	}
 }
 

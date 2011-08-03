@@ -60,7 +60,7 @@ int CPlayerPool::Delete( _PlayerID playerID, uint8_t reason )
 		this->isCreated[ playerID ]			= 0;
 		this->isPlayerAdmin[ playerID ]		= 0;
 
-		uint32_t RPC_PlayerLeave = 0x63;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( _PlayerID ) playerID );
 		bStream.Write( ( uint8_t ) reason );
@@ -129,7 +129,7 @@ int CPlayerPool::New( _PlayerID playerID, const char* nickname, char* serial, ui
 	bStream.Write( ( uint8_t ) strlen( nickname ) );
 	bStream.Write( nickname, strlen( nickname ) );
 
-	uint32_t RPC_NewPlayer = 0x62;
+	
 	CNetGame__RPC_SendToEveryPlayer( ( uint32_t )__NetGame, &RPC_NewPlayer, &bStream, playerID, 2 );
 
 	//in_addr addr;
@@ -196,7 +196,7 @@ void CPlayerPool::givePlayerMoney( _PlayerID playerID, uint32_t amount )
 {
 	if( GetSlotState( playerID ) )
 	{
-		uint32_t RPC_GivePlayerMoney = 0x20;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint32_t ) amount );
 		CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_GivePlayerMoney, &bStream, playerID, 2 );
@@ -214,7 +214,7 @@ void CPlayerPool::resetPlayerMoney( _PlayerID playerID )
 {
 	if( GetSlotState( playerID ) )
 	{
-		uint32_t RPC_ResetPlayerMoney = 0x22;
+		
 		RakNet::BitStream bStream;
 		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ResetPlayerMoney, &bStream, playerID, 2 );
 

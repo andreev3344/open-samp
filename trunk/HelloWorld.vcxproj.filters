@@ -78,6 +78,7 @@
     <ClCompile Include="object\class_player_var.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="RPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="helloworld.def" />
@@ -195,5 +196,6 @@
     <ClInclude Include="object\class_player_var.h">
       <Filter>object</Filter>
     </ClInclude>
+    <ClInclude Include="RPC.h" />
   </ItemGroup>
 </Project>

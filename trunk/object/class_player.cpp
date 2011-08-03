@@ -123,7 +123,7 @@ void CPlayer::Say( char* text, uint8_t len )
 	bStream.Write( ( uint8_t ) len );
 	bStream.Write( ( char*) text, len );
 
-	uint32_t RPC_AddPlayerMessage = 0x7D;
+	
 
 	if( __NetGame->blimitGlobalChatRadius )
 	{
@@ -154,7 +154,7 @@ void CPlayer::Say( char* text, uint8_t len )
 
 void CPlayer::SendTime( )
 {
-	uint32_t RPC_SendTime = 0x94;
+	
 	RakNet::BitStream bStream;
 	bStream.Write( ( uint32_t ) __NetGame->GetTime( ) );
 	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SendTime, &bStream, this->myPlayerID, 2 );
@@ -166,25 +166,21 @@ void CPlayer::ShowPlayerAttachedObjectToPlayer( _PlayerID toPlayerID, uint8_t ob
 
 	if( this->attachedObjectSlot[ objectID ] )
 	{
-		uint32_t RPC_ShowAttachedObject = 0x5B;
+		
 		RakNet::BitStream bStream;
 		bStream.Write( ( uint16_t ) this->myPlayerID );
 		bStream.Write( ( uint32_t ) objectID );
 		//bStream.sub_465330( );
 		bStream.Write( ( char* ) &attachedObject[ objectID ], sizeof( tAttachedObject ) );
 
-		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowAttachedObject, &bStream, toPlayerID, 2 );
+		CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachAttachedObject, &bStream, toPlayerID, 2 );
 	}
 
 }
 
 int CPlayer::showForPlayer( _PlayerID playerID )
 {
-	uint32_t RPC_ShowPlayer = 0x65;	// je pense plutot à renommer en spawnForPlayer mais bon
-
 	RakNet::BitStream bStream;
-
-
 
 	bStream.Write( ( uint16_t ) this->myPlayerID ); // <-- une erreur de ...
 	bStream.Write( ( uint8_t ) this->customSpawn.Team );
@@ -196,7 +192,7 @@ int CPlayer::showForPlayer( _PlayerID playerID )
 
 	bStream.Write( ( char* )skillsLevel, sizeof( uint16_t ) * 11 );
 
-	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_ShowPlayer, &bStream, playerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_spawnPlayerForPlayer, &bStream, playerID, 2 );
 
 	for( uint32_t i = 0; i < MAX_ATTACHED_OBJECT; i++ )
 	{
@@ -247,14 +243,13 @@ void CPlayer::setAttachedObject( uint32_t index, uint32_t model, uint32_t bone, 
 	this->attachedObjectSlot[ index ] = TRUE;
 
 	RakNet::BitStream bStream;
-	uint32_t RPC_AttachObject = 0x5B;
 	bStream.Write( ( _PlayerID ) this->myPlayerID );
 	bStream.Write( ( uint32_t ) index );
 	bStream.Write( ( bool ) true );
 	bStream.Write( ( char* )&attachedObject[ index ], sizeof( tAttachedObject ) );
 
-	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
-	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachAttachedObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachAttachedObject, &bStream, this->myPlayerID, 2 );
 
 }
 
@@ -267,13 +262,12 @@ void CPlayer::removeAttachedObject( uint32_t index )
 	this->attachedObjectSlot[ index ] = FALSE;
 
 	RakNet::BitStream bStream;
-	uint32_t RPC_AttachObject = 0x5B;
 	bStream.Write( ( _PlayerID ) this->myPlayerID );
 	bStream.Write( ( uint32_t ) index );
 	bStream.Write( ( bool ) false );
 
-	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
-	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToUnknown( ( uint32_t )__NetGame, &RPC_AttachAttachedObject, &bStream, this->myPlayerID, 2 );
+	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_AttachAttachedObject, &bStream, this->myPlayerID, 2 );
 
 }
 
@@ -864,7 +858,7 @@ void CPlayer::setSkillLevel( int skill, uint16_t level )
 {
 	if( 0 > skill || skill >= 11 ) return;
 
-	uint32_t RPC_SetSkillLevel = 0x8F;
+	
 
 	RakNet::BitStream bStream;
 
@@ -1040,7 +1034,8 @@ void CPlayer::showRaceCheckpoint( bool show )
 
 	if( show )
 	{
-		RPC_ShowOrHideThatIsTheQuestion = 0x6F;
+		
+		RPC_ShowOrHideThatIsTheQuestion = RPC_ShowRaceCheckpoint;
 		bStream.Write( (uint8_t)this->raceCheckpointType );
 		bStream.Write( (float)this->raceCheckpointPos.X );
 		bStream.Write( (float)this->raceCheckpointPos.Y );
@@ -1052,7 +1047,7 @@ void CPlayer::showRaceCheckpoint( bool show )
 	}
 	else
 	{
-		RPC_ShowOrHideThatIsTheQuestion = 0x70;
+		RPC_ShowOrHideThatIsTheQuestion = RPC_HideRaceCheckpoint;
 	}
 	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowOrHideThatIsTheQuestion, &bStream, this->myPlayerID, 2 );
 }
@@ -1076,18 +1071,19 @@ void CPlayer::showCheckpoint( bool show )
 
 	uint32_t RPC_ShowOrHideThatIsTheQuestion = 0x00;
 	RakNet::BitStream bStream;
+
 	if( show )
 	{
 		bStream.Write( (float)checkpointPosition.X );
 		bStream.Write( (float)checkpointPosition.Y );
 		bStream.Write( (float)checkpointPosition.Z );
 		bStream.Write( (float)checkpointSize );
-		RPC_ShowOrHideThatIsTheQuestion = 0x6D; // le RPC pour montrer le Checkpoint
+		RPC_ShowOrHideThatIsTheQuestion = RPC_ShowCheckpoint;
 
 	}
 	else
 	{
-		RPC_ShowOrHideThatIsTheQuestion = 0x6E; // le RPC pour cacher le Checkpoint
+		RPC_ShowOrHideThatIsTheQuestion = RPC_HideCheckpoint;
 	}
 
 	CNetGame__RPC_SendToPlayer( (uint32_t)__NetGame, &RPC_ShowOrHideThatIsTheQuestion, &bStream, this->myPlayerID, 2 );
@@ -1151,7 +1147,6 @@ tSPAWNS* CPlayer::getCustomSpawn( )
 void CPlayer::setColor( uint32_t color )
 {
 	this->nickNameColor = color;
-	uint32_t RPC_SetPlayerColor = 0x14;
 	RakNet::BitStream bStream;
 	bStream.Write( ( _PlayerID ) this->myPlayerID );
 	bStream.Write( ( uint32_t ) color );
@@ -1276,7 +1271,7 @@ float CPlayer::getHealth( )
 
 void CPlayer::setHealth( float health )
 {
-	uint32_t RPC_SetPlayerHealth = 0x11;
+	
 	RakNet::BitStream bStream;
 	bStream.Write( ( float ) health );
 	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_SetPlayerHealth, &bStream, this->myPlayerID, 2 );
@@ -1309,7 +1304,6 @@ void CPlayer::setPosition( tVector position )
 
 void CPlayer::setPosition( float x, float y, float z )
 {
-	uint32_t RPC_SetPlayerPosition = 0x0F;
 	RakNet::BitStream bStream;
 
 	bStream.Write( ( float ) x );
@@ -1321,7 +1315,7 @@ void CPlayer::setPosition( float x, float y, float z )
 
 void CPlayer::setPositionFindZ( float x, float y, float z )
 {
-	uint32_t RPC_SetPlayerPositionFindZ = 0x10;
+	
 	RakNet::BitStream bStream;
 
 	bStream.Write( ( float ) x );

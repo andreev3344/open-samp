@@ -249,7 +249,7 @@ void CText3DLabels::showForPlayer( _Text3DID labelID, _PlayerID playerID )
 	bStream->Write( (uint16_t)this->TextLabels[ labelID ].attachedToPlayerID );
 	bStream->Write( (uint16_t)this->TextLabels[ labelID ].attachedToVehicleID );
 
-	uint32_t RPC_ShowText3DLabels = 0x91;
+	
 
 /* besoin de plus d'info sur ça, je trouve un peu le code chelou
 
@@ -356,7 +356,7 @@ void CText3DLabels::hideForPlayer( _Text3DID labelID, _PlayerID playerID )
 	if( 0 > labelID || labelID >= MAX_TEXT_LABELS ) return;
 
 	RakNet::BitStream bStream;
-	uint32_t RPC_HideText3DLabel = 0x92;
+	
 
 	bStream.Write( ( uint16_t )labelID );
 	CNetGame__RPC_SendToPlayer( ( uint32_t )__NetGame, &RPC_HideText3DLabel, &bStream, playerID, 2 );
