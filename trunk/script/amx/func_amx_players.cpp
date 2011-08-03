@@ -1920,12 +1920,72 @@ cell AMX_NATIVE_CALL funcStopRecordingPlayerData ( AMX* a_AmxInterface, cell* a_
 cell AMX_NATIVE_CALL funcPlayCrimeReportForPlayer ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcPlayCrimeReportForPlayer()" );
+	//CHECK_PARAMS( 3 );
+
+	//_PlayerID playerID = (_PlayerID) a_Params[ 1 ], suspectID = (_PlayerID) a_Params[ 2 ];
+
+	//if( __NetGame->playerPool->GetSlotState( playerID ) && __NetGame->playerPool->GetSlotState( suspectID ) )
+	//{
+	//	CPlayer* suspect = __NetGame->playerPool->GetPlayer( suspectID );
+	//	if( suspect == 0 ) return 0;
+	//	uint32_t RPC_PlayCrimeReportForPlayer = 0x5A;
+	//	RakNet::BitStream bStream;
+
+	//	if( suspect->getState( ) == PLAYER_STATE_DRIVER || suspect->getState( ) == PLAYER_STATE_PASSENGER )
+	//	{
+	//		
+	//		if( __NetGame->vehiclePool->GetSlotState( suspect->getCurrentVehicleID( ) ) )
+	//		{
+	//			//CVehicle* vehicle = __NetGame->vehiclePool->GetVehicle( suspect->getCurrentVehicleID( ) );
+	//			//if( vehicle == 0 ) return 0;
+
+
+
+	//		}
+	//		else
+	//			return 0;
+	//	}
+	//	else if( suspect->getState( ) == PLAYER_STATE_ONFOOT )
+	//	{
+	//		bStream.Write( suspectID );
+	//		bStream.Write( ( uint32_t ) 0 );
+	//		bStream.Write( ( uint32_t ) 0 );
+	//		bStream.Write( ( uint32_t ) 0 );
+	//		bStream.Write( ( uint32_t ) a_Params[ 3 ] );
+	//		bStream.Write( ( float ) suspect->getPosition( )->X );
+	//		bStream.Write( ( float ) suspect->getPosition( )->Y );
+	//		bStream.Write( ( float ) suspect->getPosition( )->Z );
+	//	}
+
+	//	CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_PlayCrimeReportForPlayer, &bStream, playerID, 2 );
+	//	return 1;
+	//}
+	//return 0;
 	return _funcPlayCrimeReportForPlayer ( a_AmxInterface, a_Params );
 }
 cell AMX_NATIVE_CALL funcSetPlayerShopName ( AMX* a_AmxInterface, cell* a_Params )
 {
 	logprintf ( "[Call]-> funcSetPlayerShopName()" );
-	return _funcSetPlayerShopName ( a_AmxInterface, a_Params );
+	CHECK_PARAMS( 2 );
+
+	_PlayerID playerID = ( _PlayerID ) a_Params[ 1 ];
+
+	if( __NetGame->playerPool->GetSlotState( playerID ) )
+	{
+		char* str = 0;
+		amx_StrParam( a_AmxInterface, a_Params[ 2 ], str );
+		if( strlen( str ) <= 31 )
+		{
+			uint32_t RPC_SetPlayerShopName = 0x8E;
+			RakNet::BitStream bStream;
+			bStream.Write( str, 32 );
+			CNetGame__RPC_SendToPlayer( ( uint32_t ) __NetGame, &RPC_SetPlayerShopName, &bStream, playerID, 2 );
+			return 1;
+		}
+
+	}
+	return 0;
+	//return _funcSetPlayerShopName ( a_AmxInterface, a_Params );
 }
 
 
