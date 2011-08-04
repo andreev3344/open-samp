@@ -67,7 +67,9 @@ char* GetAnimationNameByIndex( uint32_t index );
 #define MAX_MAP_ICON		100
 
 
-#define PACKET_PLAYER_SYNC	97 // provisoire
+#define PACKET_PLAYER_SYNC		97 // provisoire
+#define PACKET_DRIVER_SYNC		98 // provisoire
+#define PACKET_PASSENGER_SYNC	99 // provisoire
 
 #include "RPC.h"
 

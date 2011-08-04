@@ -22,7 +22,7 @@ void CPlayer::SendSyncData( )
 
 	RakNet::BitStream bStream;
 
-	if( getState( ) == PLAYER_STATE_ONFOOT || this->SyncingDataType == SYNCING_TYPE_ON_FOOT )
+	if( getState( ) == PLAYER_STATE_ONFOOT && this->SyncingDataType == SYNCING_TYPE_ON_FOOT )
 	{
 		bStream.Write( ( uint8_t ) PACKET_PLAYER_SYNC );
 		bStream.Write( ( _PlayerID ) this->myPlayerID );
@@ -86,7 +86,79 @@ void CPlayer::SendSyncData( )
 		// __NetGame->sub_499310( &bStream, this->myPlayerID );
 
 	}
+	else if( getState( ) == PLAYER_STATE_DRIVER && this->SyncingDataType == SYNCING_TYPE_DRIVER	)
+	{
+		bStream.Write( ( uint8_t ) PACKET_DRIVER_SYNC );
+		bStream.Write( ( _PlayerID ) this->myPlayerID );
+		bStream.Write( ( _VehicleID ) this->onVehicleSyncData.vehicleID );
 
+		bStream.Write( ( uint16_t ) this->onVehicleSyncData.leftRightKeysOnVehicle );
+		bStream.Write( ( uint16_t ) this->onVehicleSyncData.updownKeysOnVehicle );
+		bStream.Write( ( uint16_t ) this->onVehicleSyncData.keysOnVehicle );
+		
+		bStream.WriteNormQuat( this->onVehicleSyncData.rotation.W, this->onVehicleSyncData.rotation.X, this->onVehicleSyncData.rotation.Y, this->onVehicleSyncData.rotation.Z );
+		bStream.Write( (char*)&this->onVehicleSyncData.position, sizeof( tVector ) );
+		bStream.WriteNormVector( this->onVehicleSyncData.velocity.X, this->onVehicleSyncData.velocity.Y, this->onVehicleSyncData.velocity.Z );
+		bStream.Write( ( uint16_t ) this->onVehicleSyncData.health );
+
+		uint16_t compressedHealthArmour = 0x00;
+
+		if( this->onVehicleSyncData.playerHealth > 0 && this->onVehicleSyncData.playerHealth < 100 )
+			compressedHealthArmour = ( this->onVehicleSyncData.playerHealth / 7 ) << 4;
+		else if( this->onVehicleSyncData.playerHealth >= 100 )
+			compressedHealthArmour = 0xF0;
+		
+		if( this->onVehicleSyncData.playerArmor > 0 && this->onVehicleSyncData.playerArmor < 100 )
+			compressedHealthArmour |= ( this->onVehicleSyncData.playerArmor / 7 );
+		else if( this->onVehicleSyncData.playerArmor >= 100 )
+			compressedHealthArmour |= 0x0F;
+
+		bStream.Write( ( uint8_t ) compressedHealthArmour );
+		bStream.Write( ( uint8_t ) this->onVehicleSyncData.playerWeapon );
+
+		if( this->onVehicleSyncData.sirenType )
+		{
+			bStream.Write( false );
+			bStream.Write( ( uint8_t ) this->onVehicleSyncData.sirenType );
+		}
+		else
+			bStream.Write( false );
+
+
+		if( this->onVehicleSyncData.gearState )
+		{
+			bStream.Write( false );
+			bStream.Write( ( uint8_t ) this->onVehicleSyncData.gearState );
+		}
+		else
+			bStream.Write( false );
+
+
+		if( this->onVehicleSyncData.hydraReactorAngle )
+		{
+			bStream.Write( true );
+			bStream.Write( ( uint16_t ) this->onVehicleSyncData.hydraReactorAngle[0] );
+		}
+		else 
+			bStream.Write( false );
+
+		// __NetGame->sub_499310( &bStream, this->myPlayerID );
+	}
+	else if( getState( ) == PLAYER_STATE_PASSENGER && this->SyncingDataType == SYNCING_TYPE_PASSENGER )
+	{
+
+		bStream.Write( ( uint8_t ) PACKET_PASSENGER_SYNC );
+		bStream.Write( ( _PlayerID ) this->myPlayerID );
+
+		uint16_t old_keys = this->passengerSyncData.passengersKeys;
+
+		if( this->passengerSyncData.playerWeapon == 43 )
+			this->passengerSyncData.passengersKeys &= 0xFB;
+
+		bStream.Write( (char*)&this->passengerSyncData, sizeof( PASSENGER_SYNC ) );
+		this->passengerSyncData.passengersKeys = old_keys;
+		// __NetGame->sub_499310( &bStream, this->myPlayerID );
+	}
 
 
 }
