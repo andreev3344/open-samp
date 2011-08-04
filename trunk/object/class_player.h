@@ -109,7 +109,7 @@ typedef struct PASSENGER_SYNC_t // size 0x18
 	tVector		position;				// + 0x000C
 } PASSENGER_SYNC;
 
-typedef struct AIM_SYNC_t // size 0x1A
+typedef struct AIM_SYNC_t // size 0x1F
 {
 #pragma pack( 1 )
 
@@ -123,11 +123,23 @@ typedef struct AIM_SYNC_t // size 0x1A
 
 typedef struct SPECTATING_SYNC_t		// size 0x12
 {
+#pragma pack( 1 )
 	uint16_t	leftRightKeysOnSpectating;				// + 0x0000
 	uint16_t	updownKeysOnSpectating;					// + 0x0002
 	uint16_t	keysOnSpectating;						// + 0x0004
 	tVector		position;								// + 0x0006
 } SPECTATING_SYNC;
+
+typedef struct TRAILER_SYNC_t // size 0x32
+{
+#pragma pack( 1 )
+
+	_VehicleID trailerID;		// + 0x0000
+	tVector	roll;				// + 0x0002
+	tVector direction;			// + 0x000E
+	tVector position;			// + 0x001A
+	tVector velocity;			// + 0x0026
+} TRAILER_SYNC;
 
 class CPlayer // size 0x1AF8
 {
@@ -160,9 +172,9 @@ public:
 	void ProcessOnFootSyncData( ON_FOOT_SYNC* syncData );
 	void ProcessOnVehicleSyncData( IN_VEHICLE_SYNC* syncData );
 	void ProcessPassengerSyncData( PASSENGER_SYNC* syncData );
-//	void ProcessAimingSyncData( AIM_SYNC* syncData );
+	void ProcessAimingSyncData( AIM_SYNC* syncData );
 	void ProcessSpectatingSyncData( SPECTATING_SYNC* syncData );
-
+	void ProcessTrailerSyncData( TRAILER_SYNC* syncData );
 	
 //	bool isObjectStreamedIn( uint16_t objectID ); // Pour le futur streamer.
 	bool isPickupStreamedIn( uint16_t pickupID );
@@ -286,16 +298,16 @@ private:
 	PASSENGER_SYNC	passengerSyncData;					// + 0x00C5
 	AIM_SYNC		aimSyncData;						// + 0x00DD
 	SPECTATING_SYNC spectatingSyncData;					// + 0x00FC
+	TRAILER_SYNC	trailerSyncData;					// + 0x010E
+//	uint8_t		trailerSyncData[ 50 ];					// + 0x010E
+	uint8_t		unknown0151[ 67 ];						// + 0x0151
 
-	uint8_t		unknown010E[0x183-0x10E];				// + 0x010E
-
-//	uint8_t		unknown0183[5][44];						// + 0x0183 -> 0x025F
 	tAttachedObject	attachedObject[MAX_ATTACHED_OBJECT];// + 0x0183 -> 0x025F
 	BOOL		attachedObjectSlot[MAX_ATTACHED_OBJECT];// + 0x025F -> 0x273
 
 	uint16_t	lastKeysState;							// + 0x0273
-	uint32_t	unknown0275;							// + 0x0275
-	uint32_t	unknown0279;							// + 0x0279
+	BOOL		bIsAimUpdated;							// + 0x0275
+	BOOL		bIsTrailerUpdated;							// + 0x0279
 
 	uint8_t		unknown027D[0x281-0x27D];				// + 0x027D						
 

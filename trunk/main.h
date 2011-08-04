@@ -66,10 +66,12 @@ char* GetAnimationNameByIndex( uint32_t index );
 #define LIMIT_MAX_PICKUPS	2048
 #define MAX_MAP_ICON		100
 
-
-#define PACKET_PLAYER_SYNC		97 // provisoire
-#define PACKET_DRIVER_SYNC		98 // provisoire
-#define PACKET_PASSENGER_SYNC	99 // provisoire
+/* à foutre dans PacketEnumeration.h */
+#define PACKET_PLAYER_SYNC		97  // provisoire
+#define PACKET_DRIVER_SYNC		98  // provisoire
+#define PACKET_PASSENGER_SYNC	99  // provisoire
+#define PACKET_AIM_SYNC			100 // provisoire
+#define PACKET_TRAILER_SYNC		106
 
 #include "RPC.h"
 

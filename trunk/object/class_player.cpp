@@ -161,6 +161,27 @@ void CPlayer::SendSyncData( )
 	}
 
 
+	if( this->bIsAimUpdated == TRUE )
+	{
+		bStream.Reset( );
+		bStream.Write( ( uint8_t ) PACKET_AIM_SYNC );
+		bStream.Write( ( _PlayerID ) this->myPlayerID );
+		bStream.Write( (char*)&this->aimSyncData, sizeof( AIM_SYNC ) );
+		// __NetGame->sub_499310( &bStream, this->myPlayerID );
+		this->bIsAimUpdated = FALSE;
+	}
+
+
+	if( this->bIsTrailerUpdated == TRUE )
+	{
+		bStream.Reset( );
+		bStream.Write( ( uint16_t ) PACKET_TRAILER_SYNC ); // sûrement trailer sync
+		bStream.Write( ( _PlayerID ) this->myPlayerID );
+		bStream.Write( ( char* )&this->trailerSyncData, sizeof( TRAILER_SYNC ) );
+		this->bIsTrailerUpdated = FALSE;
+	}
+
+
 }
 
 void CPlayer::Init( )
@@ -168,8 +189,8 @@ void CPlayer::Init( )
 
 	this->SyncingDataType		= SYNCING_TYPE_NONE;
 	this->currentVehicleID		= -1;
-	this->unknown0275			= 0;
-	this->unknown0279			= 0;
+	this->bIsAimUpdated			= FALSE;
+	this->bIsTrailerUpdated		= FALSE;
 	this->playerState			= PLAYER_STATE_NONE;
 	this->nickNameColor			= 0;
 	this->lastKeysState			= 0;
@@ -983,6 +1004,12 @@ void CPlayer::ProcessPassengerSyncData( PASSENGER_SYNC* syncData )
 	}
 }
 
+void CPlayer::ProcessAimingSyncData( AIM_SYNC* syncData )
+{
+	memcpy( &this->aimSyncData, syncData, sizeof( AIM_SYNC ) );
+	bIsAimUpdated = TRUE;
+}
+
 void CPlayer::ProcessSpectatingSyncData( SPECTATING_SYNC* syncData )
 {
 	this->currentVehicleID = 0;
@@ -993,6 +1020,25 @@ void CPlayer::ProcessSpectatingSyncData( SPECTATING_SYNC* syncData )
 	setState( PLAYER_STATE_SPECTATING );
 }
 
+void CPlayer::ProcessTrailerSyncData( TRAILER_SYNC* syncData )
+{
+	//if( __NetGame->vehiclePool )
+	//{
+	//	memcpy( &this->trailerSyncData, syncData, sizeof( TRAILER_SYNC ) );
+	//	if( syncData->trailerID < MAX_VEHICLES )
+	//	{
+
+	//		CVehicle* trailer = __NetGame->vehiclePool->GetVehicle( syncData->trailerID );
+	//		if( trailer )
+	//		{
+
+
+
+	//			this->bIsTrailerUpdated = TRUE;
+	//		}
+	//	}
+	//}
+}
 
 
 uint16_t CPlayer::getSkillLevel( int skill )
