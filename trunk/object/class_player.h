@@ -186,9 +186,11 @@ public:
 
 	int GetAmmoInSlot( int slot );
 	int GetWeaponInSlot( int slot );
+	void SetWeaponInSlot( int slot, uint8_t weapon ) { this->weaponInSlot[slot] = weapon; }
 	int GetWeaponSlot( uint8_t weapon );
 
 	int GetCurrentWeapon( );
+	void SetCurrentWeapon( uint8_t weapon ) { this->currentWeapon = weapon; }
 	uint16_t getSkillLevel( int skill );
 	void setSkillLevel( int skill, uint16_t level );
 
@@ -270,6 +272,8 @@ public:
 	void setHealth( float health );
 
 	CPlayerVar*	getPlayerVars() { return playerVarsClass; }
+
+	void Spawn();
 	
 
 	float getArmour( );

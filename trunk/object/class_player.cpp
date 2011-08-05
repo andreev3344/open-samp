@@ -1527,3 +1527,51 @@ void CPlayer::setSpectatingType( uint8_t type )
 {
 	this->spectateType = type;
 }
+
+void CPlayer::Spawn()
+{   
+	if(this->hasCustomSpawn) 
+	{
+		for(uint16_t i = 0; i < MAX_PLAYERS; i++)
+		{
+			if(i != this->myPlayerID && __NetGame->playerPool->GetSlotState(i)) 
+			{
+				if(__NetGame->playerPool->GetPlayer(i) && __NetGame->playerPool->GetPlayer(i)->isPlayerStreamedIn(this->myPlayerID)) 
+				{
+				    __NetGame->playerPool->GetPlayer(i)->streamOutPlayer(this->myPlayerID);
+				}
+		
+			}
+		}
+
+		for(uint8_t i = 0; i < MAX_ATTACHED_OBJECT; i++)
+		{
+			if(this->IsAttachedObjectSlotUsed(i))
+			{
+				this->removeAttachedObject(i);
+			}
+		}
+		
+		this->getOnFootSyncData()->position.X = this->customSpawn.posX;
+		this->getOnFootSyncData()->position.Y = this->customSpawn.posY;
+		this->getOnFootSyncData()->position.Z = this->customSpawn.posZ;
+
+		this->getPosition()->X = this->customSpawn.posX;
+		this->getPosition()->Y = this->customSpawn.posY;
+		this->getPosition()->Z = this->customSpawn.posZ;
+
+		this->currentVehicleID = 0;
+
+		uint8_t weaponSlot = this->GetWeaponSlot(0);
+		if ( weaponSlot == -1 )
+			this->getOnFootSyncData()->weapon = 0;
+		else
+		{
+			this->SetWeaponInSlot(weaponSlot, 0);
+			this->SetCurrentWeapon(0);
+		}
+
+
+		this->setState(PLAYER_STATE_SPAWNED);	
+	}
+}
