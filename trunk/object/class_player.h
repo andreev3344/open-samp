@@ -234,6 +234,7 @@ public:
 	SPECTATING_SYNC* getSpectatingSyncData( );
 
 	tSPAWNS* getCustomSpawn( );
+	void setCustomSpawn(tSPAWNS* playerSpawn);
 	bool HasCustomSpawn( );
 
 	void setColor( uint32_t color );

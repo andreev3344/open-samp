@@ -1528,6 +1528,12 @@ void CPlayer::setSpectatingType( uint8_t type )
 	this->spectateType = type;
 }
 
+void CPlayer::setCustomSpawn(tSPAWNS* playerSpawn)
+{
+	memcpy(this->getCustomSpawn(), playerSpawn, sizeof(tSPAWNS));
+	this->hasCustomSpawn = 1;
+}
+
 void CPlayer::Spawn()
 {   
 	if(this->hasCustomSpawn) 
