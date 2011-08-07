@@ -98,7 +98,7 @@ void CPlayer::SendSyncData( )
 		
 		bStream.WriteNormQuat( this->onVehicleSyncData.rotation.W, this->onVehicleSyncData.rotation.X, this->onVehicleSyncData.rotation.Y, this->onVehicleSyncData.rotation.Z );
 		bStream.Write( (char*)&this->onVehicleSyncData.position, sizeof( tVector ) );
-		bStream.WriteNormVector( this->onVehicleSyncData.velocity.X, this->onVehicleSyncData.velocity.Y, this->onVehicleSyncData.velocity.Z );
+		bStream.WriteVector( this->onVehicleSyncData.velocity.X, this->onVehicleSyncData.velocity.Y, this->onVehicleSyncData.velocity.Z );
 		bStream.Write( ( uint16_t ) this->onVehicleSyncData.health );
 
 		uint16_t compressedHealthArmour = 0x00;
