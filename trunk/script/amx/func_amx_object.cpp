@@ -128,8 +128,7 @@ cell AMX_NATIVE_CALL funcSetObjectPos ( AMX* a_AmxInterface, cell* a_Params )
 		RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetPosition();
 		if ( l_BitStream )
 		{
-			uint32_t l_RpcSetObjectPosition = 0x00000031;
-			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectPosition, l_BitStream, 0xFFFFu, 2 );
+			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_SetObjectPosition, l_BitStream, 0xFFFFu, 2 );
 
 			return 1;
 		}
@@ -159,8 +158,7 @@ cell AMX_NATIVE_CALL funcSetObjectRot ( AMX* a_AmxInterface, cell* a_Params )
 		RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetRotation();
 		if ( l_BitStream )
 		{
-			uint32_t l_RpcSetObjectRotation = 0x00000032;
-			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectRotation, l_BitStream, 0xFFFFu, 2 );
+			CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_SetObjectRotation, l_BitStream, 0xFFFFu, 2 );
 
 			return 1;
 		}
@@ -253,8 +251,7 @@ cell AMX_NATIVE_CALL funcDestroyObject ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream;
 			l_BitStream.Write ( l_uint16_ObjectIndex );
 
-		uint32_t l_RpcDestroyObject = 0x00000033;
-		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcDestroyObject, &l_BitStream, 0xFFFFu, 2 );
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_DestroyObject, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
@@ -293,8 +290,8 @@ cell AMX_NATIVE_CALL funcMoveObject ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( l_VectorPosition->Z );
 			l_BitStream.Write ( l_MoveSpeed );
 
-		uint32_t l_RpcMoveObject = 0x00000038;
-		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcMoveObject, &l_BitStream, 0xFFFFu, 2 );
+		
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_MoveObject, &l_BitStream, 0xFFFFu, 2 );
 
 		l_Return = l_Object->Move ( l_VectorPosition, l_MoveSpeed );
 	}
@@ -321,8 +318,8 @@ cell AMX_NATIVE_CALL funcStopObject ( AMX* a_AmxInterface, cell* a_Params )
 			l_BitStream.Write ( l_Object->GetPosition()->Y );
 			l_BitStream.Write ( l_Object->GetPosition()->Z );
 
-		uint32_t l_RpcStopObject = 0x00000039;
-		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &l_RpcStopObject, &l_BitStream, 0xFFFFu, 2 );
+		
+		CNetGame__RPC_SendToEveryPlayer ( ( uint32_t )__NetGame, &RPC_StopObject, &l_BitStream, 0xFFFFu, 2 );
 
 		return 1;
 	}
@@ -385,8 +382,8 @@ cell AMX_NATIVE_CALL funcDestroyPlayerObject ( AMX* a_AmxInterface, cell* a_Para
 				l_BitStream;
 				l_BitStream.Write ( ( uint16_t )a_Params[ 2 ] );
 
-			uint32_t l_RpcDestroyObject = 0x00000033;
-			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcDestroyObject, &l_BitStream, ( uint16_t )a_Params[ 1 ], 2 );
+			
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_DestroyObject, &l_BitStream, ( uint16_t )a_Params[ 1 ], 2 );
 
 			return 1;
 		}
@@ -419,8 +416,8 @@ cell AMX_NATIVE_CALL funcSetPlayerObjectPos ( AMX* a_AmxInterface, cell* a_Param
 			RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetPosition();
 			if ( l_BitStream )
 			{
-				uint32_t l_RpcSetObjectPosition = 0x00000031;
-				CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectPosition, l_BitStream, l_uint16_PlayerIndex, 2 );
+				
+				CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_SetObjectPosition, l_BitStream, l_uint16_PlayerIndex, 2 );
 				
 				return 1;
 			}
@@ -454,8 +451,8 @@ cell AMX_NATIVE_CALL funcSetPlayerObjectRot ( AMX* a_AmxInterface, cell* a_Param
 			RakNet::BitStream* l_BitStream = l_Object->ComputeBitStream_SetRotation();
 			if ( l_BitStream )
 			{
-				uint32_t l_RpcSetObjectRotation = 0x00000032;
-				CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcSetObjectRotation, l_BitStream, l_uint16_PlayerIndex, 2 );
+				
+				CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_SetObjectRotation, l_BitStream, l_uint16_PlayerIndex, 2 );
 				
 				return 1;
 			}
@@ -581,8 +578,7 @@ cell AMX_NATIVE_CALL funcMovePlayerObject ( AMX* a_AmxInterface, cell* a_Params 
 				l_BitStream.Write ( l_VectorPosition->Z );
 				l_BitStream.Write ( l_MoveSpeed );
 
-			uint32_t l_RpcMoveObject = 0x00000038;
-			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcMoveObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_MoveObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
 
 			l_Return = l_Object->Move ( l_VectorPosition, l_MoveSpeed );
 		}
@@ -613,8 +609,8 @@ cell AMX_NATIVE_CALL funcStopPlayerObject ( AMX* a_AmxInterface, cell* a_Params 
 				l_BitStream.Write ( l_Object->GetPosition()->Y );
 				l_BitStream.Write ( l_Object->GetPosition()->Z );
 
-			uint32_t l_RpcStopObject = 0x00000039;
-			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcStopObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_StopObject, &l_BitStream, l_uint16_PlayerIndex, 2 );
 
 			return 1;
 		}
@@ -646,9 +642,9 @@ cell AMX_NATIVE_CALL funcAttachObjectToPlayer ( AMX* a_AmxInterface, cell* a_Par
 				l_BitStream.Write ( amx_ctof ( a_Params[ 8 ] ) );
 
 				
-			uint32_t l_RpcAttachObjectToPlayer = 0x00000041;
-			CNetGame__RPC_SendToUnknown ( ( uint32_t )__NetGame, &l_RpcAttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
-			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &l_RpcAttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			
+			CNetGame__RPC_SendToUnknown ( ( uint32_t )__NetGame, &RPC_AttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
+			CNetGame__RPC_SendToPlayer ( ( uint32_t )__NetGame, &RPC_AttachObjectToPlayer, &l_BitStream, l_uint16_PlayerIndex, 2 );
 			return 1;
 		}
 	}

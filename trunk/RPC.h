@@ -31,8 +31,12 @@ extern uint32_t RPC_RemovePlayerMapIcon;
 extern uint32_t RPC_SetPlayerAmmo;
 
 extern uint32_t RPC_SpawnObject;
-
+extern uint32_t RPC_SetObjectPosition;
+extern uint32_t RPC_SetObjectRotation;
+extern uint32_t RPC_DestroyObject;
 extern uint32_t RPC_ShowPlayerNameTagForPlayer;
+extern uint32_t RPC_MoveObject;
+extern uint32_t RPC_StopObject;
 
 extern uint32_t RPC_TogglePlayerSpectating;
 
@@ -40,7 +44,7 @@ extern uint32_t RPC_SetPlayerSpectatingPlayer;
 extern uint32_t RPC_SetPlayerSpectatingVehicle;
 
 extern uint32_t RPC_ForceClassSelection;
-
+extern uint32_t RPC_AttachObjectToPlayer;
 extern uint32_t RPC_Menu_InitForPlayer;
 extern uint32_t RPC_Menu_ShowForPlayer;
 extern uint32_t RPC_Menu_HideForPlayer;

@@ -33,16 +33,20 @@ uint32_t RPC_RemovePlayerMapIcon = 0x2A;
 uint32_t RPC_SetPlayerAmmo = 0x2B;
 
 uint32_t RPC_SpawnObject = 0x30;
-
+uint32_t RPC_SetObjectPosition = 0x31;
+uint32_t RPC_SetObjectRotation = 0x32;
+uint32_t RPC_DestroyObject = 0x33;
 uint32_t RPC_ShowPlayerNameTagForPlayer = 0x37;
-
+uint32_t RPC_MoveObject = 0x38;
 uint32_t RPC_TogglePlayerSpectating = 0x3B;
+uint32_t RPC_StopObject = 0x39;
+
 
 uint32_t RPC_SetPlayerSpectatingPlayer = 0x3D;
 uint32_t RPC_SetPlayerSpectatingVehicle = 0x3E;
 
 uint32_t RPC_ForceClassSelection = 0x40;
-
+uint32_t RPC_AttachObjectToPlayer = 0x41;
 uint32_t RPC_Menu_InitForPlayer = 0x42;
 uint32_t RPC_Menu_ShowForPlayer = 0x43;
 uint32_t RPC_Menu_HideForPlayer = 0x44;
