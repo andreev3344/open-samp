@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{42578DE1-3BB3-456A-989F-BBA1D3618BFF}</ProjectGuid>
+    <RootNamespace>HelloWorld</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\Build\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\Build\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WindowsSdkDir)include;$(VCInstallDir)atlmfc\include;$(VCInstallDir)include;C:\Qt\4.7.3\include\;C:\Program Files\Microsoft DirectX SDK (November 2008)\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WindowsSdkDir)include;$(VCInstallDir)atlmfc\include;$(VCInstallDir)include;C:\Qt\4.7.3\include\;C:\Program Files\Microsoft DirectX SDK (November 2008)\Include;$(IncludePath)</IncludePath>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">opensampsvr</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">opensampsvr</TargetName>
+    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Yoann\Documents\Open-Samp\amx;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CONSOLE;HELLOWORLD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/D "_CRT_SECURE_NO_WARNINGS" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>Build\$(Configuration)\opensamp-server.exe</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)/../$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CONSOLE;HELLOWORLD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>helloworld.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <OutputFile>C:\Users\Sasuke78200\Documents\samp server\plugins\plug.dll</OutputFile>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)/../$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\SDK\amx\getch.c" />
+    <ClCompile Include="amx\amx.c" />
+    <ClCompile Include="amx\amxcons.c" />
+    <ClCompile Include="amx\amxcore.c" />
+    <ClCompile Include="amx\amxDGram.c" />
+    <ClCompile Include="amx\amxfile.c" />
+    <ClCompile Include="amx\amxfloat.c" />
+    <ClCompile Include="amx\amxstring.c" />
+    <ClCompile Include="amx\amxtime.c" />
+    <ClCompile Include="amx\sqlite\sqlite3.c" />
+    <ClCompile Include="amx\sqlite\sqlite_amx.c" />
+    <ClCompile Include="class_console.cpp" />
+    <ClCompile Include="class_netgame.cpp" />
+    <ClCompile Include="exception_handler.cpp" />
+    <ClCompile Include="factory\class_element_factory.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="object\class_color.cpp" />
+    <ClCompile Include="object\class_element.cpp" />
+    <ClCompile Include="object\class_keybinder.cpp" />
+    <ClCompile Include="object\class_object.cpp" />
+    <ClCompile Include="object\class_menu.cpp" />
+    <ClCompile Include="object\class_deprecated_object.cpp" />
+    <ClCompile Include="object\class_pickup.cpp" />
+    <ClCompile Include="object\class_player.cpp" />
+    <ClCompile Include="object\class_player_text3dlabels.cpp" />
+    <ClCompile Include="object\class_player_var.cpp" />
+    <ClCompile Include="object\class_radaricon.cpp" />
+    <ClCompile Include="object\class_radarzone.cpp" />
+    <ClCompile Include="object\class_referencecounter.cpp" />
+    <ClCompile Include="object\class_vehicle.cpp" />
+    <ClCompile Include="plugin\class_plugins.cpp" />
+    <ClCompile Include="pool\class_deprecated_gangzonepool.cpp" />
+    <ClCompile Include="pool\class_menupool.cpp" />
+    <ClCompile Include="pool\class_deprecated_objectpool.cpp" />
+    <ClCompile Include="pool\class_pickuppool.cpp" />
+    <ClCompile Include="pool\class_playerpool.cpp" />
+    <ClCompile Include="pool\class_text3dlabels.cpp" />
+    <ClCompile Include="pool\class_textdrawpool.cpp" />
+    <ClCompile Include="pool\class_vehiclepool.cpp" />
+    <ClCompile Include="query.cpp" />
+    <ClCompile Include="raknet\AsynchronousFileIO.cpp" />
+    <ClCompile Include="raknet\BitStream.cpp" />
+    <ClCompile Include="raknet\CheckSum.cpp" />
+    <ClCompile Include="raknet\CommandParserInterface.cpp" />
+    <ClCompile Include="raknet\ConnectionGraph.cpp" />
+    <ClCompile Include="raknet\ConsoleServer.cpp" />
+    <ClCompile Include="raknet\DataBlockEncryptor.cpp" />
+    <ClCompile Include="raknet\DS_ByteQueue.cpp" />
+    <ClCompile Include="raknet\DS_HuffmanEncodingTree.cpp" />
+    <ClCompile Include="raknet\DS_Table.cpp" />
+    <ClCompile Include="raknet\EncodeClassName.cpp" />
+    <ClCompile Include="raknet\ExtendedOverlappedPool.cpp" />
+    <ClCompile Include="raknet\GetTime.cpp" />
+    <ClCompile Include="raknet\InternalPacketPool.cpp" />
+    <ClCompile Include="raknet\LogCommandParser.cpp" />
+    <ClCompile Include="raknet\NetworkIDGenerator.cpp" />
+    <ClCompile Include="raknet\NetworkTypes.cpp" />
+    <ClCompile Include="raknet\OrderedList.cpp" />
+    <ClCompile Include="raknet\PacketConsoleLogger.cpp" />
+    <ClCompile Include="raknet\PacketFileLogger.cpp" />
+    <ClCompile Include="raknet\PacketLogger.cpp" />
+    <ClCompile Include="raknet\PluginInterface.cpp" />
+    <ClCompile Include="raknet\RakClient.cpp" />
+    <ClCompile Include="raknet\RakNetCommandParser.cpp" />
+    <ClCompile Include="raknet\RakNetStatistics.cpp" />
+    <ClCompile Include="raknet\RakNetTransport.cpp" />
+    <ClCompile Include="raknet\RakNetworkFactory.cpp" />
+    <ClCompile Include="raknet\RakPeer.cpp" />
+    <ClCompile Include="raknet\RakServer.cpp" />
+    <ClCompile Include="raknet\RakSleep.cpp" />
+    <ClCompile Include="raknet\Rand.cpp" />
+    <ClCompile Include="raknet\ReliabilityLayer.cpp" />
+    <ClCompile Include="raknet\ReplicaManager.cpp" />
+    <ClCompile Include="raknet\rijndael.cpp" />
+    <ClCompile Include="raknet\Router.cpp" />
+    <ClCompile Include="raknet\RPCMap.cpp" />
+    <ClCompile Include="raknet\SHA1.cpp" />
+    <ClCompile Include="raknet\SimpleMutex.cpp" />
+    <ClCompile Include="raknet\SimpleTCPServer.cpp" />
+    <ClCompile Include="raknet\SocketLayer.cpp" />
+    <ClCompile Include="raknet\StringCompressor.cpp" />
+    <ClCompile Include="raknet\StringTable.cpp" />
+    <ClCompile Include="raknet\SystemAddressList.cpp" />
+    <ClCompile Include="raknet\TCPInterface.cpp" />
+    <ClCompile Include="raknet\TEABlockEncryptor.cpp" />
+    <ClCompile Include="raknet\TelnetTransport.cpp" />
+    <ClCompile Include="RPC.cpp" />
+    <ClCompile Include="script\amx\func_amx_element.cpp" />
+    <ClCompile Include="script\amx\func_amx_deprecated_gangzone.cpp" />
+    <ClCompile Include="script\amx\func_amx_menu.cpp" />
+    <ClCompile Include="script\amx\func_amx_object.cpp" />
+    <ClCompile Include="script\amx\func_amx_deprecated_object.cpp" />
+    <ClCompile Include="script\amx\func_amx_pickup.cpp" />
+    <ClCompile Include="script\amx\func_amx_players.cpp" />
+    <ClCompile Include="script\amx\func_amx_radaricon.cpp" />
+    <ClCompile Include="script\amx\func_amx_radarzone.cpp" />
+    <ClCompile Include="script\amx\func_amx_textdraw.cpp" />
+    <ClCompile Include="script\class_fsmanager.cpp" />
+    <ClCompile Include="script\class_gmmanager.cpp" />
+    <ClCompile Include="script\class_httpclient.cpp" />
+    <ClCompile Include="script\class_scripthttp.cpp" />
+    <ClCompile Include="script\class_scripttimers.cpp" />
+    <ClCompile Include="script\core.cpp" />
+    <ClCompile Include="script\format.cpp" />
+    <ClCompile Include="script\func_amx.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="tinyxml\xmltest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="helloworld.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SDK\amx\amx.h" />
+    <ClInclude Include="..\SDK\amx\getch.h" />
+    <ClInclude Include="..\SDK\amx\sclinux.h" />
+    <ClInclude Include="..\SDK\plugin.h" />
+    <ClInclude Include="..\SDK\plugincommon.h" />
+    <ClInclude Include="amx\amx.h" />
+    <ClInclude Include="amx\osdefs.h" />
+    <ClInclude Include="amx\sqlite\sqlite3.h" />
+    <ClInclude Include="class_console.h" />
+    <ClInclude Include="class_netgame.h" />
+    <ClInclude Include="factory\class_element_factory.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="object\class_color.h" />
+    <ClInclude Include="object\class_element.h" />
+    <ClInclude Include="object\class_keybinder.h" />
+    <ClInclude Include="object\class_object.h" />
+    <ClInclude Include="object\class_menu.h" />
+    <ClInclude Include="object\class_deprecated_object.h" />
+    <ClInclude Include="object\class_pickup.h" />
+    <ClInclude Include="object\class_player.h" />
+    <ClInclude Include="object\class_player_text3dlabels.h" />
+    <ClInclude Include="object\class_player_var.h" />
+    <ClInclude Include="object\class_radaricon.h" />
+    <ClInclude Include="object\class_radarzone.h" />
+    <ClInclude Include="object\class_referencecounter.h" />
+    <ClInclude Include="object\class_spawnpoint.h" />
+    <ClInclude Include="object\class_vehicle.h" />
+    <ClInclude Include="plugin\class_plugins.h" />
+    <ClInclude Include="plugin\plugincommon.h" />
+    <ClInclude Include="plugin\plugininternal.h" />
+    <ClInclude Include="pool\class_deprecated_gangzonepool.h" />
+    <ClInclude Include="pool\class_menupool.h" />
+    <ClInclude Include="pool\class_deprecated_objectpool.h" />
+    <ClInclude Include="pool\class_pickuppool.h" />
+    <ClInclude Include="pool\class_playerpool.h" />
+    <ClInclude Include="pool\class_text3dlabels.h" />
+    <ClInclude Include="pool\class_textdrawpool.h" />
+    <ClInclude Include="pool\class_vehiclepool.h" />
+    <ClInclude Include="raknet\ArrayList.h" />
+    <ClInclude Include="raknet\AsynchronousFileIO.h" />
+    <ClInclude Include="raknet\BigTypes.h" />
+    <ClInclude Include="raknet\BinarySearchTree.h" />
+    <ClInclude Include="raknet\BitStream.h" />
+    <ClInclude Include="raknet\CheckSum.h" />
+    <ClInclude Include="raknet\ClientContextStruct.h" />
+    <ClInclude Include="raknet\CommandParserInterface.h" />
+    <ClInclude Include="raknet\ConnectionGraph.h" />
+    <ClInclude Include="raknet\ConsoleServer.h" />
+    <ClInclude Include="raknet\DataBlockEncryptor.h" />
+    <ClInclude Include="raknet\DS_BPlusTree.h" />
+    <ClInclude Include="raknet\DS_ByteQueue.h" />
+    <ClInclude Include="raknet\DS_MemoryPool.h" />
+    <ClInclude Include="raknet\DS_RangeList.h" />
+    <ClInclude Include="raknet\DS_Table.h" />
+    <ClInclude Include="raknet\EncodeClassName.h" />
+    <ClInclude Include="raknet\Export.h" />
+    <ClInclude Include="raknet\ExtendedOverlappedPool.h" />
+    <ClInclude Include="raknet\FullyConnectedMesh.h" />
+    <ClInclude Include="raknet\GetTime.h" />
+    <ClInclude Include="raknet\HuffmanEncodingTree.h" />
+    <ClInclude Include="raknet\HuffmanEncodingTreeFactory.h" />
+    <ClInclude Include="raknet\HuffmanEncodingTreeNode.h" />
+    <ClInclude Include="raknet\InternalPacket.h" />
+    <ClInclude Include="raknet\InternalPacketPool.h" />
+    <ClInclude Include="raknet\LinkedList.h" />
+    <ClInclude Include="raknet\LogCommandParser.h" />
+    <ClInclude Include="raknet\MTUSize.h" />
+    <ClInclude Include="raknet\Multiplayer.h" />
+    <ClInclude Include="raknet\NetworkIDGenerator.h" />
+    <ClInclude Include="raknet\NetworkTypes.h" />
+    <ClInclude Include="raknet\OrderedList.h" />
+    <ClInclude Include="raknet\PacketConsoleLogger.h" />
+    <ClInclude Include="raknet\PacketEnumerations.h" />
+    <ClInclude Include="raknet\PacketFileLogger.h" />
+    <ClInclude Include="raknet\PacketLogger.h" />
+    <ClInclude Include="raknet\PacketPool.h" />
+    <ClInclude Include="raknet\PacketPriority.h" />
+    <ClInclude Include="raknet\PluginInterface.h" />
+    <ClInclude Include="raknet\QueueLinkedList.h" />
+    <ClInclude Include="raknet\RakClient.h" />
+    <ClInclude Include="raknet\RakClientInterface.h" />
+    <ClInclude Include="raknet\RakNetCommandParser.h" />
+    <ClInclude Include="raknet\RakNetQueue.h" />
+    <ClInclude Include="raknet\RakNetStatistics.h" />
+    <ClInclude Include="raknet\RakNetTransport.h" />
+    <ClInclude Include="raknet\RakNetworkFactory.h" />
+    <ClInclude Include="raknet\RakPeer.h" />
+    <ClInclude Include="raknet\RakPeerInterface.h" />
+    <ClInclude Include="raknet\RakServer.h" />
+    <ClInclude Include="raknet\RakServerInterface.h" />
+    <ClInclude Include="raknet\RakSleep.h" />
+    <ClInclude Include="raknet\Rand.h" />
+    <ClInclude Include="raknet\ReliabilityLayer.h" />
+    <ClInclude Include="raknet\ReplicaManager.h" />
+    <ClInclude Include="raknet\rijndael-boxes.h" />
+    <ClInclude Include="raknet\rijndael.h" />
+    <ClInclude Include="raknet\Router.h" />
+    <ClInclude Include="raknet\RPCMap.h" />
+    <ClInclude Include="raknet\RPCNode.h" />
+    <ClInclude Include="raknet\RSACrypt.h" />
+    <ClInclude Include="raknet\SHA1.h" />
+    <ClInclude Include="raknet\SimpleMutex.h" />
+    <ClInclude Include="raknet\SimpleTCPServer.h" />
+    <ClInclude Include="raknet\SingleProducerConsumer.h" />
+    <ClInclude Include="raknet\SocketLayer.h" />
+    <ClInclude Include="raknet\StringCompressor.h" />
+    <ClInclude Include="raknet\StringTable.h" />
+    <ClInclude Include="raknet\SystemAddressList.h" />
+    <ClInclude Include="raknet\TCPInterface.h" />
+    <ClInclude Include="raknet\TEABlockEncryptor.h" />
+    <ClInclude Include="raknet\TelnetTransport.h" />
+    <ClInclude Include="raknet\TransportInterface.h" />
+    <ClInclude Include="raknet\Types.h" />
+    <ClInclude Include="RPC.h" />
+    <ClInclude Include="script\amx\func_amx_element.h" />
+    <ClInclude Include="script\amx\func_amx_deprecated_gangzone.h" />
+    <ClInclude Include="script\amx\func_amx_menu.h" />
+    <ClInclude Include="script\amx\func_amx_object.h" />
+    <ClInclude Include="script\amx\func_amx_deprecated_object.h" />
+    <ClInclude Include="script\amx\func_amx_pickup.h" />
+    <ClInclude Include="script\amx\func_amx_players.h" />
+    <ClInclude Include="script\amx\func_amx_radaricon.h" />
+    <ClInclude Include="script\amx\func_amx_radarzone.h" />
+    <ClInclude Include="script\amx\func_amx_textdraw.h" />
+    <ClInclude Include="script\class_fsmanager.h" />
+    <ClInclude Include="script\class_gmmanager.h" />
+    <ClInclude Include="script\class_httpclient.h" />
+    <ClInclude Include="script\class_scripthttp.h" />
+    <ClInclude Include="script\class_scripttimers.h" />
+    <ClInclude Include="script\format.h" />
+    <ClInclude Include="script\func_amx.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

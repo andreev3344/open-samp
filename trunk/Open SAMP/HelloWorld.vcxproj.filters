@@ -1,0 +1,754 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\SDK\amx\getch.c">
+      <Filter>AMXplugin</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="script\func_amx.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_pickuppool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_text3dlabels.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_textdrawpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_textdraw.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_menupool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_menu.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_playerpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_menu.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="class_netgame.cpp" />
+    <ClCompile Include="script\amx\func_amx_players.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_fsmanager.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_gmmanager.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_vehiclepool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_player_text3dlabels.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_player_var.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="RPC.cpp" />
+    <ClCompile Include="class_console.cpp" />
+    <ClCompile Include="query.cpp" />
+    <ClCompile Include="object\class_vehicle.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="script\format.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_scripttimers.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxcons.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxcore.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amx.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxDGram.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxstring.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxfile.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxfloat.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\amxtime.c">
+      <Filter>AMX</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\sqlite\sqlite3.c">
+      <Filter>AMX\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="amx\sqlite\sqlite_amx.c">
+      <Filter>AMX\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="script\core.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\AsynchronousFileIO.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\BitStream.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\CheckSum.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\ConsoleServer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\EncodeClassName.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\ExtendedOverlappedPool.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\GetTime.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\InternalPacketPool.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\NetworkIDGenerator.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\NetworkTypes.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\OrderedList.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\PacketConsoleLogger.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\PluginInterface.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakClient.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakNetCommandParser.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakNetStatistics.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakNetTransport.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakNetworkFactory.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakPeer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakServer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\ReliabilityLayer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\rijndael.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\SocketLayer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\StringCompressor.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\StringTable.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RPCMap.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\SHA1.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\SimpleMutex.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\LogCommandParser.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\PacketLogger.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\ReplicaManager.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\DataBlockEncryptor.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\Rand.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\TelnetTransport.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\SimpleTCPServer.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="exception_handler.cpp" />
+    <ClCompile Include="raknet\PacketFileLogger.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\CommandParserInterface.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\RakSleep.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\Router.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\ConnectionGraph.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\TCPInterface.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\TEABlockEncryptor.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\SystemAddressList.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\DS_HuffmanEncodingTree.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\DS_Table.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="raknet\DS_ByteQueue.cpp">
+      <Filter>raknet</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_scripthttp.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\class_httpclient.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin\class_plugins.cpp">
+      <Filter>plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_element.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_element.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="factory\class_element_factory.cpp">
+      <Filter>factory</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_referencecounter.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_radaricon.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_radarzone.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_radarzone.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_radaricon.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_object.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_deprecated_object.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_deprecated_objectpool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_deprecated_object.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_deprecated_gangzone.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_object.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="pool\class_deprecated_gangzonepool.cpp">
+      <Filter>pool</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_pickup.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="script\amx\func_amx_pickup.cpp">
+      <Filter>script\amx</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_player.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_color.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>Tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>Tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>Tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>Tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\xmltest.cpp">
+      <Filter>Tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="object\class_keybinder.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="helloworld.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="pool">
+      <UniqueIdentifier>{96cfd164-fe00-4fd6-9599-e1759c151612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script">
+      <UniqueIdentifier>{e8c9900a-5783-4052-b8ff-51b20ced6afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="script\amx">
+      <UniqueIdentifier>{07722e63-8a2e-41a8-9f5b-c242795b59af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{b24e6fd8-25e8-4920-97f7-d7477d404e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AMXplugin">
+      <UniqueIdentifier>{8c6623fb-5317-4c35-8bf2-fdd6e7defcc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AMX">
+      <UniqueIdentifier>{cfe8d4aa-57e3-4117-8f4e-f33d62370a19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AMX\sqlite">
+      <UniqueIdentifier>{bddf8fe4-8ef3-4c09-a1e5-d4f9fac9c154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="raknet">
+      <UniqueIdentifier>{d7634abc-9685-4bf1-b20e-23aa39a6cc09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugin">
+      <UniqueIdentifier>{defe3273-5866-44f2-86a4-e2c012a63856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="factory">
+      <UniqueIdentifier>{22c80817-9938-403a-95f6-7933d9c55605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tinyxml">
+      <UniqueIdentifier>{8c59c9e5-a4fa-4138-9407-2d3835b67e4c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\SDK\amx\amx.h">
+      <Filter>AMXplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SDK\amx\getch.h">
+      <Filter>AMXplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SDK\amx\sclinux.h">
+      <Filter>AMXplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SDK\plugin.h">
+      <Filter>AMXplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SDK\plugincommon.h">
+      <Filter>AMXplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_pickuppool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h" />
+    <ClInclude Include="script\func_amx.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_textdrawpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_text3dlabels.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_textdraw.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="class_netgame.h" />
+    <ClInclude Include="pool\class_menupool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_menu.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_playerpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_menu.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_player.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_players.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_fsmanager.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_gmmanager.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_vehiclepool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_player_text3dlabels.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_player_var.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="RPC.h" />
+    <ClInclude Include="class_console.h" />
+    <ClInclude Include="object\class_vehicle.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\format.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_scripttimers.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="amx\amx.h">
+      <Filter>AMX</Filter>
+    </ClInclude>
+    <ClInclude Include="amx\osdefs.h">
+      <Filter>AMX</Filter>
+    </ClInclude>
+    <ClInclude Include="amx\sqlite\sqlite3.h">
+      <Filter>AMX\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\Types.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ArrayList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\AsynchronousFileIO.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\BigTypes.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\BinarySearchTree.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\BitStream.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\CheckSum.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ClientContextStruct.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ConsoleServer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DataBlockEncryptor.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\EncodeClassName.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\Export.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ExtendedOverlappedPool.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\FullyConnectedMesh.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\GetTime.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\HuffmanEncodingTree.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\HuffmanEncodingTreeFactory.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\HuffmanEncodingTreeNode.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\InternalPacket.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\InternalPacketPool.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\LinkedList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\LogCommandParser.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\MTUSize.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\Multiplayer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\NetworkIDGenerator.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\NetworkTypes.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\OrderedList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketConsoleLogger.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketEnumerations.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketFileLogger.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketLogger.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketPool.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PacketPriority.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\PluginInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\QueueLinkedList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakClient.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakClientInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakNetCommandParser.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakNetQueue.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakNetStatistics.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakNetTransport.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakNetworkFactory.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakPeer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakPeerInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakServer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakServerInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\Rand.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ReliabilityLayer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ReplicaManager.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\rijndael.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\rijndael-boxes.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RPCMap.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RPCNode.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RSACrypt.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SHA1.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SimpleMutex.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SimpleTCPServer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SingleProducerConsumer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SocketLayer.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\StringCompressor.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\StringTable.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\TelnetTransport.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\TransportInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\CommandParserInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\RakSleep.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\Router.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\ConnectionGraph.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\TCPInterface.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\TEABlockEncryptor.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\SystemAddressList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DS_ByteQueue.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DS_MemoryPool.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DS_RangeList.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DS_Table.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="raknet\DS_BPlusTree.h">
+      <Filter>raknet</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_scripthttp.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\class_httpclient.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\class_plugins.h">
+      <Filter>plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\plugincommon.h">
+      <Filter>plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin\plugininternal.h">
+      <Filter>plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_element.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_element.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_referencecounter.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="factory\class_element_factory.h">
+      <Filter>factory</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_radaricon.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_radarzone.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_radarzone.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_radaricon.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_object.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_deprecated_object.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_deprecated_objectpool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_deprecated_object.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_deprecated_gangzone.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_object.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="pool\class_deprecated_gangzonepool.h">
+      <Filter>pool</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_pickup.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="script\amx\func_amx_pickup.h">
+      <Filter>script\amx</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_color.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_spawnpoint.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>Tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>Tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="object\class_keybinder.h">
+      <Filter>object</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
